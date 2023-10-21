@@ -13,7 +13,7 @@ public interface Dao<T> {
     void save(T t);
     void update(int id, T t);
     void delete(int id);
-    List<T> getEntities() throws IOException;
+    List<T> getEntities(Class<T> tClass) throws IOException;
     void writeEntities() throws IOException;
     void setFilePath(String filePath);
     String getFilePath();

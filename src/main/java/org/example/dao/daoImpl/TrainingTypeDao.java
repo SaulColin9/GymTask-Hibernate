@@ -37,7 +37,7 @@ public class TrainingTypeDao implements Dao<TrainingType> {
     }
 
     @Override
-    public List<TrainingType> getEntities() throws IOException {
+    public List<TrainingType> getEntities(Class<TrainingType> tClass) throws IOException {
         return null;
     }
 

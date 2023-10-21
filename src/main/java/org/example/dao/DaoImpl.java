@@ -1,82 +1,57 @@
 package org.example.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.model.User;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoImpl{
+public abstract class DaoImpl<T> extends DaoConnectionImpl<T> implements Dao<T>, InitializingBean {
+    protected List<T> entities;
+    public abstract Optional<T> get(int id);
+    public abstract void save(T t);
+    public abstract void setFilePath(String filePath);
+    public abstract  String getFilePath();
+    public abstract void afterPropertiesSet();
 
-//    protected String filePath;
-//
-//    protected List<T> entities = new ArrayList<>();
-//    @Override
-//    public void setFilePath(String filePath){
-//        this.filePath = filePath;
-//    }
-//
-//    @Override
-//    public String getFilePath() {
-//        return null;
-//    }
-//
-//    @Override
-//    public Optional<T> get(int id) {
-//        return Optional.ofNullable(entities.get(id));
-//    }
-//
-//    @Override
-//    public List<T> getAll() {
-//        return entities;
-//    }
-//
-//    @Override
-//    public void save(T t) {
-//
-//    }
-//
-//    @Override
-//    public void update(T t) {
-//        int id = entities.indexOf(t);
-//        entities.set(id, t);
-//    }
-//
-//    @Override
-//    public void delete(int id) {
-//        entities.remove(id);
-//        writeEntities(filePath, entities);
-//    }
-//
-//    public List getEntities(String filePath, TypeReference<List<T>> typeReference){
-//        try{
-//            ObjectMapper mapper = new ObjectMapper();
-//            InputStream inputStream = new FileInputStream(filePath);
-//            return mapper.readValue(inputStream, typeReference);
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public void setEntities(List<T> entities) {
+        this.entities = entities;
+    }
 
-//    @Override
-//    public void writeEntities(String filePath, List<T> entities){
-//        try{
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.writeValue(new File(filePath), entities);
-//
-//        }catch (IOException e){
-//            throw new RuntimeException(e);
-//        }
-//    }
+    @Override
+    public List<T> getAll() {
+        return entities;
+    }
 
-//    public abstract void save(T t);
+    @Override
+    public void update(int id, T t) {
+        Optional<T> foundEntity = get(id);
+        int listId;
+        if(foundEntity.isPresent()){
+            listId = entities.indexOf(foundEntity.get());
+            entities.set(listId, t);
+            writeEntities();
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+        Optional<T> foundEntity = get(id);
+        int listId;
+        if(foundEntity.isPresent()){
+            listId = entities.indexOf(foundEntity.get());
+            entities.remove(listId);
+            writeEntities();
+        }
+    }
+
+    @Override
+    public List<T> getEntities(Class<T> tClass) {
+        return getEntities(getFilePath(), tClass);
+    }
+
+    @Override
+    public void writeEntities() {
+        writeEntities(getFilePath(), entities);
+    }
 }
