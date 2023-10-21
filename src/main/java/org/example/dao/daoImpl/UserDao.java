@@ -5,22 +5,6 @@ import java.util.*;
 
 public class UserDao extends DaoImpl<User> {
     private String filePath;
-    @Override
-    public Optional<User> get(int id) {
-        User foundUser = null;
-        for (User user : entities) {
-            if (user.getId() == id) {
-                foundUser = user;
-                break;
-            }
-        }
-        return Optional.ofNullable(foundUser);
-    }
-
-    @Override
-    public void save(User user) {
-
-    }
 
     @Override
     public void setFilePath(String filePath) {
@@ -35,5 +19,21 @@ public class UserDao extends DaoImpl<User> {
     @Override
     public void afterPropertiesSet() {
         setEntities(getEntities(User.class));
+    }
+
+    @Override
+    public int getNextId() {
+        return entities.get(entities.size() - 1).getId() + 1;
+    }
+
+    @Override
+    public User setId(User user, int id) {
+        user.setId(id);
+        return user;
+    }
+
+    @Override
+    public int getId(User user) {
+        return user.getId();
     }
 }

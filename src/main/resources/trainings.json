@@ -1,0 +1,9 @@
+[{
+  "id": 1,
+  "traineeId": 1,
+  "trainerId": 1,
+  "trainingName": "The Elite Program",
+  "trainingTypeId": 1,
+  "trainingDate": "2023-10-21",
+  "trainingDuration": 1
+}]

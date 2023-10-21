@@ -8,19 +8,37 @@ import java.util.Optional;
 
 public abstract class DaoImpl<T> extends DaoConnectionImpl<T> implements Dao<T>, InitializingBean {
     protected List<T> entities;
-    public abstract Optional<T> get(int id);
-    public abstract void save(T t);
     public abstract void setFilePath(String filePath);
     public abstract  String getFilePath();
     public abstract void afterPropertiesSet();
+    public abstract int getNextId();
+    public abstract T setId(T t, int id);
+    public abstract int getId(T t);
 
     public void setEntities(List<T> entities) {
         this.entities = entities;
     }
 
     @Override
+    public  Optional<T> get(int id){
+        T foundT = null;
+        for(T t: entities){
+            if(getId(t) == id){
+                foundT = t;
+            }
+        }
+        return Optional.ofNullable(foundT);
+    }
+    @Override
     public List<T> getAll() {
         return entities;
+    }
+    @Override
+    public void save(T t){
+        T newT = setId(t, getNextId());
+        entities.add(newT);
+        writeEntities();
+
     }
 
     @Override

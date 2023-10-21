@@ -2,6 +2,7 @@ package org.example.dao.daoImpl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.example.dao.Dao;
+import org.example.dao.DaoImpl;
 import org.example.model.TrainingType;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -9,51 +10,37 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public class TrainingTypeDao implements Dao<TrainingType> {
+public class TrainingTypeDao extends DaoImpl<TrainingType> {
 
-    @Override
-    public Optional<TrainingType> get(int id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<TrainingType> getAll() {
-        return null;
-    }
-
-    @Override
-    public void save(TrainingType trainingType) {
-
-    }
-
-    @Override
-    public void update(int id, TrainingType trainingType) {
-
-    }
-
-    @Override
-    public void delete(int id) {
-
-    }
-
-    @Override
-    public List<TrainingType> getEntities(Class<TrainingType> tClass) throws IOException {
-        return null;
-    }
-
-    @Override
-    public void writeEntities() throws IOException {
-
-    }
-
-
+    private String filePath;
     @Override
     public void setFilePath(String filePath) {
-
+       this.filePath = filePath;
     }
 
     @Override
     public String getFilePath() {
-        return null;
+        return filePath;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        setEntities(getEntities(TrainingType.class));
+    }
+
+    @Override
+    public int getNextId() {
+        return entities.get(entities.size() - 1).getId() + 1;
+    }
+
+    @Override
+    public TrainingType setId(TrainingType trainingType, int id) {
+        trainingType.setId(id);
+        return trainingType;
+    }
+
+    @Override
+    public int getId(TrainingType trainingType) {
+        return trainingType.getId();
     }
 }

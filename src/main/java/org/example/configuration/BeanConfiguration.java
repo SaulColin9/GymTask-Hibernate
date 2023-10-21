@@ -2,9 +2,12 @@ package org.example.configuration;
 
 import org.example.dao.Dao;
 import org.example.dao.daoImpl.*;
+import org.example.model.Trainee;
+import org.example.model.User;
 import org.example.service.TrainingService;
 import org.example.service.serviceImpl.TrainingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +29,7 @@ public class BeanConfiguration {
         return userDao;
     }
     @Bean("trainings")
-    public Dao trainingDao(@Value("${trainigs.source}")String trainigsPath){
+    public Dao trainingDao(@Value("${trainings.source}")String trainigsPath){
         Dao trainingDao = new TrainingDao();
         trainingDao.setFilePath(trainigsPath);
         return trainingDao;
@@ -48,7 +51,7 @@ public class BeanConfiguration {
 
     @Bean("trainees")
     public Dao traineeDao(@Value("${trainees.source}")String traineesPath){
-        Dao traineeDao = new TraineeDao();
+        TraineeDao traineeDao = new TraineeDao();
         traineeDao.setFilePath(traineesPath);
         return traineeDao;
     }
