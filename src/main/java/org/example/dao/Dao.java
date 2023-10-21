@@ -10,12 +10,11 @@ import java.util.Optional;
 public interface Dao<T> {
     Optional<T> get(int id);
     List<T> getAll();
-
     void save(T t);
-    void update(T t);
+    void update(int id, T t);
     void delete(int id);
-    List<T> getEntities(String filePath, TypeReference<List<T>> typeReference) throws IOException;
-    void writeEntities(String path, List<T> entities) throws IOException;
+    List<T> getEntities() throws IOException;
+    void writeEntities() throws IOException;
     void setFilePath(String filePath);
     String getFilePath();
 }

@@ -1,6 +1,5 @@
 package org.example.dao.daoImpl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.example.dao.Dao;
 import org.example.model.Training;
 
@@ -26,7 +25,7 @@ public class TrainingDao implements Dao<Training>{
     }
 
     @Override
-    public void update(Training training) {
+    public void update(int id, Training training) {
 
     }
 
@@ -36,14 +35,15 @@ public class TrainingDao implements Dao<Training>{
     }
 
     @Override
-    public List<Training> getEntities(String filePath, TypeReference<List<Training>> typeReference) throws IOException {
+    public List<Training> getEntities() throws IOException {
         return null;
     }
 
     @Override
-    public void writeEntities(String path, List<Training> entities) throws IOException {
+    public void writeEntities() throws IOException {
 
     }
+
 
     @Override
     public void setFilePath(String filePath) {

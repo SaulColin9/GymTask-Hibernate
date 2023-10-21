@@ -26,7 +26,7 @@ public class TraineeDao implements Dao<Trainee>{
     }
 
     @Override
-    public void update(Trainee trainee) {
+    public void update(int id, Trainee trainee) {
 
     }
 
@@ -36,14 +36,15 @@ public class TraineeDao implements Dao<Trainee>{
     }
 
     @Override
-    public List<Trainee> getEntities(String filePath, TypeReference<List<Trainee>> typeReference) throws IOException {
+    public List<Trainee> getEntities() throws IOException {
         return null;
     }
 
     @Override
-    public void writeEntities(String path, List<Trainee> entities) throws IOException {
+    public void writeEntities() throws IOException {
 
     }
+
 
     @Override
     public void setFilePath(String filePath) {
