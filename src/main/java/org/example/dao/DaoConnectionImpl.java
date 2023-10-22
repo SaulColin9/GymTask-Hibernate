@@ -14,7 +14,13 @@ import java.util.List;
 
 public class DaoConnectionImpl<T extends Entity> implements DaoConnection<T>{
 
-    public List<T> getEntities(String filePath, Class<T> tClass){
+    private Class<T> tClass;
+
+    public DaoConnectionImpl(Class<T> tClass) {
+        this.tClass = tClass;
+    }
+
+    public List<T> getEntities(String filePath){
         try{
             ObjectMapper mapper = new ObjectMapper();
             CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, tClass );

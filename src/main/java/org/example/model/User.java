@@ -43,8 +43,9 @@ public class User implements Entity{
                 '}';
     }
 
-    public void setId(int id) {
+    public User setId(int id) {
         this.id = id;
+        return this;
     }
 
     public String getFirstName() {

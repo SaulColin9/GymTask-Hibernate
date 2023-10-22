@@ -6,9 +6,10 @@ import org.example.configuration.StorageImpl;
 import org.example.dao.Dao;
 import org.example.dao.DaoConnection;
 import org.example.dao.DaoConnectionImpl;
-import org.example.dao.daoImpl.TrainingDao;
+import org.example.dao.DaoImpl;
 import org.example.model.Training;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,77 +19,66 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfig.class)
 class TrainingServiceImplTest {
 
-//    @Autowired
     private TrainingServiceImpl trainingService;
-//    @Autowired
     private Storage storage = new StorageImpl();
     private TrainingServiceImpl mock = mock(TrainingServiceImpl.class);
-    private DaoConnectionImpl<Training> daoConnection;
-    @Before
+    private DaoConnectionImpl<Training> daoConnection = new DaoConnectionImpl<>(Training.class);
+    List<Training> trainings = new ArrayList<>();
+    @BeforeEach
     public void setUp(){
         Map<String, Dao> daos = new HashMap<>();
-        daos.put("trainings", new TrainingDao());
+        daos.put("trainings", new DaoImpl<>(Training.class));
         storage.setDaos(daos);
         trainingService = new TrainingServiceImpl(storage);
+
+        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
+        trainingTest.setId(1);
+        Training trainingTest2 = new Training(2,2,"Test Training 2", 2, new Date(),1.5);
+        trainingTest2.setId(2);
+        trainings.add(trainingTest);
+        trainings.add(trainingTest2);
+
         daoConnection = mock(DaoConnectionImpl.class);
-        daos.get("trainings").setDaoConnection(daoConnection);
-    }
-    @Test
-    void createTrainingProfile() {
-        Map<String, Dao> daos = new HashMap<>();
-        daos.put("trainings", new TrainingDao());
-        storage.setDaos(daos);
-        trainingService = new TrainingServiceImpl(storage);
-        daoConnection = mock(DaoConnectionImpl.class);
+        when(daoConnection.getEntities(anyString())).thenReturn(trainings);
+        when(daoConnection.writeEntities(anyString(), anyList())).thenReturn(trainings);
         daos.get("trainings").setDaoConnection(daoConnection);
         daos.get("trainings").setFilePath("mockFilePath");
 
+    }
+    @Test
+    void createTrainingProfileTest() {
         Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
-        List<Training> trainings = new ArrayList<>();
-        trainings.add(trainingTest);
-        System.out.println(daoConnection);
-        when(daoConnection.writeEntities(anyString(), anyList())).thenReturn(trainings);
+
         Training trainingsCreated = trainingService.createTrainingProfile(trainingTest);
+
         assertNotNull(trainingsCreated);
         verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
-
-//        when(mock.createTrainingProfile(any(Training.class))).thenReturn(trainingTest);
-//
-//        Training createdTraining = mock.createTrainingProfile(trainingTest);
-//        assertNotNull(createdTraining.getTrainingName());
-//        verify(mock, times(1)).createTrainingProfile(trainingTest);
     }
 
     @Test
-    void selectTrainingProfile() {
-        Optional<Training> trainingTest = Optional.of(new Training(1, 1, "Test Training", 1, new Date(), 1));
-        trainingTest.get().setId(1);
-        TrainingDao storageMock = (TrainingDao) mock(storage.getDao("trainings").getClass());
+    void selectTrainingProfileTest() {
+        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
+        trainingTest.setId(1);
 
-        when(storageMock.get(1)).thenReturn(trainingTest);
-//        when(mock.selectTrainingProfile(trainingTest.getId())).thenReturn(Optional.of(trainingTest));
-        Optional<Training> selectedTraining = storageMock.get(trainingTest.get().getId());
-        System.out.println(selectedTraining.get());
-        assertNotNull(selectedTraining.get());
-//        System.out.println(storage.getDao("trainings").getClass());
+        Optional<Training> trainingSelected = trainingService.selectTrainingProfile(1);
+        assertEquals(trainingTest.getId(), trainingSelected.get().getId());
+        assertEquals(trainingTest.getTrainingName(), trainingSelected.get().getTrainingName());
+        verify(daoConnection, times(1)).getEntities(anyString());
+
+
+
     }
 
     @Test
-    void selectAll() {
-        List<Training> trainingTests = new ArrayList<>();
-        trainingTests.add(new Training(1,1,"Test Training", 1, new Date(),1));
-        trainingTests.add(new Training(2,2,"Test Training 2", 2, new Date(),1));
-
-        when(mock.selectAll()).thenReturn(trainingTests);
-        List<Training> trainings = mock.selectAll();
+    void selectAllTest() {
+        List<Training> selectedTrainings = trainingService.selectAll();
         assertNotNull(trainings);
+        assertEquals(selectedTrainings, trainings);
     }
 }

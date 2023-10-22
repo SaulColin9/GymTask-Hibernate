@@ -16,8 +16,9 @@ public class TrainingType implements Entity{
         return id;
     }
 
-    public void setId(int id) {
+    public TrainingType setId(int id) {
         this.id = id;
+        return this;
     }
 
     public String getTrainingTypeName() {

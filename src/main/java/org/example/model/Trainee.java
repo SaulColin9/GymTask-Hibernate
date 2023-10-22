@@ -21,8 +21,9 @@ public class Trainee implements Entity {
     }
 
     @Override
-    public void setId(int id) {
+    public Trainee setId(int id) {
         this.id = id;
+        return this;
     }
 
     public Date getDateOfBirth() {
@@ -58,4 +59,6 @@ public class Trainee implements Entity {
                 ", userId=" + userId +
                 '}';
     }
+
+
 }

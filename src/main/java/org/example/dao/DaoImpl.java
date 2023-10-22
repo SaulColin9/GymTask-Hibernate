@@ -12,10 +12,11 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
     protected String filePath;
     final Class<T> tClass;
     protected List<T> entities = new ArrayList<>();
-    protected  DaoConnection<T> daoConnection = new DaoConnectionImpl<>();
+    protected  DaoConnection<T> daoConnection;
 
     public DaoImpl(Class<T> tClass) {
         this.tClass = tClass;
+        daoConnection =  new DaoConnectionImpl<>(tClass);
     }
 
     public void setFilePath(String filePath){
@@ -55,6 +56,7 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
 
     @Override
     public  Optional<T> get(int id){
+        entities = getEntities(tClass);
         T foundT = null;
         for(T t: entities){
             if(t.getId() == id){
@@ -65,10 +67,12 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
     }
     @Override
     public List<T> getAll() {
+        entities = getEntities(tClass);
         return entities;
     }
     @Override
     public T save(T t){
+        entities = getEntities(tClass);
         T newT = setId(t, getNextId());
         entities.add(newT);
         writeEntities();
@@ -78,6 +82,7 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
 
     @Override
     public T update(int id, T t) {
+        entities = getEntities(tClass);
         Optional<T> foundEntity = get(id);
         int listId;
         if(foundEntity.isPresent()){
@@ -91,6 +96,7 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
 
     @Override
     public Optional<T> delete(int id) {
+        entities = getEntities(tClass);
         Optional<T> foundEntity = get(id);
         int listId;
         if(foundEntity.isPresent()){
@@ -104,7 +110,7 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
     @Override
     public List<T> getEntities(Class<T> tClass){
         try {
-            return getDaoConnection().getEntities(getFilePath(), tClass);
+            return getDaoConnection().getEntities(getFilePath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
