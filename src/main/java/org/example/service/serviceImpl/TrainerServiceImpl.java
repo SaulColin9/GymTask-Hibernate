@@ -7,6 +7,7 @@ import org.example.service.PasswordGeneratorImpl;
 import org.example.service.TrainerService;
 import org.example.service.UsernameGeneratorImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -33,5 +34,10 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Optional<Trainer> selectTrainerProfile(int id) {
         return storage.getDao("trainers").get(id);
+    }
+
+    @Override
+    public List<Trainer> selectAll() {
+        return storage.getDao("trainers").getAll();
     }
 }

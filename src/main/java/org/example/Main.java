@@ -18,6 +18,9 @@ public class Main {
         TrainerService trainerService = context.getBean("trainerService", TrainerServiceImpl.class);
         TraineeService traineeService = context.getBean("traineeService", TraineeServiceImpl.class);
         TrainingService trainingService = context.getBean("trainingService", TrainingServiceImpl.class);
+        System.out.println(trainingService.selectAll());
+        System.out.println(traineeService.selectAll());
+        System.out.println(trainerService.selectAll());
 
     }
 }

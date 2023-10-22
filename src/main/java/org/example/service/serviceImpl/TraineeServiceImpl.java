@@ -8,6 +8,7 @@ import org.example.service.TraineeService;
 import org.example.service.UsernameGeneratorImpl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class TraineeServiceImpl implements TraineeService {
@@ -39,5 +40,10 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Optional<Trainee> selectTraineeProfile(int id) {
         return storage.getDao("trainees").get(id);
+    }
+
+    @Override
+    public List<Trainee> selectAll() {
+        return storage.getDao("trainees").getAll();
     }
 }
