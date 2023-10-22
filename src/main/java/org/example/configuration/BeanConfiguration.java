@@ -3,7 +3,7 @@ package org.example.configuration;
 import org.example.dao.Dao;
 import org.example.dao.DaoConnection;
 import org.example.dao.DaoConnectionImpl;
-import org.example.dao.daoImpl.*;
+import org.example.dao.DaoImpl;
 import org.example.model.*;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
@@ -37,40 +37,35 @@ public class BeanConfiguration {
     }
     @Bean("users")
     public Dao userDao(@Value("${users.source}")String usersPath){
-        Dao userDao = new UserDao();
+        Dao userDao = new DaoImpl<>(User.class);
         userDao.setFilePath(usersPath);
-        userDao.setDaoConnection(new DaoConnectionImpl<User>());
         return userDao;
     }
     @Bean("trainings")
     public Dao trainingDao(@Value("${trainings.source}")String trainigsPath){
-        Dao trainingDao = new TrainingDao();
+        Dao trainingDao = new DaoImpl<>(Training.class);
         trainingDao.setFilePath(trainigsPath);
-        trainingDao.setDaoConnection(new DaoConnectionImpl<Training>());
         return trainingDao;
     }
 
     @Bean("trainingTypes")
     public Dao trainingTypesDao(@Value("${trainingTypes.source}")String trainingTypesPath){
-        Dao trainingTypesDao = new TrainingTypeDao();
+        Dao trainingTypesDao = new DaoImpl<>(TrainingType.class);
         trainingTypesDao.setFilePath(trainingTypesPath);
-        trainingTypesDao.setDaoConnection( new DaoConnectionImpl<TrainingType>());
         return trainingTypesDao;
     }
 
     @Bean("trainers")
     public Dao trainerDao(@Value("${trainers.source}") String trainersPath){
-        Dao trainerDao = new TrainerDao();
+        Dao trainerDao = new DaoImpl(Trainer.class);
         trainerDao.setFilePath(trainersPath);
-        trainerDao.setDaoConnection(new DaoConnectionImpl<Trainer>());
         return trainerDao;
     }
 
     @Bean("trainees")
     public Dao traineeDao(@Value("${trainees.source}")String traineesPath){
-        Dao traineeDao = new TraineeDao();
+        Dao traineeDao = new DaoImpl<>(Trainee.class);
         traineeDao.setFilePath(traineesPath);
-        traineeDao.setDaoConnection(new DaoConnectionImpl<Trainee>());
         return traineeDao;
     }
 

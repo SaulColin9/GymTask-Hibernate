@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.io.Serializable;
 
-public class User {
+public class User implements Entity{
     private int id;
     private String firstName;
     private String lastName;
@@ -26,6 +26,7 @@ public class User {
         this.isActive = true;
     }
 
+    @Override
     public int getId() {
         return id;
     }

@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.util.Date;
 
-public class Trainee {
+public class Trainee implements Entity {
     private int id;
     private Date dateOfBirth;
     private String address;
@@ -15,10 +15,12 @@ public class Trainee {
         this.userId = userId;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

@@ -1,6 +1,6 @@
 package org.example.dao;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import org.example.model.Entity;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
@@ -8,15 +8,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DaoImpl<T>  implements Dao<T>, InitializingBean {
+public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
+    protected String filePath;
+    final Class<T> tClass;
     protected List<T> entities = new ArrayList<>();
-    protected  DaoConnection<T> daoConnection;
-    public abstract void setFilePath(String filePath);
-    public abstract  String getFilePath();
-    public abstract void afterPropertiesSet();
-    public abstract int getNextId();
-    public abstract T setId(T t, int id);
-    public abstract int getId(T t);
+    protected  DaoConnection<T> daoConnection = new DaoConnectionImpl<>();
+
+    public DaoImpl(Class<T> tClass) {
+        this.tClass = tClass;
+    }
+
+    public void setFilePath(String filePath){
+        this.filePath = filePath;
+    }
+    public String getFilePath(){
+        return filePath;
+    }
+    public void afterPropertiesSet(){
+        setEntities(getEntities(tClass));
+    }
+    public int getNextId(){
+        if(entities.size()== 0){
+            return 0;
+        }
+        return entities.get(entities.size() - 1).getId() + 1;
+    }
+    public T setId(T t, int id){
+        t.setId(id);
+        return t;
+    }
+    public int getId(T t){
+        return t.getId();
+    }
     @Override
     public void setDaoConnection(DaoConnection<T> daoConnection){
         this.daoConnection = daoConnection;
@@ -34,7 +57,7 @@ public abstract class DaoImpl<T>  implements Dao<T>, InitializingBean {
     public  Optional<T> get(int id){
         T foundT = null;
         for(T t: entities){
-            if(getId(t) == id){
+            if(t.getId() == id){
                 foundT = t;
             }
         }

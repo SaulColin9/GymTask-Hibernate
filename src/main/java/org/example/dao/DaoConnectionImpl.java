@@ -3,6 +3,7 @@ package org.example.dao;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import org.example.model.Entity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +12,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoConnectionImpl<T> implements DaoConnection<T>{
+public class DaoConnectionImpl<T extends Entity> implements DaoConnection<T>{
 
     public List<T> getEntities(String filePath, Class<T> tClass){
         try{

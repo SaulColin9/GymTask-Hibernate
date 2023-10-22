@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.util.Date;
 
-public class Training {
+public class Training implements Entity{
     int id;
     int traineeId;
     int trainerId;
@@ -21,6 +21,7 @@ public class Training {
         this.trainingDuration = trainingDuration;
     }
 
+    @Override
     public int getId() {
         return id;
     }

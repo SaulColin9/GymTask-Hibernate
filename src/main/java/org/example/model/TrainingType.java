@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class TrainingType {
+public class TrainingType implements Entity{
     int id;
     String trainingTypeName;
 
@@ -11,6 +11,7 @@ public class TrainingType {
         this.trainingTypeName = trainingTypeName;
     }
 
+    @Override
     public int getId() {
         return id;
     }
