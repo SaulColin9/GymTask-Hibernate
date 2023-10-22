@@ -17,4 +17,7 @@ public interface Dao<T> {
     void writeEntities() throws IOException;
     void setFilePath(String filePath);
     String getFilePath();
+    void setDaoConnection(DaoConnection<T> daoConnection);
+    DaoConnection<T> getDaoConnection();
+
 }

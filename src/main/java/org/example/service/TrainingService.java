@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TrainingService {
-    Training createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
+    Training createTrainingProfile(Training training);
     Optional<Training> selectTrainingProfile(int id);
     List<Training> selectAll();
 }

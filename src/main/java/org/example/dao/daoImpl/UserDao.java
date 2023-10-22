@@ -1,10 +1,12 @@
 package org.example.dao.daoImpl;
+import org.example.dao.DaoConnection;
 import org.example.dao.DaoImpl;
 import org.example.model.User;
 import java.util.*;
 
 public class UserDao extends DaoImpl<User> {
     private String filePath;
+
 
     @Override
     public void setFilePath(String filePath) {
@@ -23,6 +25,9 @@ public class UserDao extends DaoImpl<User> {
 
     @Override
     public int getNextId() {
+        if(entities.size()== 0){
+            return 0;
+        }
         return entities.get(entities.size() - 1).getId() + 1;
     }
 
@@ -36,4 +41,6 @@ public class UserDao extends DaoImpl<User> {
     public int getId(User user) {
         return user.getId();
     }
+
+
 }

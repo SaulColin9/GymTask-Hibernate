@@ -2,6 +2,7 @@ package org.example.dao.daoImpl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.example.dao.Dao;
+import org.example.dao.DaoConnection;
 import org.example.dao.DaoImpl;
 import org.example.model.TrainingType;
 import org.springframework.beans.factory.InitializingBean;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TrainingTypeDao extends DaoImpl<TrainingType> {
+
 
     private String filePath;
     @Override
@@ -30,6 +32,9 @@ public class TrainingTypeDao extends DaoImpl<TrainingType> {
 
     @Override
     public int getNextId() {
+        if(entities.size()== 0){
+            return 0;
+        }
         return entities.get(entities.size() - 1).getId() + 1;
     }
 
@@ -43,4 +48,6 @@ public class TrainingTypeDao extends DaoImpl<TrainingType> {
     public int getId(TrainingType trainingType) {
         return trainingType.getId();
     }
+
+
 }

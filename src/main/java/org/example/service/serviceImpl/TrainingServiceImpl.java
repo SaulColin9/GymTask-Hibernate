@@ -17,8 +17,9 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public Training createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        return (Training) storage.getDao("trainings").save(new Training(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration));
+    public Training createTrainingProfile(Training training) {
+        System.out.println(training);
+        return (Training) storage.getDao("trainings").save(training);
     }
 
     @Override

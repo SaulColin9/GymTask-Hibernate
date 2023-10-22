@@ -3,17 +3,28 @@ package org.example.dao;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DaoImpl<T> extends DaoConnectionImpl<T> implements Dao<T>, InitializingBean {
-    protected List<T> entities;
+public abstract class DaoImpl<T>  implements Dao<T>, InitializingBean {
+    protected List<T> entities = new ArrayList<>();
+    protected  DaoConnection<T> daoConnection;
     public abstract void setFilePath(String filePath);
     public abstract  String getFilePath();
     public abstract void afterPropertiesSet();
     public abstract int getNextId();
     public abstract T setId(T t, int id);
     public abstract int getId(T t);
+    @Override
+    public void setDaoConnection(DaoConnection<T> daoConnection){
+        this.daoConnection = daoConnection;
+    }
+    @Override
+    public DaoConnection<T> getDaoConnection(){
+        return this.daoConnection;
+    }
 
     public void setEntities(List<T> entities) {
         this.entities = entities;
@@ -68,12 +79,20 @@ public abstract class DaoImpl<T> extends DaoConnectionImpl<T> implements Dao<T>,
     }
 
     @Override
-    public List<T> getEntities(Class<T> tClass) {
-        return getEntities(getFilePath(), tClass);
+    public List<T> getEntities(Class<T> tClass){
+        try {
+            return getDaoConnection().getEntities(getFilePath(), tClass);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void writeEntities() {
-        writeEntities(getFilePath(), entities);
+        try {
+            getDaoConnection().writeEntities(getFilePath(), entities);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

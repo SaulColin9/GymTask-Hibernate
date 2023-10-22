@@ -34,6 +34,9 @@ public class TraineeDao extends DaoImpl<Trainee> {
 
     @Override
     public int getNextId() {
+        if(entities.size()== 0){
+            return 0;
+        }
         return entities.get(entities.size() - 1).getId() + 1;
     }
 

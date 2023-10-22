@@ -27,11 +27,11 @@ public class DaoConnectionImpl<T> implements DaoConnection<T>{
     }
 
     @Override
-    public void writeEntities(String filePath, List<T> entities){
+    public List<T> writeEntities(String filePath, List<T> entities){
         try{
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File(filePath), entities);
-
+            return entities;
         }catch (IOException e){
             throw new RuntimeException(e);
         }

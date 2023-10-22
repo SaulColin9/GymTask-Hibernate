@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface DaoConnection<T> {
     List<T> getEntities(String filePath, Class<T> tClass) throws IOException;
-    void writeEntities(String path, List<T> entities) throws IOException;
+    List<T> writeEntities(String path, List<T> entities) throws IOException;
 
 }

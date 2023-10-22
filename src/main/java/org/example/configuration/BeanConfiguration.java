@@ -1,9 +1,10 @@
 package org.example.configuration;
 
 import org.example.dao.Dao;
+import org.example.dao.DaoConnection;
+import org.example.dao.DaoConnectionImpl;
 import org.example.dao.daoImpl.*;
-import org.example.model.Trainee;
-import org.example.model.User;
+import org.example.model.*;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
@@ -38,12 +39,14 @@ public class BeanConfiguration {
     public Dao userDao(@Value("${users.source}")String usersPath){
         Dao userDao = new UserDao();
         userDao.setFilePath(usersPath);
+        userDao.setDaoConnection(new DaoConnectionImpl<User>());
         return userDao;
     }
     @Bean("trainings")
     public Dao trainingDao(@Value("${trainings.source}")String trainigsPath){
         Dao trainingDao = new TrainingDao();
         trainingDao.setFilePath(trainigsPath);
+        trainingDao.setDaoConnection(new DaoConnectionImpl<Training>());
         return trainingDao;
     }
 
@@ -51,6 +54,7 @@ public class BeanConfiguration {
     public Dao trainingTypesDao(@Value("${trainingTypes.source}")String trainingTypesPath){
         Dao trainingTypesDao = new TrainingTypeDao();
         trainingTypesDao.setFilePath(trainingTypesPath);
+        trainingTypesDao.setDaoConnection( new DaoConnectionImpl<TrainingType>());
         return trainingTypesDao;
     }
 
@@ -58,13 +62,15 @@ public class BeanConfiguration {
     public Dao trainerDao(@Value("${trainers.source}") String trainersPath){
         Dao trainerDao = new TrainerDao();
         trainerDao.setFilePath(trainersPath);
+        trainerDao.setDaoConnection(new DaoConnectionImpl<Trainer>());
         return trainerDao;
     }
 
     @Bean("trainees")
     public Dao traineeDao(@Value("${trainees.source}")String traineesPath){
-        TraineeDao traineeDao = new TraineeDao();
+        Dao traineeDao = new TraineeDao();
         traineeDao.setFilePath(traineesPath);
+        traineeDao.setDaoConnection(new DaoConnectionImpl<Trainee>());
         return traineeDao;
     }
 
@@ -74,4 +80,5 @@ public class BeanConfiguration {
         storage.setDaos(tables);
         return storage;
     }
+
 }
