@@ -4,7 +4,11 @@ import org.example.dao.Dao;
 import org.example.dao.daoImpl.*;
 import org.example.model.Trainee;
 import org.example.model.User;
+import org.example.service.TraineeService;
+import org.example.service.TrainerService;
 import org.example.service.TrainingService;
+import org.example.service.serviceImpl.TraineeServiceImpl;
+import org.example.service.serviceImpl.TrainerServiceImpl;
 import org.example.service.serviceImpl.TrainingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +25,14 @@ public class BeanConfiguration {
     @Bean
     public TrainingService trainingService(@Autowired Storage storage){
         return new TrainingServiceImpl(storage);
+    }
+    @Bean
+    public TrainerService trainerService (@Autowired Storage storage){
+        return new TrainerServiceImpl(storage);
+    }
+    @Bean
+    TraineeService traineeService(@Autowired Storage storage ){
+        return new TraineeServiceImpl(storage);
     }
     @Bean("users")
     public Dao userDao(@Value("${users.source}")String usersPath){

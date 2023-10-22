@@ -1,4 +1,1 @@
-[{"id":6, "specialization": 1,"userId":6},
-  {"id":7,"specialization": 2,"userId":7},
-  {"id":8,"specialization": 3,"userId":8}
-]
+[{"id":1,"specialization":1,"userId":6},{"id":2,"specialization":2,"userId":7},{"id":3,"specialization":3,"userId":8},{"id":4,"specialization":1,"userId":15}]

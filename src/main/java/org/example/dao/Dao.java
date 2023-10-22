@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface Dao<T> {
     Optional<T> get(int id);
     List<T> getAll();
-    void save(T t);
-    void update(int id, T t);
-    void delete(int id);
+    T save(T t);
+    T update(int id, T t);
+    Optional<T> delete(int id);
     List<T> getEntities(Class<T> tClass) throws IOException;
     void writeEntities() throws IOException;
     void setFilePath(String filePath);

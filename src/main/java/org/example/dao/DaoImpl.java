@@ -34,26 +34,29 @@ public abstract class DaoImpl<T> extends DaoConnectionImpl<T> implements Dao<T>,
         return entities;
     }
     @Override
-    public void save(T t){
+    public T save(T t){
         T newT = setId(t, getNextId());
         entities.add(newT);
         writeEntities();
+        return newT;
 
     }
 
     @Override
-    public void update(int id, T t) {
+    public T update(int id, T t) {
         Optional<T> foundEntity = get(id);
         int listId;
         if(foundEntity.isPresent()){
             listId = entities.indexOf(foundEntity.get());
             entities.set(listId, t);
             writeEntities();
+            return foundEntity.get();
         }
+        return null;
     }
 
     @Override
-    public void delete(int id) {
+    public Optional<T> delete(int id) {
         Optional<T> foundEntity = get(id);
         int listId;
         if(foundEntity.isPresent()){
@@ -61,6 +64,7 @@ public abstract class DaoImpl<T> extends DaoConnectionImpl<T> implements Dao<T>,
             entities.remove(listId);
             writeEntities();
         }
+        return foundEntity;
     }
 
     @Override

@@ -20,6 +20,11 @@ public class User {
         this.password = password;
         this.isActive = isActive;
     }
+    public User(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = true;
+    }
 
     public int getId() {
         return id;
