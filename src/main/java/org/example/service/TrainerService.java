@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface TrainerService {
     Trainer createTrainerProfile(String firstName, String lastName, int specialization);
-    Trainer updateTrainerProfile(int id, Trainer trainer);
-    Optional<Trainer> selectTrainerProfile(int id);
+    Trainer updateTrainerProfile(int id, String firstName, String lastName, boolean isActive, int specialization);
+    Trainer selectTrainerProfile(int id);
     List<Trainer> selectAll();
 }

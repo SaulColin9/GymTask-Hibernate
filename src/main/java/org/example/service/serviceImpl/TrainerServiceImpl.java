@@ -17,31 +17,47 @@ import java.util.Optional;
 public class TrainerServiceImpl implements TrainerService {
     Storage storage;
     private static final String TRAINERS_KEY = "trainers";
+    private static final String USERS_KEY = "users";
     private static Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
     public TrainerServiceImpl(Storage storage){
         this.storage = storage;
     }
     @Override
     public Trainer createTrainerProfile(String firstName, String lastName, int specialization) {
-            
             String username = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
             String passowrd = PasswordGeneratorImpl.generatePassword(10);
-            User newUser = (User) storage.getDao("users")
+            User newUser = (User) storage.getDao(USERS_KEY)
                     .save(new User(firstName, lastName, username, passowrd,true));
             logger.info("Creating Trainer Profile with id " + newUser.getId());
-            return (Trainer) storage.getDao(TRAINERS_KEY).save(new Trainer(specialization, newUser.getId()));
+            return (Trainer) storage.getDao(TRAINERS_KEY).save(new Trainer(specialization, newUser.getId(), newUser));
     }
 
     @Override
-    public Trainer updateTrainerProfile(int id, Trainer trainer) {
+    public Trainer updateTrainerProfile(int id, String firstName, String lastName, boolean isActive, int specialization) {
+        Optional<Trainer> trainerToUpdate = storage.getDao(TRAINERS_KEY).get(id);
+        if (trainerToUpdate.isEmpty()){
+            logger.error("Provided Trainer Id does not exist");
+            return null;
+        }
+
+        User userToUpdate = trainerToUpdate.get().getUser();
+        userToUpdate.setLastName(firstName);
+        userToUpdate.setLastName(lastName);
+        userToUpdate.setIsActive(isActive);
+        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
+        userToUpdate.setUsername(newUserName);
+
+        trainerToUpdate.get().setSpecialization(specialization);
+
         logger.info("Updating Trainer Profile with id " + id);
-        return (Trainer) storage.getDao(TRAINERS_KEY).update(id, trainer);
+        return (Trainer) storage.getDao(TRAINERS_KEY).update(id, trainerToUpdate.get());
     }
 
     @Override
-    public Optional<Trainer> selectTrainerProfile(int id) {
+    public Trainer selectTrainerProfile(int id) {
         logger.info("Selecting Trainer Profile with id " + id);
-        return storage.getDao(TRAINERS_KEY).get(id);
+
+        return (Trainer) storage.getDao(TRAINERS_KEY).get(id).get();
     }
 
     @Override

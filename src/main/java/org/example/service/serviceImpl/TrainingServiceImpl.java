@@ -1,11 +1,15 @@
 package org.example.service.serviceImpl;
 
 import org.example.configuration.Storage;
+import org.example.model.Trainee;
+import org.example.model.Trainer;
 import org.example.model.Training;
+import org.example.model.TrainingType;
 import org.example.service.TrainingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,16 +23,31 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public Training createTrainingProfile(Training training) {
-        Training newTraining = (Training) storage.getDao(TRAININGS_KEY).save(training);
+    public Training createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
+        Optional<Trainee> trainee = storage.getDao("trainees").get(traineeId);
+        Optional<Trainer> trainer = storage.getDao("trainers").get(trainerId);
+        Optional<TrainingType> trainingType = storage.getDao("trainingTypes").get(trainingTypeId);
+        if(trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()){
+            logger.error("The next Ids do not exist: " +
+                    (trainee.isEmpty()? "traineeId, ": "")+
+                    (trainer.isEmpty()? "trainerId, ": "")+
+                    (trainingType.isEmpty()? "trainingTypeId ": "")
+            );
+            return null;
+        }
+        Training newTraining = (Training) storage.getDao(TRAININGS_KEY).save(
+                new Training(traineeId,trainee.get(),trainerId, trainer.get(),
+                        trainingName, trainingTypeId, trainingType.get(), trainingDate, trainingDuration )
+        );
+        System.out.println(newTraining);
         logger.info("Creating Training Profile with id " + newTraining.getId());
         return newTraining;
     }
 
     @Override
-    public Optional<Training> selectTrainingProfile(int id) {
+    public Training selectTrainingProfile(int id) {
         logger.info("Selecting Training Profile with id " + id);
-        return storage.getDao(TRAININGS_KEY).get(id);
+        return (Training) storage.getDao(TRAININGS_KEY).get(id).get();
     }
 
     @Override

@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface TraineeService {
     Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address);
-    Trainee updateTraineeProfile(int id, Trainee trainee);
-    Optional<Trainee> deleteTraineeProfile(int id);
-    Optional<Trainee> selectTraineeProfile(int id);
+    Trainee updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
+    Trainee deleteTraineeProfile(int id);
+    Trainee selectTraineeProfile(int id);
     List<Trainee> selectAll();
 }

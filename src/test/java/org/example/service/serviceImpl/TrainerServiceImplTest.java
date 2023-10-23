@@ -38,17 +38,17 @@ class TrainerServiceImplTest {
 
     @BeforeEach
     public void setUp(){
-        Trainer trainerTest =  new Trainer(1,1);
-        trainerTest = trainerTest.setId(1);
-        Trainer trainerTest2 = new Trainer(2, 2);
-        trainerTest2 = trainerTest2.setId(2);
-        trainers.add(trainerTest);
-        trainers.add(trainerTest2);
-
         User userTest = new User("User Test", "User Test", ".");
         User userTest2 = new User("User Test 2", "User Test 2", ".");
         users.add(userTest);
         users.add(userTest2);
+
+        Trainer trainerTest =  new Trainer(1,1, userTest);
+        trainerTest = trainerTest.setId(1);
+        Trainer trainerTest2 = new Trainer(2, 2, userTest2);
+        trainerTest2 = trainerTest2.setId(2);
+        trainers.add(trainerTest);
+        trainers.add(trainerTest2);
 
 
         daoConnection = mock(DaoConnectionImpl.class);
@@ -80,22 +80,23 @@ class TrainerServiceImplTest {
 
     @Test
     void updateTrainerProfile() {
-        Optional<Trainer> trainerTest = trainerService.selectTrainerProfile(1);
-        trainerTest = Optional.ofNullable(trainerTest.get().setSpecialization(2));
+        Trainer trainerTest = trainerService.selectTrainerProfile(1);
+        trainerTest = trainerTest.setSpecialization(2);
+        String trainerTestUserName = trainerTest.getUser().getUsername();
 
-        Trainer updatedTrainer = trainerService.updateTrainerProfile(1, trainerTest.get());
-        assertEquals(trainerTest.get().getSpecialization(), updatedTrainer.getSpecialization());
+        Trainer updatedTrainer = trainerService.updateTrainerProfile(1, "Updated Trainer Name", "Updated Trainer Last", false, 1);
+        assertNotEquals(trainerTestUserName, updatedTrainer.getUser().getUsername());
     }
 
     @Test
     void selectTrainerProfile() {
         Trainer trainerTest = new Trainer(1,1);
         trainerTest.setId(1);
-        Optional<Trainer> trainserSelected = trainerService.selectTrainerProfile(1);
+        Trainer trainserSelected = trainerService.selectTrainerProfile(1);
 
         assertNotNull(trainserSelected);
-        assertEquals(trainerTest.getId(), trainserSelected.get().getId());
-        assertEquals(trainerTest.getUserId(), trainserSelected.get().getUserId());
+        assertEquals(trainerTest.getId(), trainserSelected.getId());
+        assertEquals(trainerTest.getUserId(), trainserSelected.getUserId());
     }
 
     @Test
@@ -103,5 +104,14 @@ class TrainerServiceImplTest {
         List<Trainer> selectedTrainers = trainerService.selectAll();
         assertNotNull(selectedTrainers);
         assertEquals(trainers, selectedTrainers);
+    }
+
+    @Test
+    void trainersUsernamesDifferent(){
+        Trainer trainer1 = trainerService.createTrainerProfile("John", "Smith", 1);
+        Trainer trainer2 = trainerService.createTrainerProfile("John", "Smith", 1);
+
+        assertNotEquals(trainer1.getUser().getUsername(), trainer2.getUser().getUsername());
+
     }
 }

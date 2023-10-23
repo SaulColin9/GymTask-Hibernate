@@ -26,29 +26,56 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
         String username = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
-        String passowrd = PasswordGeneratorImpl.generatePassword(10);
+        String password = PasswordGeneratorImpl.generatePassword(10);
         User newUser = (User) storage.getDao("users")
-                .save(new User(firstName, lastName, username, passowrd,true));
+                .save(new User(firstName, lastName, username, password,true));
         logger.info("Creating Trainee Profile with id " + newUser.getId());
-        return (Trainee) storage.getDao(TRAINEES_KEY).save(new Trainee(dateOfBirth, address, newUser.getId()));
+        return (Trainee) storage.getDao(TRAINEES_KEY).save(new Trainee(dateOfBirth, address, newUser.getId(), newUser));
     }
 
     @Override
-    public Trainee updateTraineeProfile(int id, Trainee trainee) {
+    public Trainee updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+        Optional<Trainee> traineeToUpdate = storage.getDao(TRAINEES_KEY).get(id);
+        if(traineeToUpdate.isEmpty()){
+            logger.error("Provided Trainee Id does not exist");
+            return null;
+        }
+        User userToUpdate = traineeToUpdate.get().getUser();
+        userToUpdate.setLastName(firstName);
+        userToUpdate.setLastName(lastName);
+        userToUpdate.setIsActive(isActive);
+        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
+        userToUpdate.setUsername(newUserName);
+
+        storage.getDao("users").update(traineeToUpdate.get().getUserId(), userToUpdate);
+
+        traineeToUpdate.get().setDateOfBirth(dateOfBirth);
+        traineeToUpdate.get().setAddress(address);
+
         logger.info("Updating Trainee Profile with id " + id);
-        return (Trainee) storage.getDao(TRAINEES_KEY).update(id,trainee);
+        return (Trainee) storage.getDao(TRAINEES_KEY).update(id,traineeToUpdate.get());
     }
 
     @Override
-    public Optional<Trainee> deleteTraineeProfile(int id) {
+    public Trainee deleteTraineeProfile(int id) {
+        Optional<Trainee> traineeToUpdate = storage.getDao(TRAINEES_KEY).get(id);
+        if(traineeToUpdate.isEmpty()){
+            logger.error("Provided Trainee Id does not exist");
+            return null;
+        }
         logger.info("Deleting Trainee Profile with id " + id);
-        return storage.getDao(TRAINEES_KEY).delete(id);
+        return (Trainee) storage.getDao(TRAINEES_KEY).delete(id).get();
     }
 
     @Override
-    public Optional<Trainee> selectTraineeProfile(int id) {
+    public Trainee selectTraineeProfile(int id) {
+        Optional<Trainee> traineeToUpdate = storage.getDao(TRAINEES_KEY).get(id);
+        if(traineeToUpdate.isEmpty()){
+            logger.error("Provided Trainee Id does not exist");
+            return null;
+        }
         logger.info("Selecting Trainee Profile with id " + id);
-        return storage.getDao(TRAINEES_KEY).get(id);
+        return (Trainee) storage.getDao(TRAINEES_KEY).get(id).get();
     }
 
     @Override

@@ -10,6 +10,9 @@ public class Training implements Entity{
     int trainingTypeId;
     Date  trainingDate;
     double trainingDuration;
+    Trainee trainee;
+    Trainer trainer;
+    TrainingType trainingType;
 
     public Training(){}
     public Training(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
@@ -17,6 +20,18 @@ public class Training implements Entity{
         this.trainerId = trainerId;
         this.trainingName = trainingName;
         this.trainingTypeId = trainingTypeId;
+        this.trainingDate = trainingDate;
+        this.trainingDuration = trainingDuration;
+    }
+
+    public Training(int traineeId, Trainee trainee, int trainerId, Trainer trainer, String trainingName, int trainingTypeId, TrainingType trainingType, Date trainingDate, double trainingDuration) {
+        this.traineeId = traineeId;
+        this.trainee = trainee;
+        this.trainerId = trainerId;
+        this.trainer = trainer;
+        this.trainingName = trainingName;
+        this.trainingTypeId = trainingTypeId;
+        this.trainingType = trainingType;
         this.trainingDate = trainingDate;
         this.trainingDuration = trainingDuration;
     }

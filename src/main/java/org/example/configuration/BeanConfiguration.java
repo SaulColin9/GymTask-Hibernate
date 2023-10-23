@@ -4,6 +4,8 @@ import org.example.dao.Dao;
 import org.example.dao.DaoConnection;
 import org.example.dao.DaoConnectionImpl;
 import org.example.dao.DaoImpl;
+import org.example.facade.GymFacade;
+import org.example.facade.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
@@ -23,6 +25,10 @@ import java.util.Map;
 @Configuration
 @PropertySource(value="storage.properties")
 public class BeanConfiguration {
+    @Bean
+    public GymFacade gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService, @Autowired TrainingService trainingService){
+        return new GymFacadeImpl(traineeService, trainerService, trainingService);
+    }
     @Bean
     public TrainingService trainingService(@Autowired Storage storage){
         return new TrainingServiceImpl(storage);

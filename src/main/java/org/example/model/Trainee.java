@@ -7,12 +7,19 @@ public class Trainee implements Entity {
     private Date dateOfBirth;
     private String address;
     private int userId;
+    private User user;
 
     public Trainee(){}
     public Trainee(Date dateOfBirth, String address, int userId) {
         this.dateOfBirth = dateOfBirth;
         this.address = address;
         this.userId = userId;
+    }
+    public Trainee(Date dateOfBirth, String address, int userId, User user) {
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.userId = userId;
+        this.user = user;
     }
 
     @Override
@@ -26,6 +33,9 @@ public class Trainee implements Entity {
         return this;
     }
 
+    public User getUser(){
+        return this.user;
+    }
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -51,5 +61,14 @@ public class Trainee implements Entity {
         this.userId = userId;
     }
 
-
+    @Override
+    public String toString() {
+        return "Trainee{" +
+                "id=" + id +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address='" + address + '\'' +
+                ", userId=" + userId +
+                ", user=" + user +
+                '}';
+    }
 }

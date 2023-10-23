@@ -3,7 +3,6 @@ package org.example.service.serviceImpl;
 import org.example.configuration.Storage;
 import org.example.dao.DaoConnectionImpl;
 import org.example.model.Trainee;
-import org.example.model.Trainer;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,18 +40,17 @@ class TraineeServiceImplTest {
 
     @BeforeEach
     public void setUp(){
-        Trainee traineeTest =  new Trainee(new Date(), "Test Address", 1);
-        traineeTest = traineeTest.setId(1);
-        Trainee traineeTest2 =  new Trainee(new Date(), "Test Address 2", 2);
-        traineeTest2 = traineeTest2.setId(2);
-        trainees.add(traineeTest);
-        trainees.add(traineeTest2);
-
         User userTest = new User("User Test", "User Test", ".");
         User userTest2 = new User("User Test 2", "User Test 2", ".");
         users.add(userTest);
         users.add(userTest2);
 
+        Trainee traineeTest =  new Trainee(new Date(), "Test Address", 1, userTest);
+        traineeTest = traineeTest.setId(1);
+        Trainee traineeTest2 =  new Trainee(new Date(), "Test Address 2", 2, userTest2);
+        traineeTest2 = traineeTest2.setId(2);
+        trainees.add(traineeTest);
+        trainees.add(traineeTest2);
 
         daoConnection = mock(DaoConnectionImpl.class);
         when(daoConnection.getEntities(anyString())).thenReturn(trainees);
@@ -82,21 +79,24 @@ class TraineeServiceImplTest {
 
     @Test
     void updateTraineeProfile() {
-        Optional<Trainee> traineeTest = traineeService.selectTraineeProfile(1);
-        traineeTest = Optional.ofNullable(traineeTest.get().setAddress("New Address Test"));
+        Trainee traineeTest = traineeService.selectTraineeProfile(1);
+        traineeTest = traineeTest.setAddress("New Address Test");
+        String traineeTestUserName = traineeTest.getUser().getUsername();
 
-        Trainee updatedTrainee = traineeService.updateTraineeProfile(1, traineeTest.get());
-        assertEquals(traineeTest.get().getAddress(), updatedTrainee.getAddress());
+        Trainee updatedTrainee = traineeService
+                .updateTraineeProfile(1, "Updated Name", "Updated Last Name", false, new Date(), "Updated Addresss");
+
+        assertNotEquals(traineeTestUserName, updatedTrainee.getUser().getUsername());
     }
 
     @Test
     void deleteTraineeProfile() {
-        Optional<Trainee> traineeTest =  traineeService.selectTraineeProfile(1);
-        assertTrue(traineeTest.isPresent());
+        Trainee traineeTest =  traineeService.selectTraineeProfile(1);
+        assertNotNull(traineeTest);
 
         traineeService.deleteTraineeProfile(1);
-        Optional<Trainee> deletedTrainee = traineeService.selectTraineeProfile(1);
-        assertTrue(deletedTrainee.isEmpty());
+        Trainee deletedTrainee = traineeService.selectTraineeProfile(1);
+        assertNull(deletedTrainee);
         verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
     }
 
@@ -104,11 +104,11 @@ class TraineeServiceImplTest {
     void selectTraineeProfile() {
         Trainee traineeTest =  new Trainee(new Date(), "Test Address", 1);
         traineeTest = traineeTest.setId(1);
-        Optional<Trainee> traineeSelected = traineeService.selectTraineeProfile(1);
+        Trainee traineeSelected = traineeService.selectTraineeProfile(1);
 
         assertNotNull(traineeSelected);
-        assertEquals(traineeTest.getId(), traineeSelected.get().getId());
-        assertEquals(traineeTest.getUserId(), traineeSelected.get().getUserId());
+        assertEquals(traineeTest.getId(), traineeSelected.getId());
+        assertEquals(traineeTest.getUserId(), traineeSelected.getUserId());
 
     }
 
@@ -117,6 +117,14 @@ class TraineeServiceImplTest {
         List<Trainee> selectedTrainees = traineeService.selectAll();
         assertNotNull(selectedTrainees);
         assertEquals(trainees, selectedTrainees);
+    }
+    @Test
+    void trainersUsernamesDifferent(){
+        Trainee trainee1 = traineeService.createTraineeProfile("John", "Smith", new Date(), "Test address");
+        Trainee trainee2 = traineeService.createTraineeProfile("John", "Smith", new Date(), "Test address");
+
+        assertNotEquals(trainee1.getUser().getUsername(), trainee2.getUser().getUsername());
+
     }
 
 
