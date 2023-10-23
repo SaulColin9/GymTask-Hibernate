@@ -51,15 +51,5 @@ public class Trainee implements Entity {
         this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return "Trainee{" +
-                "id=" + id +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", address='" + address + '\'' +
-                ", userId=" + userId +
-                '}';
-    }
-
 
 }

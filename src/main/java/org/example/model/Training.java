@@ -79,17 +79,5 @@ public class Training implements Entity{
         this.trainingDuration = trainingDuration;
     }
 
-    @Override
-    public String toString() {
-        return "Training{" +
-                "id=" + id +
-                ", traineeId=" + traineeId +
-                ", trainerId=" + trainerId +
-                ", trainingName='" + trainingName + '\'' +
-                ", trainingTypeId=" + trainingTypeId +
-                ", trainingDate=" + trainingDate +
-                ", trainingDuration=" + trainingDuration +
-                '}';
-    }
 
 }

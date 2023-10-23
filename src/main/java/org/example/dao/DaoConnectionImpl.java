@@ -38,7 +38,6 @@ public class DaoConnectionImpl<T extends Entity> implements DaoConnection<T>{
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public List<T> writeEntities(String filePath, List<T> entities){
         try{
