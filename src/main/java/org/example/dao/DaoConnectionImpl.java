@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import org.example.model.Entity;
+import org.example.service.TraineeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +18,8 @@ import java.util.List;
 public class DaoConnectionImpl<T extends Entity> implements DaoConnection<T>{
 
     private Class<T> tClass;
+    private static Logger logger = LoggerFactory.getLogger(DaoConnectionImpl.class);
+
 
     public DaoConnectionImpl(Class<T> tClass) {
         this.tClass = tClass;
@@ -29,6 +34,7 @@ public class DaoConnectionImpl<T extends Entity> implements DaoConnection<T>{
             return mapper.readValue(inputStream, listType);
 
         } catch (IOException e) {
+            logger.error("No file path specified for getEntities");
             throw new RuntimeException(e);
         }
     }
@@ -40,6 +46,7 @@ public class DaoConnectionImpl<T extends Entity> implements DaoConnection<T>{
             mapper.writeValue(new File(filePath), entities);
             return entities;
         }catch (IOException e){
+            logger.error("No file path specified for writeEntities");
             throw new RuntimeException(e);
         }
     }

@@ -25,12 +25,7 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = TestConfig.class)
 class TrainerServiceImplTest {
 
-//    private TrainerServiceImpl trainerService;
-//    private Storage storage = new StorageImpl();
-//    private DaoConnectionImpl<Trainer> daoConnection = new DaoConnectionImpl<>(Trainer.class);
-//    private DaoConnectionImpl<User> daoConnectionUsers = new DaoConnectionImpl<>(User.class);
-//    private List<Trainer> trainers = new ArrayList<>();
-//    private List<User> users = new ArrayList<>();
+
     @Autowired
     private TrainerServiceImpl trainerService;
     @Autowired
@@ -43,12 +38,6 @@ class TrainerServiceImplTest {
 
     @BeforeEach
     public void setUp(){
-//        Map<String, Dao> daos = new HashMap<>();
-//        daos.put("trainers", new DaoImpl<>(Trainer.class));
-//        daos.put("users", new DaoImpl<>(User.class));
-//        storage.setDaos(daos);
-//        trainerService = new TrainerServiceImpl(storage);
-//
         Trainer trainerTest =  new Trainer(1,1);
         trainerTest = trainerTest.setId(1);
         Trainer trainerTest2 = new Trainer(2, 2);
@@ -108,7 +97,6 @@ class TrainerServiceImplTest {
         assertEquals(trainerTest.getId(), trainserSelected.get().getId());
         assertEquals(trainerTest.getUserId(), trainserSelected.get().getUserId());
     }
-
 
     @Test
     void selectAll() {
