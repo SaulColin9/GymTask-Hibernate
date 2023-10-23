@@ -1,5 +1,4 @@
-package org.example.service.serviceImpl;
-
+package org.example.facade;
 
 import org.example.configuration.Storage;
 import org.example.dao.DaoConnectionImpl;
@@ -7,6 +6,8 @@ import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.model.User;
+import org.example.service.serviceImpl.TestConfig;
+import org.example.service.serviceImpl.TrainingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,17 +15,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-class TrainingServiceImplTest {
+class GymFacadeImplTest {
+
     @Autowired
-    private TrainingServiceImpl trainingService;
+    private GymFacade gymFacade;
     @Autowired
     private Storage storage;
     private DaoConnectionImpl<Training> daoConnection = new DaoConnectionImpl<>(Training.class);
@@ -84,33 +89,85 @@ class TrainingServiceImplTest {
         storage.getTrainerDao().setDaoConnection(daoConnectionTrainers);
         storage.getTrainerDao().setFilePath("mockFilePath");
     }
+
     @Test
-    void createTrainingProfileTest() {
-        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
-
-        Training trainingsCreated = trainingService.createTrainingProfile(1, 1,"Test Training", 1, new Date(), 1);
-
-        assertNotNull(trainingsCreated);
-        verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
+    void addTrainee() {
+        Trainee newTrainee = gymFacade.addTrainee("New Test Trainee","Test Last", new Date(), "Test Address");
+        assertNotNull(newTrainee);
     }
 
     @Test
-    void selectTrainingProfileTest() {
-        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
-        trainingTest.setId(1);
+    void updateTrainee() {
+        Trainee oldTrainee = gymFacade.getTrainee(1);
+        String oldTraineeName = oldTrainee.getUser().getUsername();
+        Trainee updatedTrainee = gymFacade.updateTrainee(1, "Updated Name", "Updated Last",
+                false, new Date(), "Test Address");
 
-        Training trainingSelected = trainingService.selectTrainingProfile(1);
-
-        assertNotNull(trainingSelected);
-        assertEquals(trainingTest.getId(), trainingSelected.getId());
-        assertEquals(trainingTest.getTrainingName(), trainingSelected.getTrainingName());
-        verify(daoConnection, times(1)).getEntities(anyString());
+        assertNotEquals(oldTraineeName,updatedTrainee.getUser().getUsername());
     }
 
     @Test
-    void selectAllTest() {
-        List<Training> selectedTrainings = trainingService.selectAll();
+    void deleteTrainee() {
+        assertNotNull(gymFacade.getTrainee(1));
+        Trainee traineeDeleted = gymFacade.deleteTrainee(1);
+        assertNull(gymFacade.getTrainee(1));
+    }
+
+    @Test
+    void getTrainee() {
+        Trainee trainee = gymFacade.getTrainee(1);
+        assertNotNull(trainee);
+    }
+
+    @Test
+    void getAllTrainees() {
+        List<Trainee> trainees = gymFacade.getAllTrainees();
+        assertNotNull(trainees);
+    }
+
+    @Test
+    void addTrainer() {
+        Trainer newTrainer = gymFacade.addTrainer("New Trainer", "New Trainer Last", 1);
+        assertNotNull(newTrainer);
+    }
+
+    @Test
+    void updateTrainer() {
+        Trainer oldTrainer = gymFacade.getTrainer(1);
+        String oldTrainerName = oldTrainer.getUser().getUsername();
+        Trainer updatedTrainer = gymFacade
+                .updateTrainer(1, "Updated Name", "Updated Last", false, 2);
+
+        assertNotEquals(oldTrainerName,updatedTrainer.getUser().getUsername());
+    }
+
+    @Test
+    void getTrainer() {
+        Trainer trainer = gymFacade.getTrainer(1);
+        assertNotNull(trainer);
+    }
+
+    @Test
+    void getAllTrainers() {
+        List<Trainer> trainers = gymFacade.getAllTrainers();
+        assertNotNull(trainers);
+    }
+
+    @Test
+    void addTraining() {
+        Training newTraining = gymFacade
+                .addTraining(1,1, "New Training", 1,new Date(), 1);
+        assertNotNull(newTraining);
+    }
+
+    @Test
+    void getTraining() {
+        Training training = gymFacade.getTraining(1);
+    }
+
+    @Test
+    void getAllTrainings() {
+        List<Training> trainings = gymFacade.getAllTrainings();
         assertNotNull(trainings);
-        assertEquals(selectedTrainings, trainings);
     }
 }

@@ -15,7 +15,6 @@ import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
     Storage storage;
-    private static final String TRAININGS_KEY = "trainings";
     private static Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     public TrainingServiceImpl(Storage storage){
@@ -24,9 +23,9 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        Optional<Trainee> trainee = storage.getDao("trainees").get(traineeId);
-        Optional<Trainer> trainer = storage.getDao("trainers").get(trainerId);
-        Optional<TrainingType> trainingType = storage.getDao("trainingTypes").get(trainingTypeId);
+        Optional<Trainee> trainee = storage.getTraineeDao().get(traineeId);
+        Optional<Trainer> trainer = storage.getTrainerDao().get(trainerId);
+        Optional<TrainingType> trainingType = storage.getTrainingTypeDao().get(trainingTypeId);
         if(trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()){
             logger.error("The next Ids do not exist: " +
                     (trainee.isEmpty()? "traineeId, ": "")+
@@ -35,7 +34,7 @@ public class TrainingServiceImpl implements TrainingService {
             );
             return null;
         }
-        Training newTraining = (Training) storage.getDao(TRAININGS_KEY).save(
+        Training newTraining = (Training) storage.getTrainingDao().save(
                 new Training(traineeId,trainee.get(),trainerId, trainer.get(),
                         trainingName, trainingTypeId, trainingType.get(), trainingDate, trainingDuration )
         );
@@ -47,12 +46,12 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training selectTrainingProfile(int id) {
         logger.info("Selecting Training Profile with id " + id);
-        return (Training) storage.getDao(TRAININGS_KEY).get(id).get();
+        return (Training) storage.getTrainingDao().get(id).get();
     }
 
     @Override
     public List<Training> selectAll() {
         logger.info("Selecting All Training Profiles");
-        return storage.getDao(TRAININGS_KEY).getAll();
+        return storage.getTrainingDao().getAll();
     }
 }

@@ -77,7 +77,7 @@ public class BeanConfiguration {
 
     @Bean
     public Storage storage(@Autowired Map<String, Dao> tables){
-        Storage storage = new StorageImpl();
+        Storage storage = new GymStorageImpl();
         storage.setDaos(tables);
         return storage;
     }

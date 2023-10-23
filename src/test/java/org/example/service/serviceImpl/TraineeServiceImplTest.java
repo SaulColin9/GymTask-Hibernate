@@ -26,7 +26,6 @@ import static org.mockito.Mockito.times;
 @ContextConfiguration(classes = TestConfig.class)
 class TraineeServiceImplTest {
 
-    private static final String TRAINEES_KEY = "trainees";
 
     @Autowired
     private TraineeServiceImpl traineeService;
@@ -55,19 +54,19 @@ class TraineeServiceImplTest {
         daoConnection = mock(DaoConnectionImpl.class);
         when(daoConnection.getEntities(anyString())).thenReturn(trainees);
         when(daoConnection.writeEntities(anyString(), anyList())).thenReturn(trainees);
-        storage.getDao(TRAINEES_KEY).setDaoConnection(daoConnection);
-        storage.getDao(TRAINEES_KEY).setFilePath("mockFilePath");
+        storage.getTraineeDao().setDaoConnection(daoConnection);
+        storage.getTraineeDao().setFilePath("mockFilePath");
 
         daoConnectionUsers = mock(DaoConnectionImpl.class);
         when(daoConnectionUsers.getEntities(anyString())).thenReturn(users);
         when(daoConnectionUsers.writeEntities(anyString(), anyList())).thenReturn(users);
-        storage.getDao("users").setDaoConnection(daoConnectionUsers);
-        storage.getDao("users").setFilePath("mockFilePath");
+        storage.getUserDao().setDaoConnection(daoConnectionUsers);
+        storage.getUserDao().setFilePath("mockFilePath");
     }
     @Test
     void createTraineeProfile() {
         Trainee traineeTest = new Trainee(new Date(), "Test Address", 1);
-        traineeTest = traineeTest.setId(storage.getDao("trainees").getNextId());
+        traineeTest = traineeTest.setId(storage.getTraineeDao().getNextId());
 
         Trainee traineeCreated = traineeService.createTraineeProfile("Test Trainee", "Test Trainee Last", new Date(), "Test Address");
 

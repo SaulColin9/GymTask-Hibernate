@@ -1,11 +1,7 @@
 package org.example.service.serviceImpl;
 
-import org.example.configuration.BeanConfiguration;
 import org.example.configuration.Storage;
-import org.example.configuration.StorageImpl;
-import org.example.dao.Dao;
 import org.example.dao.DaoConnectionImpl;
-import org.example.dao.DaoImpl;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,21 +50,21 @@ class TrainerServiceImplTest {
         daoConnection = mock(DaoConnectionImpl.class);
         when(daoConnection.getEntities(anyString())).thenReturn(trainers);
         when(daoConnection.writeEntities(anyString(), anyList())).thenReturn(trainers);
-        storage.getDao("trainers").setDaoConnection(daoConnection);
-        storage.getDao("trainers").setFilePath("mockFilePath");
+        storage.getTrainerDao().setDaoConnection(daoConnection);
+        storage.getTrainerDao().setFilePath("mockFilePath");
 
         daoConnectionUsers = mock(DaoConnectionImpl.class);
         when(daoConnectionUsers.getEntities(anyString())).thenReturn(users);
         when(daoConnectionUsers.writeEntities(anyString(), anyList())).thenReturn(users);
-        storage.getDao("users").setDaoConnection(daoConnectionUsers);
-        storage.getDao("users").setFilePath("mockFilePath");
+        storage.getUserDao().setDaoConnection(daoConnectionUsers);
+        storage.getUserDao().setFilePath("mockFilePath");
     }
 
     @Test
     void createTrainerProfile() {
 
         Trainer trainerTest =  new Trainer(1,1);
-        trainerTest = trainerTest.setId(storage.getDao("trainers").getNextId());
+        trainerTest = trainerTest.setId(storage.getTrainerDao().getNextId());
 
         Trainer trainerCreated = trainerService.createTrainerProfile("Test Trainer", "Test Trainer Last", 1);
 
