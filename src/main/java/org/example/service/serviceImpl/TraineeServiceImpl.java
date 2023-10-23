@@ -75,7 +75,7 @@ public class TraineeServiceImpl implements TraineeService {
             return null;
         }
         logger.info("Selecting Trainee Profile with id " + id);
-        return storage.getTraineeDao().get(id).get();
+        return storage.getTraineeDao().get(id).orElse(null);
     }
 
     @Override

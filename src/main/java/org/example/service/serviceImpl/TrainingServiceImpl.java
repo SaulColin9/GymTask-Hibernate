@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
     Storage storage;
-    private static Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     public TrainingServiceImpl(Storage storage){
         this.storage = storage;
@@ -34,9 +34,9 @@ public class TrainingServiceImpl implements TrainingService {
             );
             return null;
         }
-        Training newTraining = (Training) storage.getTrainingDao().save(
-                new Training(traineeId,trainee.get(),trainerId, trainer.get(),
-                        trainingName, trainingTypeId, trainingType.get(), trainingDate, trainingDuration )
+        Training newTraining = storage.getTrainingDao().save(
+                new Training(trainee.get(), trainer.get(),
+                        trainingName, trainingType.get(), trainingDate, trainingDuration )
         );
         System.out.println(newTraining);
         logger.info("Creating Training Profile with id " + newTraining.getId());
@@ -46,7 +46,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training selectTrainingProfile(int id) {
         logger.info("Selecting Training Profile with id " + id);
-        return (Training) storage.getTrainingDao().get(id).get();
+        return storage.getTrainingDao().get(id).orElse(null);
     }
 
     @Override

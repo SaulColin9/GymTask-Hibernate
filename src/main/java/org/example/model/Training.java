@@ -24,13 +24,13 @@ public class Training implements Entity{
         this.trainingDuration = trainingDuration;
     }
 
-    public Training(int traineeId, Trainee trainee, int trainerId, Trainer trainer, String trainingName, int trainingTypeId, TrainingType trainingType, Date trainingDate, double trainingDuration) {
-        this.traineeId = traineeId;
+    public Training(Trainee trainee, Trainer trainer, String trainingName, TrainingType trainingType, Date trainingDate, double trainingDuration) {
+        this.traineeId = trainee.getId();
         this.trainee = trainee;
-        this.trainerId = trainerId;
+        this.trainerId = trainer.getId();
         this.trainer = trainer;
         this.trainingName = trainingName;
-        this.trainingTypeId = trainingTypeId;
+        this.trainingTypeId = trainingType.getId();
         this.trainingType = trainingType;
         this.trainingDate = trainingDate;
         this.trainingDuration = trainingDuration;
