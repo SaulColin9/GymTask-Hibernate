@@ -7,7 +7,6 @@ import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.model.User;
 import org.example.service.serviceImpl.TestConfig;
-import org.example.service.serviceImpl.TrainingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,17 +31,16 @@ class GymFacadeImplTest {
     private GymFacade gymFacade;
     @Autowired
     private Storage storage;
-    private DaoConnectionImpl<Training> daoConnection = new DaoConnectionImpl<>(Training.class);
-    private DaoConnectionImpl<User> daoConnectionUsers = new DaoConnectionImpl<>(User.class);
-    private DaoConnectionImpl<Trainer> daoConnectionTrainers = new DaoConnectionImpl<>(Trainer.class);
-    private DaoConnectionImpl<Trainee> daoConnectionTrainees = new DaoConnectionImpl<>(Trainee.class);
-    private List<Training> trainings = new ArrayList<>();
-    private List<User> users = new ArrayList<>();
-    private List<Trainee> trainees = new ArrayList<>();
-    private List<Trainer> trainers = new ArrayList<>();
-
     @BeforeEach
     public void setUp(){
+        DaoConnectionImpl<Training> daoConnection;
+        DaoConnectionImpl<User> daoConnectionUsers;
+        DaoConnectionImpl<Trainer> daoConnectionTrainers;
+        DaoConnectionImpl<Trainee> daoConnectionTrainees;
+        List<Training> trainings = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        List<Trainee> trainees = new ArrayList<>();
+        List<Trainer> trainers = new ArrayList<>();
         Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
         trainingTest.setId(1);
         Training trainingTest2 = new Training(2,2,"Test Training 2", 2, new Date(),1.5);
@@ -109,7 +107,7 @@ class GymFacadeImplTest {
     @Test
     void deleteTrainee() {
         assertNotNull(gymFacade.getTrainee(1));
-        Trainee traineeDeleted = gymFacade.deleteTrainee(1);
+        gymFacade.deleteTrainee(1);
         assertNull(gymFacade.getTrainee(1));
     }
 
@@ -121,8 +119,8 @@ class GymFacadeImplTest {
 
     @Test
     void getAllTrainees() {
-        List<Trainee> trainees = gymFacade.getAllTrainees();
-        assertNotNull(trainees);
+        List<Trainee> testTrainees = gymFacade.getAllTrainees();
+        assertNotNull(testTrainees);
     }
 
     @Test
@@ -149,8 +147,8 @@ class GymFacadeImplTest {
 
     @Test
     void getAllTrainers() {
-        List<Trainer> trainers = gymFacade.getAllTrainers();
-        assertNotNull(trainers);
+        List<Trainer> testTrainers = gymFacade.getAllTrainers();
+        assertNotNull(testTrainers);
     }
 
     @Test
@@ -163,11 +161,12 @@ class GymFacadeImplTest {
     @Test
     void getTraining() {
         Training training = gymFacade.getTraining(1);
+        assertNotNull(training);
     }
 
     @Test
     void getAllTrainings() {
-        List<Training> trainings = gymFacade.getAllTrainings();
-        assertNotNull(trainings);
+        List<Training> testTrainings = gymFacade.getAllTrainings();
+        assertNotNull(testTrainings);
     }
 }

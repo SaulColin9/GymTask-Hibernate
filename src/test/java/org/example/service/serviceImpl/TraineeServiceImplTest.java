@@ -32,13 +32,13 @@ class TraineeServiceImplTest {
     @Autowired
     Storage storage;
     private DaoConnectionImpl<Trainee> daoConnection = new DaoConnectionImpl<>(Trainee.class);
-    private DaoConnectionImpl<User> daoConnectionUsers = new DaoConnectionImpl<>(User.class);
     private List<Trainee> trainees = new ArrayList<>();
     private List<User> users = new ArrayList<>();
 
 
     @BeforeEach
     public void setUp(){
+        DaoConnectionImpl<User> daoConnectionUsers;
         User userTest = new User("User Test", "User Test", ".");
         User userTest2 = new User("User Test 2", "User Test 2", ".");
         users.add(userTest);

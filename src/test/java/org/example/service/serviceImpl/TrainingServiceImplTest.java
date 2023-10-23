@@ -28,9 +28,7 @@ class TrainingServiceImplTest {
     @Autowired
     private Storage storage;
     private DaoConnectionImpl<Training> daoConnection = new DaoConnectionImpl<>(Training.class);
-    private DaoConnectionImpl<User> daoConnectionUsers = new DaoConnectionImpl<>(User.class);
-    private DaoConnectionImpl<Trainer> daoConnectionTrainers = new DaoConnectionImpl<>(Trainer.class);
-    private DaoConnectionImpl<Trainee> daoConnectionTrainees = new DaoConnectionImpl<>(Trainee.class);
+
     private List<Training> trainings = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private List<Trainee> trainees = new ArrayList<>();
@@ -38,6 +36,10 @@ class TrainingServiceImplTest {
 
     @BeforeEach
     public void setUp(){
+        DaoConnectionImpl<User> daoConnectionUsers;
+        DaoConnectionImpl<Trainer> daoConnectionTrainers;
+        DaoConnectionImpl<Trainee> daoConnectionTrainees;
+
         Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
         trainingTest.setId(1);
         Training trainingTest2 = new Training(2,2,"Test Training 2", 2, new Date(),1.5);
@@ -86,8 +88,6 @@ class TrainingServiceImplTest {
     }
     @Test
     void createTrainingProfileTest() {
-        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
-
         Training trainingsCreated = trainingService.createTrainingProfile(1, 1,"Test Training", 1, new Date(), 1);
 
         assertNotNull(trainingsCreated);

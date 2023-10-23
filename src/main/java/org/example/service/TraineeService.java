@@ -4,7 +4,6 @@ import org.example.model.Trainee;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface TraineeService {
     Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address);
