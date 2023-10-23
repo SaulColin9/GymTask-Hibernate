@@ -37,15 +37,22 @@ public class TrainerServiceImpl implements TrainerService {
             logger.error("Provided Trainer Id does not exist");
             return null;
         }
+        Optional<User> userToUpdate = storage.getUserDao().get(trainerToUpdate.get().getUserId());
+        if (userToUpdate.isEmpty()){
+            logger.error("Trainer Profile User Id does not exist");
+            return null;
+        }
 
-        User userToUpdate = trainerToUpdate.get().getUser();
-        userToUpdate.setLastName(firstName);
-        userToUpdate.setLastName(lastName);
-        userToUpdate.setIsActive(isActive);
+        userToUpdate.get().setFirstName(firstName);
+        userToUpdate.get().setLastName(lastName);
+        userToUpdate.get().setIsActive(isActive);
         String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
-        userToUpdate.setUsername(newUserName);
+        userToUpdate.get().setUsername(newUserName);
+
+        storage.getUserDao().update(trainerToUpdate.get().getUserId(),userToUpdate.get());
 
         trainerToUpdate.get().setSpecialization(specialization);
+        trainerToUpdate.get().setUser(userToUpdate.get());
 
         logger.info("Updating Trainer Profile with id " + id);
         return storage.getTrainerDao().update(id, trainerToUpdate.get());
@@ -53,14 +60,25 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer selectTrainerProfile(int id) {
+        Optional<Trainer> trainer = storage.getTrainerDao().get(id);
+        if(trainer.isEmpty()){
+            logger.info("Provided Trainer Id does not exist" + id);
+        }
         logger.info("Selecting Trainer Profile with id " + id);
-
-        return storage.getTrainerDao().get(id).orElse(null);
+        Trainer selectedTrainer = trainer.orElse(null);
+        Optional<User> trainersUser = storage.getUserDao().get(selectedTrainer.getUserId());
+        selectedTrainer.setUser(trainersUser.orElse(null));
+        return selectedTrainer;
     }
 
     @Override
     public List<Trainer> selectAll() {
+        List<Trainer> trainers = storage.getTrainerDao().getAll();
+        for(Trainer trainer: trainers){
+            Optional<User> trainersUser = storage.getUserDao().get(trainer.getUserId());
+            trainer.setUser(trainersUser.orElse(null));
+        }
         logger.info("Selecting All Trainer Profiles");
-        return storage.getTrainerDao().getAll();
+        return trainers;
     }
 }

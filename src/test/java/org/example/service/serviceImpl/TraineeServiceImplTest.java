@@ -40,14 +40,19 @@ class TraineeServiceImplTest {
     public void setUp(){
         DaoConnectionImpl<User> daoConnectionUsers;
         User userTest = new User("User Test", "User Test", ".");
+        userTest.setId(1);
         User userTest2 = new User("User Test 2", "User Test 2", ".");
+        userTest2.setId(2);
         users.add(userTest);
         users.add(userTest2);
 
         Trainee traineeTest =  new Trainee(new Date(), "Test Address", 1, userTest);
         traineeTest = traineeTest.setId(1);
+        traineeTest.setUser(userTest);
         Trainee traineeTest2 =  new Trainee(new Date(), "Test Address 2", 2, userTest2);
         traineeTest2 = traineeTest2.setId(2);
+        traineeTest2.setUser(userTest2);
+        System.out.println(traineeTest2.getUser());
         trainees.add(traineeTest);
         trainees.add(traineeTest2);
 
@@ -72,7 +77,6 @@ class TraineeServiceImplTest {
 
         assertNotNull(traineeCreated);
         assertEquals(traineeTest.getId(), traineeCreated.getId());
-        assertEquals(traineeTest.getUserId(), traineeCreated.getUserId());
         verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
     }
 

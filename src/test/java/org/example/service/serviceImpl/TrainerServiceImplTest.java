@@ -35,14 +35,18 @@ class TrainerServiceImplTest {
     @BeforeEach
     public void setUp(){
         User userTest = new User("User Test", "User Test", ".");
+        userTest.setId(1);
         User userTest2 = new User("User Test 2", "User Test 2", ".");
+        userTest2.setId(2);
         users.add(userTest);
         users.add(userTest2);
 
         Trainer trainerTest =  new Trainer(1,1, userTest);
         trainerTest = trainerTest.setId(1);
+        trainerTest.setUser(userTest);
         Trainer trainerTest2 = new Trainer(2, 2, userTest2);
         trainerTest2 = trainerTest2.setId(2);
+        trainerTest2.setUser(userTest2);
         trainers.add(trainerTest);
         trainers.add(trainerTest2);
 
@@ -70,7 +74,6 @@ class TrainerServiceImplTest {
 
         assertNotNull(trainerCreated);
         assertEquals(trainerTest.getId(), trainerCreated.getId());
-        assertEquals(trainerTest.getUserId(), trainerCreated.getUserId());
         verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
     }
 

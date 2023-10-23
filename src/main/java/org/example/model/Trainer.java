@@ -48,4 +48,17 @@ public class Trainer implements Entity{
         this.userId = userId;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Trainer{" +
+                "id=" + id +
+                ", specialization=" + specialization +
+                ", userId=" + userId +
+                ", user=" + user +
+                '}';
+    }
 }

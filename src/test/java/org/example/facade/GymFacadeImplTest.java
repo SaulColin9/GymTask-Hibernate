@@ -41,27 +41,30 @@ class GymFacadeImplTest {
         List<User> users = new ArrayList<>();
         List<Trainee> trainees = new ArrayList<>();
         List<Trainer> trainers = new ArrayList<>();
-        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
-        trainingTest.setId(1);
-        Training trainingTest2 = new Training(2,2,"Test Training 2", 2, new Date(),1.5);
-        trainingTest2.setId(2);
-        trainings.add(trainingTest);
-        trainings.add(trainingTest2);
 
         User userTest = new User("User Test", "User Test", ".");
+        userTest.setId(1);
         User userTest2 = new User("User Test 2", "User Test 2", ".");
+        userTest2.setId(2);
         users.add(userTest);
         users.add(userTest2);
 
         Trainee traineeTest =  new Trainee(new Date(), "Test Address", 1, userTest);
         traineeTest = traineeTest.setId(1);
+        traineeTest.setUser(userTest);
         trainees.add(traineeTest);
 
 
         Trainer trainerTest2 = new Trainer(2, 2, userTest2);
         trainerTest2 = trainerTest2.setId(1);
+        trainerTest2.setUser(userTest2);
         trainers.add(trainerTest2);
 
+        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
+        trainingTest.setId(1);
+        trainingTest.setTrainee(traineeTest);
+        trainingTest.setTrainer(trainerTest2);
+        trainings.add(trainingTest);
 
         daoConnection = mock(DaoConnectionImpl.class);
         when(daoConnection.getEntities(anyString())).thenReturn(trainings);

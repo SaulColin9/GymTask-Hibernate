@@ -39,17 +39,23 @@ public class TraineeServiceImpl implements TraineeService {
             logger.error("Provided Trainee Id does not exist");
             return null;
         }
-        User userToUpdate = traineeToUpdate.get().getUser();
-        userToUpdate.setLastName(firstName);
-        userToUpdate.setLastName(lastName);
-        userToUpdate.setIsActive(isActive);
-        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
-        userToUpdate.setUsername(newUserName);
+        Optional<User> userToUpdate = storage.getUserDao().get(traineeToUpdate.get().getUserId());
+        if (userToUpdate.isEmpty()){
+            logger.error("Trainee Profile User Id does not exist");
+            return null;
+        }
 
-        storage.getUserDao().update(traineeToUpdate.get().getUserId(), userToUpdate);
+        userToUpdate.get().setFirstName(firstName);
+        userToUpdate.get().setLastName(lastName);
+        userToUpdate.get().setIsActive(isActive);
+        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
+        userToUpdate.get().setUsername(newUserName);
+
+        storage.getUserDao().update(traineeToUpdate.get().getUserId(), userToUpdate.get());
 
         traineeToUpdate.get().setDateOfBirth(dateOfBirth);
         traineeToUpdate.get().setAddress(address);
+        traineeToUpdate.get().setUser(userToUpdate.get());
 
         logger.info("Updating Trainee Profile with id " + id);
         return storage.getTraineeDao().update(id,traineeToUpdate.get());
@@ -69,18 +75,26 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee selectTraineeProfile(int id) {
-        Optional<Trainee> traineeToUpdate = storage.getTraineeDao().get(id);
-        if(traineeToUpdate.isEmpty()){
+        Optional<Trainee> trainee = storage.getTraineeDao().get(id);
+        if(trainee.isEmpty()){
             logger.error("Provided Trainee Id does not exist");
             return null;
         }
         logger.info("Selecting Trainee Profile with id " + id);
-        return storage.getTraineeDao().get(id).orElse(null);
+        Trainee selectedTrainee = storage.getTraineeDao().get(id).orElse(null);
+        Optional<User> traineesUser = storage.getUserDao().get(selectedTrainee.getUserId());
+        selectedTrainee.setUser(traineesUser.orElse(null));
+        return selectedTrainee;
     }
 
     @Override
     public List<Trainee> selectAll() {
+        List<Trainee> trainees = storage.getTraineeDao().getAll();
+        for(Trainee trainee : trainees){
+            Optional<User> traineesUser = storage.getUserDao().get(trainee.getUserId());
+            trainee.setUser(traineesUser.orElse(null));
+        }
         logger.info("Selecting All Trainee Profiles ");
-        return storage.getTraineeDao().getAll();
+        return trainees;
     }
 }

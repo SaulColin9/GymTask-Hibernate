@@ -94,5 +94,31 @@ public class Training implements Entity{
         this.trainingDuration = trainingDuration;
     }
 
+    public void setTrainee(Trainee trainee) {
+        this.trainee = trainee;
+    }
 
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
+
+    public void setTrainingType(TrainingType trainingType) {
+        this.trainingType = trainingType;
+    }
+
+    @Override
+    public String toString() {
+        return "Training{" +
+                "id=" + id +
+                ", traineeId=" + traineeId +
+                ", trainerId=" + trainerId +
+                ", trainingName='" + trainingName + '\'' +
+                ", trainingTypeId=" + trainingTypeId +
+                ", trainingDate=" + trainingDate +
+                ", trainingDuration=" + trainingDuration +
+                ", trainee=" + trainee +
+                ", trainer=" + trainer +
+                ", trainingType=" + trainingType +
+                '}';
+    }
 }

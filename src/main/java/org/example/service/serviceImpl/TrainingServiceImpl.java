@@ -1,10 +1,7 @@
 package org.example.service.serviceImpl;
 
 import org.example.configuration.Storage;
-import org.example.model.Trainee;
-import org.example.model.Trainer;
-import org.example.model.Training;
-import org.example.model.TrainingType;
+import org.example.model.*;
 import org.example.service.TrainingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,13 +42,40 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training selectTrainingProfile(int id) {
+        Training training  = storage.getTrainingDao().get(id).orElse(null);
+        Optional<Trainer> trainer = storage.getTrainerDao().get(training.getTrainerId());
+        Optional<User> trainersUser = storage.getUserDao().get(trainer.get().getUserId());
+        trainer.get().setUser(trainersUser.orElse(null));
+        Optional<Trainee> trainee = storage.getTraineeDao().get(training.getTraineeId());
+        Optional<User> traineesUser = storage.getUserDao().get(trainee.get().getUserId());
+        trainee.get().setUser(traineesUser.orElse(null));
+        Optional<TrainingType> trainingType = storage.getTrainingTypeDao().get(training.getTrainingTypeId());
+
+        training.setTrainer(trainer.orElse(null));
+        training.setTrainee(trainee.orElse(null));
+        training.setTrainingType(trainingType.orElse(null));
+
         logger.info("Selecting Training Profile with id " + id);
-        return storage.getTrainingDao().get(id).orElse(null);
+        return training;
     }
 
     @Override
     public List<Training> selectAll() {
+        List<Training> trainings = storage.getTrainingDao().getAll();
+        for(Training training: trainings){
+            Optional<Trainer> trainer = storage.getTrainerDao().get(training.getTrainerId());
+            Optional<User> trainersUser = storage.getUserDao().get(trainer.get().getUserId());
+            trainer.get().setUser(trainersUser.orElse(null));
+            Optional<Trainee> trainee = storage.getTraineeDao().get(training.getTraineeId());
+            Optional<User> traineesUser = storage.getUserDao().get(trainee.get().getUserId());
+            trainee.get().setUser(traineesUser.orElse(null));
+            Optional<TrainingType> trainingType = storage.getTrainingTypeDao().get(training.getTrainingTypeId());
+
+            training.setTrainer(trainer.orElse(null));
+            training.setTrainee(trainee.orElse(null));
+            training.setTrainingType(trainingType.orElse(null));
+        }
         logger.info("Selecting All Training Profiles");
-        return storage.getTrainingDao().getAll();
+        return trainings;
     }
 }

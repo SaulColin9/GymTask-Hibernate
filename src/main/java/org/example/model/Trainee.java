@@ -61,6 +61,10 @@ public class Trainee implements Entity {
         this.userId = userId;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Trainee{" +

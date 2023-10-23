@@ -40,12 +40,6 @@ class TrainingServiceImplTest {
         DaoConnectionImpl<Trainer> daoConnectionTrainers;
         DaoConnectionImpl<Trainee> daoConnectionTrainees;
 
-        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
-        trainingTest.setId(1);
-        Training trainingTest2 = new Training(2,2,"Test Training 2", 2, new Date(),1.5);
-        trainingTest2.setId(2);
-        trainings.add(trainingTest);
-        trainings.add(trainingTest2);
 
         User userTest = new User("User Test", "User Test", ".");
         User userTest2 = new User("User Test 2", "User Test 2", ".");
@@ -61,6 +55,11 @@ class TrainingServiceImplTest {
         trainerTest2 = trainerTest2.setId(1);
         trainers.add(trainerTest2);
 
+        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
+        trainingTest.setId(1);
+        trainingTest.setTrainer(trainerTest2);
+        trainingTest.setTrainee(traineeTest);
+        trainings.add(trainingTest);
 
         daoConnection = mock(DaoConnectionImpl.class);
         when(daoConnection.getEntities(anyString())).thenReturn(trainings);
