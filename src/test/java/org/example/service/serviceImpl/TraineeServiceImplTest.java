@@ -79,10 +79,19 @@ class TraineeServiceImplTest {
 
     @Test
     void updateTraineeProfile() {
+        fail();
     }
 
     @Test
     void deleteTraineeProfile() {
+        Optional<Trainee> traineeTest =  traineeService.selectTraineeProfile(1);
+        assertTrue(traineeTest.isPresent());
+
+        traineeService.deleteTraineeProfile(1);
+        Optional<Trainee> deletedTrainee = traineeService.selectTraineeProfile(1);
+        assertTrue(deletedTrainee.isEmpty());
+
+
     }
 
     @Test

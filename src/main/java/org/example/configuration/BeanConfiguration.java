@@ -36,35 +36,35 @@ public class BeanConfiguration {
         return new TraineeServiceImpl(storage);
     }
     @Bean("users")
-    public Dao userDao(@Value("${users.source}")String usersPath){
-        Dao userDao = new DaoImpl<>(User.class);
+    public Dao<User> userDao(@Value("${users.source}")String usersPath){
+        Dao<User> userDao = new DaoImpl<>(User.class);
         userDao.setFilePath(usersPath);
         return userDao;
     }
     @Bean("trainings")
-    public Dao trainingDao(@Value("${trainings.source}")String trainigsPath){
-        Dao trainingDao = new DaoImpl<>(Training.class);
+    public Dao<Training> trainingDao(@Value("${trainings.source}")String trainigsPath){
+        Dao<Training> trainingDao = new DaoImpl<>(Training.class);
         trainingDao.setFilePath(trainigsPath);
         return trainingDao;
     }
 
     @Bean("trainingTypes")
-    public Dao trainingTypesDao(@Value("${trainingTypes.source}")String trainingTypesPath){
-        Dao trainingTypesDao = new DaoImpl<>(TrainingType.class);
+    public Dao<TrainingType> trainingTypesDao(@Value("${trainingTypes.source}")String trainingTypesPath){
+        Dao<TrainingType> trainingTypesDao = new DaoImpl<>(TrainingType.class);
         trainingTypesDao.setFilePath(trainingTypesPath);
         return trainingTypesDao;
     }
 
     @Bean("trainers")
-    public Dao trainerDao(@Value("${trainers.source}") String trainersPath){
-        Dao trainerDao = new DaoImpl(Trainer.class);
+    public Dao<Trainer> trainerDao(@Value("${trainers.source}") String trainersPath){
+        Dao<Trainer> trainerDao = new DaoImpl(Trainer.class);
         trainerDao.setFilePath(trainersPath);
         return trainerDao;
     }
 
     @Bean("trainees")
-    public Dao traineeDao(@Value("${trainees.source}")String traineesPath){
-        Dao traineeDao = new DaoImpl<>(Trainee.class);
+    public Dao<Trainee> traineeDao(@Value("${trainees.source}")String traineesPath){
+        Dao<Trainee> traineeDao = new DaoImpl<>(Trainee.class);
         traineeDao.setFilePath(traineesPath);
         return traineeDao;
     }
