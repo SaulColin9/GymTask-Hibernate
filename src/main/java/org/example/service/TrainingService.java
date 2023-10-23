@@ -2,7 +2,6 @@ package org.example.service;
 
 import org.example.model.Training;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

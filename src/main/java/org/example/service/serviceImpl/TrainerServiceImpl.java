@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public class TrainerServiceImpl implements TrainerService {
     Storage storage;
+    private static final String TRAINERS_KEY = "trainers";
     public TrainerServiceImpl(Storage storage){
         this.storage = storage;
     }
@@ -24,21 +25,21 @@ public class TrainerServiceImpl implements TrainerService {
             User newUser = (User) storage.getDao("users")
                     .save(new User(firstName, lastName, username, passowrd,true));
 
-            return (Trainer) storage.getDao("trainers").save(new Trainer(specialization, newUser.getId()));
+            return (Trainer) storage.getDao(TRAINERS_KEY).save(new Trainer(specialization, newUser.getId()));
     }
 
     @Override
     public Trainer updateTrainerProfile(int id, Trainer trainer) {
-        return (Trainer) storage.getDao("trainers").update(id, trainer);
+        return (Trainer) storage.getDao(TRAINERS_KEY).update(id, trainer);
     }
 
     @Override
     public Optional<Trainer> selectTrainerProfile(int id) {
-        return storage.getDao("trainers").get(id);
+        return storage.getDao(TRAINERS_KEY).get(id);
     }
 
     @Override
     public List<Trainer> selectAll() {
-        return storage.getDao("trainers").getAll();
+        return storage.getDao(TRAINERS_KEY).getAll();
     }
 }

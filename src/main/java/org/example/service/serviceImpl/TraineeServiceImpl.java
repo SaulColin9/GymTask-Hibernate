@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public class TraineeServiceImpl implements TraineeService {
     Storage storage;
+    private final static String TRAINEES_KEY = "trainees";
     public TraineeServiceImpl(Storage storage){
         this.storage = storage;
     }
@@ -24,7 +25,7 @@ public class TraineeServiceImpl implements TraineeService {
         String passowrd = PasswordGeneratorImpl.generatePassword(10);
         User newUser = (User) storage.getDao("users")
                 .save(new User(firstName, lastName, username, passowrd,true));
-        return (Trainee) storage.getDao("trainees").save(new Trainee(dateOfBirth, address, newUser.getId()));
+        return (Trainee) storage.getDao(TRAINEES_KEY).save(new Trainee(dateOfBirth, address, newUser.getId()));
     }
 
     @Override
@@ -34,16 +35,16 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Optional<Trainee> deleteTraineeProfile(int id) {
-        return storage.getDao("trainees").delete(id);
+        return storage.getDao(TRAINEES_KEY).delete(id);
     }
 
     @Override
     public Optional<Trainee> selectTraineeProfile(int id) {
-        return storage.getDao("trainees").get(id);
+        return storage.getDao(TRAINEES_KEY).get(id);
     }
 
     @Override
     public List<Trainee> selectAll() {
-        return storage.getDao("trainees").getAll();
+        return storage.getDao(TRAINEES_KEY).getAll();
     }
 }

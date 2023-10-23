@@ -31,7 +31,7 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
     @Override
     public int getNextId(){
         entities = getEntities(tClass);
-        if(entities.size()== 0){
+        if(entities.isEmpty()){
             return 0;
         }
         return entities.get(entities.size() - 1).getId() + 1;

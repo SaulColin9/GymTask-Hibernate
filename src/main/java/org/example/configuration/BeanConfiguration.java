@@ -57,7 +57,7 @@ public class BeanConfiguration {
 
     @Bean("trainers")
     public Dao<Trainer> trainerDao(@Value("${trainers.source}") String trainersPath){
-        Dao<Trainer> trainerDao = new DaoImpl(Trainer.class);
+        Dao<Trainer> trainerDao = new DaoImpl<>(Trainer.class);
         trainerDao.setFilePath(trainersPath);
         return trainerDao;
     }

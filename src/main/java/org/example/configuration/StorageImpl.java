@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StorageImpl implements Storage, InitializingBean {
+public class StorageImpl implements Storage{
 
     private Map<String, Dao> daos = new HashMap<>();
     @Override
@@ -30,9 +30,6 @@ public class StorageImpl implements Storage, InitializingBean {
         return daos.get(tableName);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
 
-    }
 
 }

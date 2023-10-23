@@ -3,13 +3,16 @@ package org.example.service;
 import java.security.SecureRandom;
 
 public class PasswordGeneratorImpl {
+    private PasswordGeneratorImpl(){
+        throw new IllegalStateException("Utility class");
+    }
     public static String generatePassword(int length) {
-        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(CHARACTERS.length());
-            char randomChar = CHARACTERS.charAt(randomIndex);
+            int randomIndex = random.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
             sb.append(randomChar);
         }
         return sb.toString();

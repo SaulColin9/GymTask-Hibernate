@@ -93,16 +93,4 @@ public class Training implements Entity{
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Training training = (Training) o;
-        return getId() == training.getId() && getTraineeId() == training.getTraineeId() && getTrainerId() == training.getTrainerId() && getTrainingTypeId() == training.getTrainingTypeId() && Double.compare(getTrainingDuration(), training.getTrainingDuration()) == 0 && Objects.equals(getTrainingName(), training.getTrainingName()) && Objects.equals(getTrainingDate(), training.getTrainingDate());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getTraineeId(), getTrainerId(), getTrainingName(), getTrainingTypeId(), getTrainingDate(), getTrainingDuration());
-    }
 }
