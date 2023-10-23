@@ -18,6 +18,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
     @Override
     public Trainer createTrainerProfile(String firstName, String lastName, int specialization) {
+            
             String username = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", storage);
             String passowrd = PasswordGeneratorImpl.generatePassword(10);
             User newUser = (User) storage.getDao("users")

@@ -28,7 +28,9 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
     public void afterPropertiesSet(){
         setEntities(getEntities(tClass));
     }
+    @Override
     public int getNextId(){
+        entities = getEntities(tClass);
         if(entities.size()== 0){
             return 0;
         }

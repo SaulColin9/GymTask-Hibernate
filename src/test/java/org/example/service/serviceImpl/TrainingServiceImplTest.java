@@ -29,7 +29,7 @@ class TrainingServiceImplTest {
     private Storage storage = new StorageImpl();
     private TrainingServiceImpl mock = mock(TrainingServiceImpl.class);
     private DaoConnectionImpl<Training> daoConnection = new DaoConnectionImpl<>(Training.class);
-    List<Training> trainings = new ArrayList<>();
+    private List<Training> trainings = new ArrayList<>();
     @BeforeEach
     public void setUp(){
         Map<String, Dao> daos = new HashMap<>();
@@ -67,6 +67,8 @@ class TrainingServiceImplTest {
         trainingTest.setId(1);
 
         Optional<Training> trainingSelected = trainingService.selectTrainingProfile(1);
+
+        assertNotNull(trainingSelected);
         assertEquals(trainingTest.getId(), trainingSelected.get().getId());
         assertEquals(trainingTest.getTrainingName(), trainingSelected.get().getTrainingName());
         verify(daoConnection, times(1)).getEntities(anyString());
