@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class TraineeServiceImpl implements TraineeService {
     Storage storage;
-    private final static String TRAINEES_KEY = "trainees";
+    private static final String TRAINEES_KEY = "trainees";
     public TraineeServiceImpl(Storage storage){
         this.storage = storage;
     }
@@ -30,7 +30,7 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee updateTraineeProfile(int id, Trainee trainee) {
-        return null;
+        return (Trainee) storage.getDao(TRAINEES_KEY).update(id,trainee);
     }
 
     @Override

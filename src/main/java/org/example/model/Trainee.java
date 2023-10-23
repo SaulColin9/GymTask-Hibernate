@@ -38,8 +38,9 @@ public class Trainee implements Entity {
         return address;
     }
 
-    public void setAddress(String address) {
+    public Trainee setAddress(String address) {
         this.address = address;
+        return this;
     }
 
     public int getUserId() {

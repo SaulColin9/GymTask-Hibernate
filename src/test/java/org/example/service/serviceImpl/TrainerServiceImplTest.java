@@ -86,11 +86,16 @@ class TrainerServiceImplTest {
         assertNotNull(trainerCreated);
         assertEquals(trainerTest.getId(), trainerCreated.getId());
         assertEquals(trainerTest.getUserId(), trainerCreated.getUserId());
+        verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
     }
 
     @Test
     void updateTrainerProfile() {
-        fail();
+        Optional<Trainer> trainerTest = trainerService.selectTrainerProfile(1);
+        trainerTest = Optional.ofNullable(trainerTest.get().setSpecialization(2));
+
+        Trainer updatedTrainer = trainerService.updateTrainerProfile(1, trainerTest.get());
+        assertEquals(trainerTest.get().getSpecialization(), updatedTrainer.getSpecialization());
     }
 
     @Test

@@ -1,7 +1,6 @@
 package org.example.model;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class Training implements Entity{
     int id;

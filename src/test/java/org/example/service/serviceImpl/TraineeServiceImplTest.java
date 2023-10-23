@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,12 +21,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 class TraineeServiceImplTest {
+
+    private static final String TRAINEES_KEY = "trainees";
 
     @Autowired
     private TraineeServiceImpl traineeService;
@@ -55,8 +58,8 @@ class TraineeServiceImplTest {
         daoConnection = mock(DaoConnectionImpl.class);
         when(daoConnection.getEntities(anyString())).thenReturn(trainees);
         when(daoConnection.writeEntities(anyString(), anyList())).thenReturn(trainees);
-        storage.getDao("trainees").setDaoConnection(daoConnection);
-        storage.getDao("trainees").setFilePath("mockFilePath");
+        storage.getDao(TRAINEES_KEY).setDaoConnection(daoConnection);
+        storage.getDao(TRAINEES_KEY).setFilePath("mockFilePath");
 
         daoConnectionUsers = mock(DaoConnectionImpl.class);
         when(daoConnectionUsers.getEntities(anyString())).thenReturn(users);
@@ -74,12 +77,16 @@ class TraineeServiceImplTest {
         assertNotNull(traineeCreated);
         assertEquals(traineeTest.getId(), traineeCreated.getId());
         assertEquals(traineeTest.getUserId(), traineeCreated.getUserId());
-
+        verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
     }
 
     @Test
     void updateTraineeProfile() {
-        fail();
+        Optional<Trainee> traineeTest = traineeService.selectTraineeProfile(1);
+        traineeTest = Optional.ofNullable(traineeTest.get().setAddress("New Address Test"));
+
+        Trainee updatedTrainee = traineeService.updateTraineeProfile(1, traineeTest.get());
+        assertEquals(traineeTest.get().getAddress(), updatedTrainee.getAddress());
     }
 
     @Test
@@ -90,8 +97,7 @@ class TraineeServiceImplTest {
         traineeService.deleteTraineeProfile(1);
         Optional<Trainee> deletedTrainee = traineeService.selectTraineeProfile(1);
         assertTrue(deletedTrainee.isEmpty());
-
-
+        verify(daoConnection, times(1)).writeEntities(anyString(), anyList());
     }
 
     @Test
@@ -112,4 +118,6 @@ class TraineeServiceImplTest {
         assertNotNull(selectedTrainees);
         assertEquals(trainees, selectedTrainees);
     }
+
+
 }

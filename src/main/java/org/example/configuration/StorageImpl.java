@@ -13,23 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 public class StorageImpl implements Storage{
-
     private Map<String, Dao> daos = new HashMap<>();
     @Override
     public void setDaos(Map<String, Dao> tables) {
         this.daos = tables;
     }
-
-    @Override
-    public Map<String, Dao> getDaos() {
-        return daos;
-    }
-
     @Override
     public Dao getDao(String tableName) {
         return daos.get(tableName);
     }
-
-
-
 }

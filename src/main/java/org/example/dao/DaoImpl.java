@@ -104,8 +104,8 @@ public class DaoImpl<T extends Entity>  implements Dao<T>, InitializingBean {
         if(foundEntity.isPresent()){
             listId = entities.indexOf(foundEntity.get());
             entities.remove(listId);
-            writeEntities();
         }
+        writeEntities();
         return foundEntity;
     }
 

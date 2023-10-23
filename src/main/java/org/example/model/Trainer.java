@@ -25,8 +25,9 @@ public class Trainer implements Entity{
         return specialization;
     }
 
-    public void setSpecialization(int specialization) {
+    public Trainer setSpecialization(int specialization) {
         this.specialization = specialization;
+        return this;
     }
 
     public int getUserId() {
