@@ -7,9 +7,15 @@ import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.model.User;
 import org.example.service.serviceImpl.TestConfig;
+import org.example.service.serviceImpl.TraineeServiceImpl;
+import org.example.service.serviceImpl.TrainerServiceImpl;
+import org.example.service.serviceImpl.TrainingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,95 +25,83 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfig.class)
+
 class GymFacadeImplTest {
 
-    @Autowired
-    private GymFacade gymFacade;
-    @Autowired
-    private Storage storage;
-    @BeforeEach
-    public void setUp(){
-        DaoConnectionImpl<Training> daoConnection;
-        DaoConnectionImpl<User> daoConnectionUsers;
-        DaoConnectionImpl<Trainer> daoConnectionTrainers;
-        DaoConnectionImpl<Trainee> daoConnectionTrainees;
-        List<Training> trainings = new ArrayList<>();
-        List<User> users = new ArrayList<>();
-        List<Trainee> trainees = new ArrayList<>();
-        List<Trainer> trainers = new ArrayList<>();
+    @InjectMocks
+    private GymFacadeImpl gymFacade;
+    @Mock
+    private TrainingServiceImpl trainingService;
+    @Mock
+    private TraineeServiceImpl traineeService;
+    @Mock
+    private TrainerServiceImpl trainerService;
+    private User userTest;
+    private Trainee traineeTest;
+    private Date date;
+    private Training trainingTest;
 
-        User userTest = new User("User Test", "User Test", ".");
+    private Trainer trainerTest;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        gymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
+
+
+        date = new Date();
+
+        userTest = new User("User Test", "User Test", ".");
         userTest.setId(1);
+
         User userTest2 = new User("User Test 2", "User Test 2", ".");
         userTest2.setId(2);
-        users.add(userTest);
-        users.add(userTest2);
 
-        Trainee traineeTest =  new Trainee(new Date(), "Test Address", 1, userTest);
+
+        traineeTest = new Trainee(new Date(), "Test Address", 1, userTest);
         traineeTest = traineeTest.setId(1);
         traineeTest.setUser(userTest);
-        trainees.add(traineeTest);
 
 
-        Trainer trainerTest2 = new Trainer(2, 2, userTest2);
-        trainerTest2 = trainerTest2.setId(1);
-        trainerTest2.setUser(userTest2);
-        trainers.add(trainerTest2);
+        trainerTest = new Trainer(2, 2, userTest2);
+        trainerTest = trainerTest.setId(1);
+        trainerTest.setUser(userTest2);
 
-        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
+        trainingTest = new Training(1, 1, "Test Training", 1, new Date(), 1);
         trainingTest.setId(1);
         trainingTest.setTrainee(traineeTest);
-        trainingTest.setTrainer(trainerTest2);
-        trainings.add(trainingTest);
+        trainingTest.setTrainer(trainerTest);
 
-        daoConnection = mock(DaoConnectionImpl.class);
-        when(daoConnection.getEntities(anyString())).thenReturn(trainings);
-        when(daoConnection.writeEntities(anyString(), anyList())).thenReturn(trainings);
-
-
-        daoConnectionUsers = mock(DaoConnectionImpl.class);
-        when(daoConnectionUsers.getEntities(anyString())).thenReturn(users);
-        when(daoConnectionUsers.writeEntities(anyString(), anyList())).thenReturn(users);
-
-
-        daoConnectionTrainees = mock(DaoConnectionImpl.class);
-        when(daoConnectionTrainees.getEntities(anyString())).thenReturn(trainees);
-        when(daoConnectionTrainees.writeEntities(anyString(), anyList())).thenReturn(trainees);
-
-
-        daoConnectionTrainers = mock(DaoConnectionImpl.class);
-        when(daoConnectionTrainers.getEntities(anyString())).thenReturn(trainers);
-        when(daoConnectionTrainers.writeEntities(anyString(), anyList())).thenReturn(trainers);
-
+        when(traineeService.selectTraineeProfile(anyInt())).thenReturn(traineeTest);
     }
 
     @Test
     void addTrainee() {
-        Trainee newTrainee = gymFacade.addTrainee("New Test Trainee","Test Last", new Date(), "Test Address");
+        when(traineeService.createTraineeProfile("New Test Trainee", "Test Last", date, "Test Address")).thenReturn(traineeTest);
+        Trainee newTrainee = gymFacade.addTrainee("New Test Trainee", "Test Last", date, "Test Address");
         assertNotNull(newTrainee);
     }
 
     @Test
     void updateTrainee() {
-        Trainee oldTrainee = gymFacade.getTrainee(1);
+        Trainee oldTrainee = traineeTest;
         String oldTraineeName = oldTrainee.getUser().getUsername();
+        traineeTest.setUser(new User("Updated Name", "Updated Last", "."));
+        when(traineeService.updateTraineeProfile(1, "Updated Name", "Updated Last", false, date, "Test Address"))
+                .thenReturn(traineeTest);
         Trainee updatedTrainee = gymFacade.updateTrainee(1, "Updated Name", "Updated Last",
-                false, new Date(), "Test Address");
+                false, date, "Test Address");
 
-        assertNotEquals(oldTraineeName,updatedTrainee.getUser().getUsername());
+        assertNotEquals(oldTraineeName, updatedTrainee.getUser().getUsername());
     }
 
     @Test
     void deleteTrainee() {
         assertNotNull(gymFacade.getTrainee(1));
-        gymFacade.deleteTrainee(1);
-        assertNull(gymFacade.getTrainee(1));
+        assertNull(gymFacade.deleteTrainee(1));
     }
 
     @Test
@@ -116,56 +110,50 @@ class GymFacadeImplTest {
         assertNotNull(trainee);
     }
 
-    @Test
-    void getAllTrainees() {
-        List<Trainee> testTrainees = gymFacade.getAllTrainees();
-        assertNotNull(testTrainees);
-    }
 
     @Test
     void addTrainer() {
+        when(trainerService.createTrainerProfile(anyString(), anyString(), anyInt())).thenReturn(trainerTest);
         Trainer newTrainer = gymFacade.addTrainer("New Trainer", "New Trainer Last", 1);
         assertNotNull(newTrainer);
     }
 
     @Test
     void updateTrainer() {
-        Trainer oldTrainer = gymFacade.getTrainer(1);
+        Trainer oldTrainer = trainerTest;
         String oldTrainerName = oldTrainer.getUser().getUsername();
+        oldTrainer.setUser(new User("Updated Name", "Updated Last", "."));
+        when(trainerService.updateTrainerProfile(1, "Updated Name", "Updated Last", false, 2)).thenReturn(oldTrainer);
         Trainer updatedTrainer = gymFacade
                 .updateTrainer(1, "Updated Name", "Updated Last", false, 2);
 
-        assertNotEquals(oldTrainerName,updatedTrainer.getUser().getUsername());
+        assertNotEquals(oldTrainerName, updatedTrainer.getUser().getUsername());
     }
 
     @Test
     void getTrainer() {
+        when(trainerService.selectTrainerProfile(anyInt())).thenReturn(trainerTest);
         Trainer trainer = gymFacade.getTrainer(1);
         assertNotNull(trainer);
     }
 
-    @Test
-    void getAllTrainers() {
-        List<Trainer> testTrainers = gymFacade.getAllTrainers();
-        assertNotNull(testTrainers);
-    }
 
     @Test
     void addTraining() {
+        when(trainingService
+                .createTrainingProfile(1, 1, "New Training", 1, date, 1))
+                .thenReturn(trainingTest);
         Training newTraining = gymFacade
-                .addTraining(1,1, "New Training", 1,new Date(), 1);
+                .addTraining(1, 1, "New Training", 1, date, 1);
         assertNotNull(newTraining);
     }
 
     @Test
     void getTraining() {
+        when(trainingService.selectTrainingProfile(anyInt())).thenReturn(trainingTest);
         Training training = gymFacade.getTraining(1);
         assertNotNull(training);
     }
 
-    @Test
-    void getAllTrainings() {
-        List<Training> testTrainings = gymFacade.getAllTrainings();
-        assertNotNull(testTrainings);
-    }
+
 }

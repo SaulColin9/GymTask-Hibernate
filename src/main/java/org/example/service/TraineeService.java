@@ -12,7 +12,7 @@ public interface TraineeService {
     Trainee updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
     Trainee deleteTraineeProfile(int id);
     Trainee selectTraineeProfile(int id);
-    List<Trainee> selectAll();
+
     void setTraineeDao(Dao<Trainee> traineeDao);
     void setUserDao(Dao<User> userDao);
 }

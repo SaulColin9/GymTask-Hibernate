@@ -74,17 +74,6 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public List<Trainer> selectAll() {
-        List<Trainer> trainers = trainerDao.getAll();
-        for(Trainer trainer: trainers){
-            Optional<User> trainersUser = userDao.get(trainer.getUserId());
-            trainer.setUser(trainersUser.orElse(null));
-        }
-        logger.info("Selecting All Trainer Profiles");
-        return trainers;
-    }
-
-    @Override
     public void setTrainerDao(Dao<Trainer> trainerDao) {
         this.trainerDao = trainerDao;
     }

@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StorageConnectionImpl<T> implements StorageConnection<T>{
+public class StorageConnectionImpl<T> implements StorageConnection<T> {
     private Class<T> tClass;
     private static Logger logger = LoggerFactory.getLogger(DaoConnectionImpl.class);
 
@@ -23,10 +23,10 @@ public class StorageConnectionImpl<T> implements StorageConnection<T>{
     }
 
     @Override
-    public T getEntities(String filePath){
-        try{
+    public T getEntities(String filePath) {
+        try {
             ObjectMapper mapper = new ObjectMapper();
-            CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, tClass );
+            CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, tClass);
 
             InputStream inputStream = new FileInputStream(filePath);
             return mapper.readValue(new File(filePath), tClass);
@@ -36,13 +36,14 @@ public class StorageConnectionImpl<T> implements StorageConnection<T>{
             throw new RuntimeException(e);
         }
     }
+
     @Override
-    public List<T> writeEntities(String filePath, List<T> entities){
-        try{
+    public List<T> writeEntities(String filePath, List<T> entities) {
+        try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File(filePath), entities);
             return entities;
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.error("No file path specified for writeEntities");
             throw new RuntimeException(e);
         }

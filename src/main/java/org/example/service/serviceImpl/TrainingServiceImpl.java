@@ -1,6 +1,7 @@
 package org.example.service.serviceImpl;
 
 import org.example.configuration.Storage;
+import org.example.dao.Dao;
 import org.example.dao.DaoImpl;
 import org.example.model.*;
 import org.example.service.TrainingService;
@@ -12,17 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
-    Storage storage;
-    DaoImpl<Trainee> traineeDao;
-    DaoImpl<Trainer> trainerDao;
-    DaoImpl<TrainingType> trainingTypeDao;
-    DaoImpl<Training> trainingDao;
-    DaoImpl<User> userDao;
+    Dao<Trainee> traineeDao;
+    Dao<Trainer> trainerDao;
+    Dao<TrainingType> trainingTypeDao;
+    Dao<Training> trainingDao;
+    Dao<User> userDao;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
-    public TrainingServiceImpl(Storage storage){
-        this.storage = storage;
-    }
 
     @Override
     public Training createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
@@ -41,7 +38,6 @@ public class TrainingServiceImpl implements TrainingService {
                 new Training(trainee.get(), trainer.get(),
                         trainingName, trainingType.get(), trainingDate, trainingDuration )
         );
-        System.out.println(newTraining);
         logger.info("Creating Training Profile with id " + newTraining.getId());
         return newTraining;
     }
@@ -66,22 +62,27 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> selectAll() {
-        List<Training> trainings = trainingDao.getAll();
-        for(Training training: trainings){
-            Optional<Trainer> trainer = trainerDao.get(training.getTrainerId());
-            Optional<User> trainersUser = userDao.get(trainer.get().getUserId());
-            trainer.get().setUser(trainersUser.orElse(null));
-            Optional<Trainee> trainee = traineeDao.get(training.getTraineeId());
-            Optional<User> traineesUser = userDao.get(trainee.get().getUserId());
-            trainee.get().setUser(traineesUser.orElse(null));
-            Optional<TrainingType> trainingType = trainingTypeDao.get(training.getTrainingTypeId());
+    public void setTraineeDao(Dao<Trainee> traineeDao) {
+        this.traineeDao = traineeDao;
+    }
 
-            training.setTrainer(trainer.orElse(null));
-            training.setTrainee(trainee.orElse(null));
-            training.setTrainingType(trainingType.orElse(null));
-        }
-        logger.info("Selecting All Training Profiles");
-        return trainings;
+    @Override
+    public void setTrainerDao(Dao<Trainer> trainerDao) {
+        this.trainerDao = trainerDao;
+    }
+
+    @Override
+    public void setTrainingTypeDao(Dao<TrainingType> trainingTypeDao) {
+        this.trainingTypeDao = trainingTypeDao;
+    }
+
+    @Override
+    public void setTrainingDao(Dao<Training> trainingDao) {
+        this.trainingDao = trainingDao;
+    }
+
+    @Override
+    public void setUserDao(Dao<User> userDao) {
+        this.userDao = userDao;
     }
 }

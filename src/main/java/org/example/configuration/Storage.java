@@ -2,16 +2,15 @@ package org.example.configuration;
 
 import org.example.dao.Dao;
 import org.example.model.*;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public interface Storage {
+public interface Storage extends InitializingBean {
 
-    void setDaos(Map<String, Dao> tables);
-
-    Dao getDao(String tableName);
+    void setFilePath(String filePath);
 
     Map<Integer, User> getUsers();
 

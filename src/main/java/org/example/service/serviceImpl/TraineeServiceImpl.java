@@ -98,14 +98,4 @@ public class TraineeServiceImpl implements TraineeService {
         return selectedTrainee;
     }
 
-    @Override
-    public List<Trainee> selectAll() {
-        List<Trainee> trainees = traineeDao.getAll();
-        for(Trainee trainee : trainees){
-            Optional<User> traineesUser = userDao.get(trainee.getUserId());
-            trainee.setUser(traineesUser.orElse(null));
-        }
-        logger.info("Selecting All Trainee Profiles ");
-        return trainees;
-    }
 }

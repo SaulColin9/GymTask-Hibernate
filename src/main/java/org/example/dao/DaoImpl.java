@@ -2,24 +2,18 @@ package org.example.dao;
 
 import org.example.configuration.Storage;
 import org.example.model.*;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class DaoImpl<T extends Entity>  implements Dao<T> {
-    private Storage storage;
     final Class<T> tClass;
     protected List<T> entities = new ArrayList<>();
     protected Map<Integer, T> storageEntities;
 
 
     public void setStorage(Storage storage){
-        this.storage = storage;
         if(tClass.equals(new User().getClass())){
             storageEntities = (Map<Integer, T>) storage.getUsers();
             return;
@@ -95,14 +89,7 @@ public class DaoImpl<T extends Entity>  implements Dao<T> {
         t.setId(id);
         return t;
     }
-    public int getId(T t){
-        return t.getId();
-    }
 
-
-    public void setEntities(List<T> entities) {
-        this.entities = entities;
-    }
 
 
 }

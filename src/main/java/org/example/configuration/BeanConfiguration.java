@@ -1,8 +1,6 @@
 package org.example.configuration;
 
 import org.example.dao.Dao;
-import org.example.dao.DaoConnection;
-import org.example.dao.DaoConnectionImpl;
 import org.example.dao.DaoImpl;
 import org.example.facade.GymFacade;
 import org.example.facade.GymFacadeImpl;
@@ -14,7 +12,6 @@ import org.example.service.serviceImpl.TraineeServiceImpl;
 import org.example.service.serviceImpl.TrainerServiceImpl;
 import org.example.service.serviceImpl.TrainingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
@@ -24,8 +21,10 @@ import java.util.Map;
 @PropertySource(value = "storage.properties")
 public class BeanConfiguration {
     @Bean
-    public Storage storage() {
+    public Storage storage(@Value("${entities.source}") String filePath) {
         Storage storage = new GymStorageImpl();
+        storage.setFilePath(filePath);
+
         return storage;
     }
 
@@ -35,8 +34,14 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public TrainingService trainingService(@Autowired Storage storage) {
-        return new TrainingServiceImpl(storage);
+    public TrainingService trainingService(@Autowired Dao<User> userDao, @Autowired Dao<Trainee> traineeDao, @Autowired Dao<Trainer> trainerDao, @Autowired Dao<Training> trainingDao, @Autowired Dao<TrainingType> trainingTypeDao) {
+        TrainingService trainingService = new TrainingServiceImpl();
+        trainingService.setUserDao(userDao);
+        trainingService.setTraineeDao(traineeDao);
+        trainingService.setTrainerDao(trainerDao);
+        trainingService.setTrainingDao(trainingDao);
+        trainingService.setTrainingTypeDao(trainingTypeDao);
+        return trainingService;
     }
 
     @Bean
@@ -56,37 +61,35 @@ public class BeanConfiguration {
     }
 
     @Bean("users")
-    public Dao<User> userDao(@Value("${users.source}") String usersPath, @Autowired Storage storage) {
-        System.out.println(storage);
+    public Dao<User> userDao(@Autowired Storage storage) {
         Dao<User> userDao = new DaoImpl<>(User.class);
-        System.out.println(storage);
         userDao.setStorage(storage);
         return userDao;
     }
 
     @Bean("trainings")
-    public Dao<Training> trainingDao(@Value("${trainings.source}") String trainigsPath, @Autowired Storage storage) {
+    public Dao<Training> trainingDao(@Autowired Storage storage) {
         Dao<Training> trainingDao = new DaoImpl<>(Training.class);
         trainingDao.setStorage(storage);
         return trainingDao;
     }
 
     @Bean("trainingTypes")
-    public Dao<TrainingType> trainingTypesDao(@Value("${trainingTypes.source}") String trainingTypesPath, @Autowired Storage storage) {
+    public Dao<TrainingType> trainingTypesDao(@Autowired Storage storage) {
         Dao<TrainingType> trainingTypesDao = new DaoImpl<>(TrainingType.class);
         trainingTypesDao.setStorage(storage);
         return trainingTypesDao;
     }
 
     @Bean("trainers")
-    public Dao<Trainer> trainerDao(@Value("${trainers.source}") String trainersPath, @Autowired Storage storage) {
+    public Dao<Trainer> trainerDao(@Autowired Storage storage) {
         Dao<Trainer> trainerDao = new DaoImpl<>(Trainer.class);
         trainerDao.setStorage(storage);
         return trainerDao;
     }
 
     @Bean("trainees")
-    public Dao<Trainee> traineeDao(@Value("${trainees.source}") String traineesPath, @Autowired Storage storage) {
+    public Dao<Trainee> traineeDao(@Autowired Storage storage) {
         Dao<Trainee> traineeDao = new DaoImpl<>(Trainee.class);
         traineeDao.setStorage(storage);
         return traineeDao;

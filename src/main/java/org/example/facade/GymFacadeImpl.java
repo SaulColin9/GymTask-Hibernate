@@ -10,16 +10,17 @@ import org.example.service.TrainingService;
 import java.util.Date;
 import java.util.List;
 
-public class GymFacadeImpl implements GymFacade{
+public class GymFacadeImpl implements GymFacade {
     TraineeService traineeService;
     TrainerService trainerService;
     TrainingService trainingService;
 
-    public GymFacadeImpl(TraineeService traineeService, TrainerService trainerService, TrainingService trainingService){
+    public GymFacadeImpl(TraineeService traineeService, TrainerService trainerService, TrainingService trainingService) {
         this.traineeService = traineeService;
         this.trainerService = trainerService;
         this.trainingService = trainingService;
     }
+
     @Override
     public Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address) {
         return traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address);
@@ -40,10 +41,6 @@ public class GymFacadeImpl implements GymFacade{
         return traineeService.selectTraineeProfile(id);
     }
 
-    @Override
-    public List<Trainee> getAllTrainees() {
-        return traineeService.selectAll();
-    }
 
     @Override
     public Trainer addTrainer(String firstName, String lastName, int specialization) {
@@ -60,23 +57,16 @@ public class GymFacadeImpl implements GymFacade{
         return trainerService.selectTrainerProfile(id);
     }
 
-    @Override
-    public List<Trainer> getAllTrainers() {
-        return trainerService.selectAll();
-    }
 
     @Override
     public Training addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
         return trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
 
     }
+
     @Override
     public Training getTraining(int id) {
         return trainingService.selectTrainingProfile(id);
     }
 
-    @Override
-    public List<Training> getAllTrainings() {
-        return trainingService.selectAll();
-    }
 }
