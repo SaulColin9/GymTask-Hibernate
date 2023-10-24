@@ -1,6 +1,7 @@
 package org.example.service.serviceImpl;
 
 import org.example.configuration.Storage;
+import org.example.dao.DaoImpl;
 import org.example.model.*;
 import org.example.service.TrainingService;
 import org.slf4j.Logger;
@@ -12,6 +13,11 @@ import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
     Storage storage;
+    DaoImpl<Trainee> traineeDao;
+    DaoImpl<Trainer> trainerDao;
+    DaoImpl<TrainingType> trainingTypeDao;
+    DaoImpl<Training> trainingDao;
+    DaoImpl<User> userDao;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     public TrainingServiceImpl(Storage storage){
@@ -20,9 +26,9 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        Optional<Trainee> trainee = storage.getTraineeDao().get(traineeId);
-        Optional<Trainer> trainer = storage.getTrainerDao().get(trainerId);
-        Optional<TrainingType> trainingType = storage.getTrainingTypeDao().get(trainingTypeId);
+        Optional<Trainee> trainee = traineeDao.get(traineeId);
+        Optional<Trainer> trainer = trainerDao.get(trainerId);
+        Optional<TrainingType> trainingType = trainingTypeDao.get(trainingTypeId);
         if(trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()){
             logger.error("The next Ids do not exist: " +
                     (trainee.isEmpty()? "traineeId, ": "")+
@@ -31,7 +37,7 @@ public class TrainingServiceImpl implements TrainingService {
             );
             return null;
         }
-        Training newTraining = storage.getTrainingDao().save(
+        Training newTraining = trainingDao.save(
                 new Training(trainee.get(), trainer.get(),
                         trainingName, trainingType.get(), trainingDate, trainingDuration )
         );
@@ -42,14 +48,14 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training selectTrainingProfile(int id) {
-        Training training  = storage.getTrainingDao().get(id).orElse(null);
-        Optional<Trainer> trainer = storage.getTrainerDao().get(training.getTrainerId());
-        Optional<User> trainersUser = storage.getUserDao().get(trainer.get().getUserId());
+        Training training  = trainingDao.get(id).orElse(null);
+        Optional<Trainer> trainer = trainerDao.get(training.getTrainerId());
+        Optional<User> trainersUser = userDao.get(trainer.get().getUserId());
         trainer.get().setUser(trainersUser.orElse(null));
-        Optional<Trainee> trainee = storage.getTraineeDao().get(training.getTraineeId());
-        Optional<User> traineesUser = storage.getUserDao().get(trainee.get().getUserId());
+        Optional<Trainee> trainee = traineeDao.get(training.getTraineeId());
+        Optional<User> traineesUser = userDao.get(trainee.get().getUserId());
         trainee.get().setUser(traineesUser.orElse(null));
-        Optional<TrainingType> trainingType = storage.getTrainingTypeDao().get(training.getTrainingTypeId());
+        Optional<TrainingType> trainingType = trainingTypeDao.get(training.getTrainingTypeId());
 
         training.setTrainer(trainer.orElse(null));
         training.setTrainee(trainee.orElse(null));
@@ -61,15 +67,15 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public List<Training> selectAll() {
-        List<Training> trainings = storage.getTrainingDao().getAll();
+        List<Training> trainings = trainingDao.getAll();
         for(Training training: trainings){
-            Optional<Trainer> trainer = storage.getTrainerDao().get(training.getTrainerId());
-            Optional<User> trainersUser = storage.getUserDao().get(trainer.get().getUserId());
+            Optional<Trainer> trainer = trainerDao.get(training.getTrainerId());
+            Optional<User> trainersUser = userDao.get(trainer.get().getUserId());
             trainer.get().setUser(trainersUser.orElse(null));
-            Optional<Trainee> trainee = storage.getTraineeDao().get(training.getTraineeId());
-            Optional<User> traineesUser = storage.getUserDao().get(trainee.get().getUserId());
+            Optional<Trainee> trainee = traineeDao.get(training.getTraineeId());
+            Optional<User> traineesUser = userDao.get(trainee.get().getUserId());
             trainee.get().setUser(traineesUser.orElse(null));
-            Optional<TrainingType> trainingType = storage.getTrainingTypeDao().get(training.getTrainingTypeId());
+            Optional<TrainingType> trainingType = trainingTypeDao.get(training.getTrainingTypeId());
 
             training.setTrainer(trainer.orElse(null));
             training.setTrainee(trainee.orElse(null));

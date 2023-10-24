@@ -64,26 +64,22 @@ class TrainingServiceImplTest {
         daoConnection = mock(DaoConnectionImpl.class);
         when(daoConnection.getEntities(anyString())).thenReturn(trainings);
         when(daoConnection.writeEntities(anyString(), anyList())).thenReturn(trainings);
-        storage.getTrainingDao().setDaoConnection(daoConnection);
-        storage.getTrainingDao().setFilePath("mockFilePath");
+
 
         daoConnectionUsers = mock(DaoConnectionImpl.class);
         when(daoConnectionUsers.getEntities(anyString())).thenReturn(users);
         when(daoConnectionUsers.writeEntities(anyString(), anyList())).thenReturn(users);
-        storage.getUserDao().setDaoConnection(daoConnectionUsers);
-        storage.getUserDao().setFilePath("mockFilePath");
+
 
         daoConnectionTrainees = mock(DaoConnectionImpl.class);
         when(daoConnectionTrainees.getEntities(anyString())).thenReturn(trainees);
         when(daoConnectionTrainees.writeEntities(anyString(), anyList())).thenReturn(trainees);
-        storage.getTraineeDao().setDaoConnection(daoConnectionTrainees);
-        storage.getTraineeDao().setFilePath("mockFilePath");
+
 
         daoConnectionTrainers = mock(DaoConnectionImpl.class);
         when(daoConnectionTrainers.getEntities(anyString())).thenReturn(trainers);
         when(daoConnectionTrainers.writeEntities(anyString(), anyList())).thenReturn(trainers);
-        storage.getTrainerDao().setDaoConnection(daoConnectionTrainers);
-        storage.getTrainerDao().setFilePath("mockFilePath");
+
     }
     @Test
     void createTrainingProfileTest() {
