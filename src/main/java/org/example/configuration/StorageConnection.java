@@ -1,7 +1,5 @@
 package org.example.configuration;
 
-import org.example.model.Entity;
-
 import java.io.IOException;
 import java.util.List;
 

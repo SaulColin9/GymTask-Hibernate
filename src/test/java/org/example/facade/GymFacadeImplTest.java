@@ -1,32 +1,20 @@
 package org.example.facade;
 
-import org.example.configuration.Storage;
-import org.example.dao.DaoConnectionImpl;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.model.User;
-import org.example.service.serviceImpl.TestConfig;
 import org.example.service.serviceImpl.TraineeServiceImpl;
 import org.example.service.serviceImpl.TrainerServiceImpl;
 import org.example.service.serviceImpl.TrainingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class GymFacadeImplTest {

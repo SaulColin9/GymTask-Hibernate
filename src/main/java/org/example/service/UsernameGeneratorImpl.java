@@ -1,11 +1,7 @@
 package org.example.service;
 
-import org.example.configuration.Storage;
 import org.example.dao.Dao;
-import org.example.dao.DaoImpl;
 import org.example.model.User;
-
-import java.util.List;
 
 public class UsernameGeneratorImpl{
 

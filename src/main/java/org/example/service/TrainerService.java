@@ -1,11 +1,8 @@
 package org.example.service;
 
 import org.example.dao.Dao;
-import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.User;
-
-import java.util.List;
 
 public interface TrainerService {
     Trainer createTrainerProfile(String firstName, String lastName, int specialization);

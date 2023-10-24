@@ -3,9 +3,7 @@ package org.example.facade;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.Training;
-
 import java.util.Date;
-import java.util.List;
 
 public interface GymFacade {
     Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address);

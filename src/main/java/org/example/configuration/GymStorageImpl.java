@@ -1,15 +1,7 @@
 package org.example.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.dao.DaoConnectionImpl;
 import org.example.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GymStorageImpl implements Storage{

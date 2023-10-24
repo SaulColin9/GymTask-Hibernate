@@ -1,8 +1,6 @@
 package org.example.service.serviceImpl;
 
-import org.example.configuration.Storage;
 import org.example.dao.Dao;
-import org.example.dao.DaoImpl;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.example.service.PasswordGeneratorImpl;
@@ -10,8 +8,6 @@ import org.example.service.TrainerService;
 import org.example.service.UsernameGeneratorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 import java.util.Optional;
 
 

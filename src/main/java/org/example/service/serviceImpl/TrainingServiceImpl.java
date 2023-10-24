@@ -1,15 +1,11 @@
 package org.example.service.serviceImpl;
 
-import org.example.configuration.Storage;
 import org.example.dao.Dao;
-import org.example.dao.DaoImpl;
 import org.example.model.*;
 import org.example.service.TrainingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {

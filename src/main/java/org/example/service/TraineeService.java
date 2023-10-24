@@ -3,9 +3,7 @@ package org.example.service;
 import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
-
 import java.util.Date;
-import java.util.List;
 
 public interface TraineeService {
     Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address);
