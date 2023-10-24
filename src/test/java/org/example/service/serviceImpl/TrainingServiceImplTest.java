@@ -28,16 +28,17 @@ class TrainingServiceImplTest {
     private Dao<Training> trainingDao;
     @InjectMocks
     private TrainingServiceImpl trainingService;
-    private User user;
-    private User user2;
-    private Trainee traineeTest;
-    private Trainer trainerTest;
-    private TrainingType trainingTypeTest;
     private Training trainingTest;
 
+    private final String TRAINING_NAME = "Test Training";
 
     @BeforeEach
     public void setUp() {
+        User user;
+        User user2;
+        Trainee traineeTest;
+        Trainer trainerTest;
+        TrainingType trainingTypeTest;
         MockitoAnnotations.openMocks(this);
 
         user = new User("User Test", "User Test", ".");
@@ -52,7 +53,7 @@ class TrainingServiceImplTest {
         trainerTest = new Trainer(2, 2, user2);
         trainerTest = trainerTest.setId(1);
 
-        trainingTest = new Training(1, 1, "Test Training", 1, new Date(), 1);
+        trainingTest = new Training(1, 1, TRAINING_NAME, 1, new Date(), 1);
         trainingTest.setId(1);
         trainingTest.setTrainer(trainerTest);
         trainingTest.setTrainee(traineeTest);
@@ -60,32 +61,33 @@ class TrainingServiceImplTest {
         trainingTypeTest = new TrainingType("TestTrainingType");
         trainingTypeTest.setId(1);
 
-        when(userDao.get(1)).thenReturn(Optional.ofNullable(user));
+        when(userDao.get(1)).thenReturn(Optional.of(user));
         when(traineeDao.get(anyInt())).thenReturn(Optional.of(traineeTest));
-        when(trainerDao.get(anyInt())).thenReturn(Optional.ofNullable(trainerTest));
-        when(trainingDao.get(anyInt())).thenReturn(Optional.ofNullable(trainingTest));
-        when(trainingTypeDao.get(anyInt())).thenReturn(Optional.ofNullable(trainingTypeTest));
+        when(trainerDao.get(anyInt())).thenReturn(Optional.of(trainerTest));
+        when(trainingDao.get(anyInt())).thenReturn(Optional.of(trainingTest));
+        when(trainingTypeDao.get(anyInt())).thenReturn(Optional.of(trainingTypeTest));
 
     }
 
     @Test
     void createTrainingProfileTest() {
         when(trainingDao.save(any(Training.class))).thenReturn(trainingTest);
-        Training trainingCreated = trainingService.createTrainingProfile(1, 1, "Test Training", 1, new Date(), 1);
+        Training trainingCreated = trainingService
+                .createTrainingProfile(1, 1, TRAINING_NAME, 1, new Date(), 1);
 
         assertNotNull(trainingCreated);
     }
 
     @Test
     void selectTrainingProfileTest() {
-        Training trainingTest = new Training(1, 1, "Test Training", 1, new Date(), 1);
-        trainingTest.setId(1);
+        Training training = new Training(1, 1, TRAINING_NAME, 1, new Date(), 1);
+        training.setId(1);
 
         Training trainingSelected = trainingService.selectTrainingProfile(1);
 
         assertNotNull(trainingSelected);
-        assertEquals(trainingTest.getId(), trainingSelected.getId());
-        assertEquals(trainingTest.getTrainingName(), trainingSelected.getTrainingName());
+        assertEquals(training.getId(), trainingSelected.getId());
+        assertEquals(training.getTrainingName(), trainingSelected.getTrainingName());
     }
 
 

@@ -14,6 +14,7 @@ import java.util.Optional;
 public class TraineeServiceImpl implements TraineeService {
     private static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
 
+    private final String NO_ID_MSG = "Provided Trainee Id does not exist";
     private Dao<User> userDao;
     private Dao<Trainee> traineeDao;
 
@@ -43,7 +44,7 @@ public class TraineeServiceImpl implements TraineeService {
     public Trainee updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
         if(traineeToUpdate.isEmpty()){
-            logger.error("Provided Trainee Id does not exist");
+            logger.error(NO_ID_MSG);
             return null;
         }
         Optional<User> userToUpdate = userDao.get(traineeToUpdate.get().getUserId());
@@ -72,7 +73,7 @@ public class TraineeServiceImpl implements TraineeService {
     public Trainee deleteTraineeProfile(int id) {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
         if(traineeToDelete.isEmpty()){
-            logger.error("Provided Trainee Id does not exist");
+            logger.error(NO_ID_MSG);
             return null;
         }
         logger.info("Deleting Trainee Profile with id " + id);
@@ -84,11 +85,12 @@ public class TraineeServiceImpl implements TraineeService {
     public Trainee selectTraineeProfile(int id) {
         Optional<Trainee> trainee = traineeDao.get(id);
         if(trainee.isEmpty()){
-            logger.error("Provided Trainee Id does not exist");
+            logger.error(NO_ID_MSG);
             return null;
         }
         logger.info("Selecting Trainee Profile with id " + id);
         Trainee selectedTrainee = traineeDao.get(id).orElse(null);
+        assert selectedTrainee != null;
         Optional<User> traineesUser = userDao.get(selectedTrainee.getUserId());
         selectedTrainee.setUser(traineesUser.orElse(null));
         return selectedTrainee;

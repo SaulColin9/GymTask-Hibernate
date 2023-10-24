@@ -53,9 +53,9 @@ class TraineeServiceImplTest {
     void updateTraineeProfile() {
         when(userDao.update(anyInt(), any(User.class))).thenReturn(user);
         when(traineeDao.update(anyInt(), any(Trainee.class))).thenReturn(traineeTest);
-        Trainee traineeTest = traineeService.selectTraineeProfile(1);
-        traineeTest = traineeTest.setAddress("New Address Test");
-        String traineeTestUserName = traineeTest.getUser().getUsername();
+        Trainee oldTrainee = traineeService.selectTraineeProfile(1);
+        oldTrainee = oldTrainee.setAddress("New Address Test");
+        String traineeTestUserName = oldTrainee.getUser().getUsername();
 
         Trainee updatedTrainee = traineeService
                 .updateTraineeProfile(1, "Updated Name", "Updated Last Name", false, new Date(), "Updated Addresss");

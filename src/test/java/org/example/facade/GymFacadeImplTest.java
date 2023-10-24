@@ -29,12 +29,13 @@ class GymFacadeImplTest {
     private TraineeServiceImpl traineeService;
     @Mock
     private TrainerServiceImpl trainerService;
-    private User userTest;
     private Trainee traineeTest;
     private Date date;
     private Training trainingTest;
-
     private Trainer trainerTest;
+    private final String TEST_ADDRESS = "Test Address";
+    private final String TEST_UPDATED_NAME = "Updated Name";
+    private final String TEST_UPDATED_LAST = "Updated Last";
 
     @BeforeEach
     public void setUp() {
@@ -44,14 +45,14 @@ class GymFacadeImplTest {
 
         date = new Date();
 
-        userTest = new User("User Test", "User Test", ".");
+        User userTest = new User("User Test", "User Test", ".");
         userTest.setId(1);
 
         User userTest2 = new User("User Test 2", "User Test 2", ".");
         userTest2.setId(2);
 
 
-        traineeTest = new Trainee(new Date(), "Test Address", 1, userTest);
+        traineeTest = new Trainee(new Date(), TEST_ADDRESS, 1, userTest);
         traineeTest = traineeTest.setId(1);
         traineeTest.setUser(userTest);
 
@@ -70,8 +71,8 @@ class GymFacadeImplTest {
 
     @Test
     void addTrainee() {
-        when(traineeService.createTraineeProfile("New Test Trainee", "Test Last", date, "Test Address")).thenReturn(traineeTest);
-        Trainee newTrainee = gymFacade.addTrainee("New Test Trainee", "Test Last", date, "Test Address");
+        when(traineeService.createTraineeProfile("New Test Trainee", "Test Last", date, TEST_ADDRESS)).thenReturn(traineeTest);
+        Trainee newTrainee = gymFacade.addTrainee("New Test Trainee", "Test Last", date, TEST_ADDRESS);
         assertNotNull(newTrainee);
     }
 
@@ -79,11 +80,11 @@ class GymFacadeImplTest {
     void updateTrainee() {
         Trainee oldTrainee = traineeTest;
         String oldTraineeName = oldTrainee.getUser().getUsername();
-        traineeTest.setUser(new User("Updated Name", "Updated Last", "."));
-        when(traineeService.updateTraineeProfile(1, "Updated Name", "Updated Last", false, date, "Test Address"))
+        traineeTest.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST, "."));
+        when(traineeService.updateTraineeProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, date, TEST_ADDRESS))
                 .thenReturn(traineeTest);
-        Trainee updatedTrainee = gymFacade.updateTrainee(1, "Updated Name", "Updated Last",
-                false, date, "Test Address");
+        Trainee updatedTrainee = gymFacade.updateTrainee(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST,
+                false, date, TEST_ADDRESS);
 
         assertNotEquals(oldTraineeName, updatedTrainee.getUser().getUsername());
     }
@@ -112,10 +113,10 @@ class GymFacadeImplTest {
     void updateTrainer() {
         Trainer oldTrainer = trainerTest;
         String oldTrainerName = oldTrainer.getUser().getUsername();
-        oldTrainer.setUser(new User("Updated Name", "Updated Last", "."));
-        when(trainerService.updateTrainerProfile(1, "Updated Name", "Updated Last", false, 2)).thenReturn(oldTrainer);
+        oldTrainer.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST, "."));
+        when(trainerService.updateTrainerProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, 2)).thenReturn(oldTrainer);
         Trainer updatedTrainer = gymFacade
-                .updateTrainer(1, "Updated Name", "Updated Last", false, 2);
+                .updateTrainer(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, 2);
 
         assertNotEquals(oldTrainerName, updatedTrainer.getUser().getUsername());
     }

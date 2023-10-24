@@ -39,7 +39,6 @@ class GymStorageImplTest {
     void setFilePath() {
         gymStorage.setFilePath("path");
         assertNotNull(gymStorage.getFilePath());
-        ;
     }
 
     @Test
@@ -81,7 +80,7 @@ class GymStorageImplTest {
             gymStorage.afterPropertiesSet();
             assertNotNull(gymStorage.getUsers());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
 
     }

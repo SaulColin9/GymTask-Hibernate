@@ -9,20 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StorageConnectionImplTest {
 
-    private StorageConnectionImpl<EntitiesReader> storageConnection;
-
-    @BeforeEach
-    void setUp() {
-        storageConnection = new StorageConnectionImpl<>(EntitiesReader.class);
-    }
-
     @Test
     void getEntities() {
+        StorageConnectionImpl<EntitiesReader> storageConnection =
+                new StorageConnectionImpl<>(EntitiesReader.class);
         assertThrows(RuntimeException.class, () -> storageConnection.getEntities(""));
     }
 
     @Test
     void writeEntities() {
+        StorageConnectionImpl<EntitiesReader> storageConnection =
+                new StorageConnectionImpl<>(EntitiesReader.class);
         assertThrows(RuntimeException.class, () -> storageConnection.writeEntities("", new ArrayList<>()));
     }
 }

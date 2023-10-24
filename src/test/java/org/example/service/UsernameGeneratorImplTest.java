@@ -14,10 +14,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class UsernameGeneratorImplTest {
-    private DaoImpl userDao;
-    private final String testName = "Test";
-    private final String testLastName = "TestLast";
-    private final String separator = ".";
+    private DaoImpl<User> userDao;
+    private final static String testName = "Test";
+    private final static String testLastName = "TestLast";
+    private final static String separator = ".";
 
     @BeforeEach
     void setUp() {
