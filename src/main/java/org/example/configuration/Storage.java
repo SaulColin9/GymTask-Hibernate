@@ -2,6 +2,7 @@ package org.example.configuration;
 
 import org.example.model.*;
 import org.springframework.beans.factory.InitializingBean;
+
 import java.util.Map;
 
 public interface Storage extends InitializingBean {

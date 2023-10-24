@@ -1,17 +1,20 @@
 package org.example.model;
 
-public class Trainer implements Entity{
+public class Trainer implements Entity {
     int id;
     int specialization;
     int userId;
     private User user;
 
 
-    public Trainer(){}
+    public Trainer() {
+    }
+
     public Trainer(int specialization, int userId) {
         this.specialization = specialization;
         this.userId = userId;
     }
+
     public Trainer(int specialization, int userId, User user) {
         this.specialization = specialization;
         this.userId = userId;
@@ -28,9 +31,10 @@ public class Trainer implements Entity{
         return this;
     }
 
-    public User getUser(){
+    public User getUser() {
         return this.user;
     }
+
     public int getSpecialization() {
         return specialization;
     }

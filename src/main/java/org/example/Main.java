@@ -1,11 +1,10 @@
 package org.example;
+
 import org.example.configuration.BeanConfiguration;
 import org.example.facade.GymFacade;
 import org.example.facade.GymFacadeImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-
 
 
 public class Main {

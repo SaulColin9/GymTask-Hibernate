@@ -1,7 +1,7 @@
 package org.example.model;
 
 
-public class User implements Entity{
+public class User implements Entity {
     private int id;
     private String firstName;
     private String lastName;
@@ -9,9 +9,10 @@ public class User implements Entity{
     private String password;
     private boolean isActive;
 
-    public User(){
+    public User() {
 
     }
+
     public User(String firstName, String lastName, String username, String password, boolean isActive) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,7 +20,8 @@ public class User implements Entity{
         this.password = password;
         this.isActive = isActive;
     }
-    public User(String firstName, String lastName, String separator){
+
+    public User(String firstName, String lastName, String separator) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = true;

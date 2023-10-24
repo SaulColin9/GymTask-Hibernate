@@ -12,19 +12,20 @@ class UserTest {
     private User user;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         user = new User("FirstName", "LastName",
-                "FirstName.LastName","Pswd", true);
+                "FirstName.LastName", "Pswd", true);
         user.setId(1);
     }
+
     @Test
     void getLastName() {
-        assertEquals(user.getLastName(),"LastName");
+        assertEquals(user.getLastName(), "LastName");
     }
 
     @Test
     void getPassword() {
-        assertEquals(user.getPassword(),"Pswd");
+        assertEquals(user.getPassword(), "Pswd");
     }
 
     @Test

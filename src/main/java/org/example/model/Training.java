@@ -2,19 +2,21 @@ package org.example.model;
 
 import java.util.Date;
 
-public class Training implements Entity{
+public class Training implements Entity {
     int id;
     int traineeId;
     int trainerId;
     String trainingName;
     int trainingTypeId;
-    Date  trainingDate;
+    Date trainingDate;
     double trainingDuration;
     Trainee trainee;
     Trainer trainer;
     TrainingType trainingType;
 
-    public Training(){}
+    public Training() {
+    }
+
     public Training(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
         this.traineeId = traineeId;
         this.trainerId = trainerId;

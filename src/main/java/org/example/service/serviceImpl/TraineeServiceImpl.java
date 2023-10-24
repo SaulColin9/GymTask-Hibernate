@@ -8,6 +8,7 @@ import org.example.service.TraineeService;
 import org.example.service.UsernameGeneratorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -29,26 +30,25 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
 
-
     @Override
     public Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
-        String username = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", userDao);
+        String username = UsernameGeneratorImpl.generateUserName(firstName, lastName, ".", userDao);
         String password = PasswordGeneratorImpl.generatePassword(10);
         User newUser = userDao
-                .save(new User(firstName, lastName, username, password,true));
+                .save(new User(firstName, lastName, username, password, true));
         logger.info("Creating Trainee Profile with id " + newUser.getId());
-        return  traineeDao.save(new Trainee(dateOfBirth, address, newUser.getId(), newUser));
+        return traineeDao.save(new Trainee(dateOfBirth, address, newUser.getId(), newUser));
     }
 
     @Override
     public Trainee updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
-        if(traineeToUpdate.isEmpty()){
+        if (traineeToUpdate.isEmpty()) {
             logger.error(NO_ID_MSG);
             return null;
         }
         Optional<User> userToUpdate = userDao.get(traineeToUpdate.get().getUserId());
-        if (userToUpdate.isEmpty()){
+        if (userToUpdate.isEmpty()) {
             logger.error("Trainee Profile User Id does not exist");
             return null;
         }
@@ -56,7 +56,7 @@ public class TraineeServiceImpl implements TraineeService {
         userToUpdate.get().setFirstName(firstName);
         userToUpdate.get().setLastName(lastName);
         userToUpdate.get().setIsActive(isActive);
-        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName,".", userDao);
+        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName, ".", userDao);
         userToUpdate.get().setUsername(newUserName);
 
         userDao.update(traineeToUpdate.get().getUserId(), userToUpdate.get());
@@ -66,13 +66,13 @@ public class TraineeServiceImpl implements TraineeService {
         traineeToUpdate.get().setUser(userToUpdate.get());
 
         logger.info("Updating Trainee Profile with id " + id);
-        return traineeDao.update(id,traineeToUpdate.get());
+        return traineeDao.update(id, traineeToUpdate.get());
     }
 
     @Override
     public Trainee deleteTraineeProfile(int id) {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
-        if(traineeToDelete.isEmpty()){
+        if (traineeToDelete.isEmpty()) {
             logger.error(NO_ID_MSG);
             return null;
         }
@@ -84,7 +84,7 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Trainee selectTraineeProfile(int id) {
         Optional<Trainee> trainee = traineeDao.get(id);
-        if(trainee.isEmpty()){
+        if (trainee.isEmpty()) {
             logger.error(NO_ID_MSG);
             return null;
         }

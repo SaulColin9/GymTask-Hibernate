@@ -14,12 +14,13 @@ class TrainingTest {
     private Training training;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         training =
-                new Training(1,1,"TrainingName",
+                new Training(1, 1, "TrainingName",
                         1, new Date(), 1);
         training.setId(1);
     }
+
     @Test
     void getTrainingDate() {
         Date date = new Date();

@@ -5,6 +5,7 @@ import org.example.model.*;
 import org.example.service.TrainingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -22,17 +23,17 @@ public class TrainingServiceImpl implements TrainingService {
         Optional<Trainee> trainee = traineeDao.get(traineeId);
         Optional<Trainer> trainer = trainerDao.get(trainerId);
         Optional<TrainingType> trainingType = trainingTypeDao.get(trainingTypeId);
-        if(trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()){
+        if (trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()) {
             logger.error("The next Ids do not exist: " +
-                    (trainee.isEmpty()? "traineeId, ": "")+
-                    (trainer.isEmpty()? "trainerId, ": "")+
-                    (trainingType.isEmpty()? "trainingTypeId ": "")
+                    (trainee.isEmpty() ? "traineeId, " : "") +
+                    (trainer.isEmpty() ? "trainerId, " : "") +
+                    (trainingType.isEmpty() ? "trainingTypeId " : "")
             );
             return null;
         }
         Training newTraining = trainingDao.save(
                 new Training(trainee.get(), trainer.get(),
-                        trainingName, trainingType.get(), trainingDate, trainingDuration )
+                        trainingName, trainingType.get(), trainingDate, trainingDuration)
         );
         logger.info("Creating Training Profile with id " + newTraining.getId());
         return newTraining;
@@ -40,7 +41,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training selectTrainingProfile(int id) {
-        Training training  = trainingDao.get(id).orElse(null);
+        Training training = trainingDao.get(id).orElse(null);
         Optional<Trainer> trainer = trainerDao.get(training.getTrainerId());
         Optional<User> trainersUser = userDao.get(trainer.get().getUserId());
         trainer.get().setUser(trainersUser.orElse(null));

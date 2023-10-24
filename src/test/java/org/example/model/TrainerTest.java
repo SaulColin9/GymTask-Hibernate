@@ -10,10 +10,12 @@ class TrainerTest {
 
     @Mock
     private Trainer trainer;
+
     @BeforeEach
-    void setUp(){
-        trainer = new Trainer(1,1, new User());
+    void setUp() {
+        trainer = new Trainer(1, 1, new User());
     }
+
     @Test
     void getSpecialization() {
         assertEquals(1, trainer.getSpecialization());

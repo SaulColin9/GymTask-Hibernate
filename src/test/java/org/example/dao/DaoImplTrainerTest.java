@@ -33,9 +33,9 @@ public class DaoImplTrainerTest {
         users.put(1, user);
         users.put(2, user2);
 
-        trainer = new Trainer(1,1, user);
+        trainer = new Trainer(1, 1, user);
         trainer.setId(1);
-        trainer2 = new Trainer(2,2, user2);
+        trainer2 = new Trainer(2, 2, user2);
         trainer2.setId(2);
         Map<Integer, Trainer> trainers = new HashMap<>();
         trainers.put(1, trainer);

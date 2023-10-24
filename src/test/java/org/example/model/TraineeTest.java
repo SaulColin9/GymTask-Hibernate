@@ -7,14 +7,13 @@ import org.mockito.Mock;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 class TraineeTest {
     @Mock
     private Trainee trainee;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         trainee = new Trainee(new Date(), "Test Address", 1, new User());
         trainee.setId(1);
     }
@@ -22,14 +21,14 @@ class TraineeTest {
 
     @Test
     void getId() {
-        assertEquals(trainee.getId(),1);
+        assertEquals(trainee.getId(), 1);
     }
 
     @Test
     void setId() {
         int newId = 2;
         trainee.setId(newId);
-        assertEquals(newId,trainee.getId());
+        assertEquals(newId, trainee.getId());
     }
 
     @Test

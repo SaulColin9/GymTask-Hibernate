@@ -13,10 +13,11 @@ class TrainingTypeTest {
     private TrainingType trainingType;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         trainingType = new TrainingType("Test Training Type");
         trainingType.setId(1);
     }
+
     @Test
     void getTrainingTypeName() {
         assertEquals(trainingType.getTrainingTypeName(), "Test Training Type");

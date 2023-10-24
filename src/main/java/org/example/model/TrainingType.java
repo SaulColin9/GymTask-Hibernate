@@ -1,12 +1,13 @@
 package org.example.model;
 
-public class TrainingType implements Entity{
+public class TrainingType implements Entity {
     int id;
     String trainingTypeName;
 
-    public TrainingType(){
+    public TrainingType() {
 
     }
+
     public TrainingType(String trainingTypeName) {
         this.trainingTypeName = trainingTypeName;
     }

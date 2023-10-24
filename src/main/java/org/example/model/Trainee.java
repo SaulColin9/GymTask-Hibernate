@@ -9,12 +9,15 @@ public class Trainee implements Entity {
     private int userId;
     private User user;
 
-    public Trainee(){}
+    public Trainee() {
+    }
+
     public Trainee(Date dateOfBirth, String address, int userId) {
         this.dateOfBirth = dateOfBirth;
         this.address = address;
         this.userId = userId;
     }
+
     public Trainee(Date dateOfBirth, String address, int userId, User user) {
         this.dateOfBirth = dateOfBirth;
         this.address = address;
@@ -33,9 +36,10 @@ public class Trainee implements Entity {
         return this;
     }
 
-    public User getUser(){
+    public User getUser() {
         return this.user;
     }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
