@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,7 @@ class TrainerServiceImplTest {
 
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
         user = new User("first", "last", ".");
         user.setId(1);
@@ -48,7 +50,7 @@ class TrainerServiceImplTest {
 
     @Test
     void updateTrainerProfile() {
-        when(userDao.update(anyInt(),any(User.class))).thenReturn(user);
+        when(userDao.update(anyInt(), any(User.class))).thenReturn(user);
         when(trainerDao.update(anyInt(), any(Trainer.class))).thenReturn(trainerTest);
         Trainer trainerToUpdate = trainerService.selectTrainerProfile(1);
         String trainerTestUserName = trainerToUpdate.getUser().getUsername();
@@ -59,7 +61,7 @@ class TrainerServiceImplTest {
 
     @Test
     void selectTrainerProfile() {
-        Trainer trainerTest = new Trainer(1,1);
+        Trainer trainerTest = new Trainer(1, 1);
         trainerTest.setId(1);
         Trainer trainserSelected = trainerService.selectTrainerProfile(1);
 

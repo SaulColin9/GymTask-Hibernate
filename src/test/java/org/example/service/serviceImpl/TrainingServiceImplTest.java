@@ -15,12 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
-
 class TrainingServiceImplTest {
     @Mock
     private Dao<Trainee> traineeDao;
     @Mock
-    private Dao<Trainer>  trainerDao;
+    private Dao<Trainer> trainerDao;
     @Mock
     private Dao<User> userDao;
     @Mock
@@ -37,10 +36,8 @@ class TrainingServiceImplTest {
     private Training trainingTest;
 
 
-
-
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
 
         user = new User("User Test", "User Test", ".");
@@ -48,14 +45,14 @@ class TrainingServiceImplTest {
         user2 = new User("User Test2", "User Test2", ".");
         user2.setId(2);
 
-        traineeTest =  new Trainee(new Date(), "Test Address", 1, user);
+        traineeTest = new Trainee(new Date(), "Test Address", 1, user);
         traineeTest = traineeTest.setId(1);
 
 
         trainerTest = new Trainer(2, 2, user2);
         trainerTest = trainerTest.setId(1);
 
-        trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
+        trainingTest = new Training(1, 1, "Test Training", 1, new Date(), 1);
         trainingTest.setId(1);
         trainingTest.setTrainer(trainerTest);
         trainingTest.setTrainee(traineeTest);
@@ -70,17 +67,18 @@ class TrainingServiceImplTest {
         when(trainingTypeDao.get(anyInt())).thenReturn(Optional.ofNullable(trainingTypeTest));
 
     }
+
     @Test
     void createTrainingProfileTest() {
         when(trainingDao.save(any(Training.class))).thenReturn(trainingTest);
-        Training trainingCreated = trainingService.createTrainingProfile(1, 1,"Test Training", 1, new Date(), 1);
+        Training trainingCreated = trainingService.createTrainingProfile(1, 1, "Test Training", 1, new Date(), 1);
 
         assertNotNull(trainingCreated);
     }
 
     @Test
     void selectTrainingProfileTest() {
-        Training trainingTest = new Training(1,1,"Test Training", 1, new Date(),1);
+        Training trainingTest = new Training(1, 1, "Test Training", 1, new Date(), 1);
         trainingTest.setId(1);
 
         Training trainingSelected = trainingService.selectTrainingProfile(1);

@@ -4,12 +4,8 @@ import org.example.dao.DaoImpl;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,31 +14,32 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class UsernameGeneratorImplTest {
-
-
-    private DaoImpl<User> userDao;
-    private List<User> users;
+    private DaoImpl userDao;
+    private final String testName = "Test";
+    private final String testLastName = "TestLast";
+    private final String separator = ".";
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        List<User> users;
         userDao = mock(DaoImpl.class);
         users = new ArrayList<>();
-        users.add(new User("Test", "TestLast", "."));
-        users.add(new User("Test", "TestLast", "."));
+        users.add(new User(testName, testLastName, separator));
+        users.add(new User(testName, testLastName, separator));
         when(userDao.getAll()).thenReturn(users);
     }
 
     @Test
     void userNameExists() {
-        int serial = UsernameGeneratorImpl.userNameExists("Test", "TestLast", ".", userDao);
+        int serial = UsernameGeneratorImpl.userNameExists(testName, testLastName, separator, userDao);
         assertTrue(serial > 0);
 
     }
 
     @Test
     void generateUserName() {
-        String usernameGenerated = UsernameGeneratorImpl.generateUserName("Test", "TestLast", ".", userDao);
+        String usernameGenerated = UsernameGeneratorImpl.generateUserName(testName, testLastName, separator, userDao);
         assertNotEquals(usernameGenerated, "Test.TestLast");
     }
 

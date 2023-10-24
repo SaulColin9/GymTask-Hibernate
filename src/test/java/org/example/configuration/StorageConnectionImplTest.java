@@ -12,16 +12,17 @@ class StorageConnectionImplTest {
     private StorageConnectionImpl<EntitiesReader> storageConnection;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         storageConnection = new StorageConnectionImpl<>(EntitiesReader.class);
     }
+
     @Test
     void getEntities() {
-        assertThrows(RuntimeException.class, ()->storageConnection.getEntities(""));
+        assertThrows(RuntimeException.class, () -> storageConnection.getEntities(""));
     }
 
     @Test
     void writeEntities() {
-        assertThrows(RuntimeException.class, ()->storageConnection.writeEntities("", new ArrayList<>()));
+        assertThrows(RuntimeException.class, () -> storageConnection.writeEntities("", new ArrayList<>()));
     }
 }

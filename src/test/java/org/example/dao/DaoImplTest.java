@@ -6,16 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class DaoImplTest {
     @InjectMocks
@@ -27,14 +21,14 @@ class DaoImplTest {
     User user2;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         user = new User("User Test", "User Test", ".");
         user.setId(1);
         user2 = new User("User Test2", "User Test2", ".");
         user2.setId(2);
-        Map<Integer,User> users = new HashMap<>();
-        users.put(1,user);
-        users.put(2,user2);
+        Map<Integer, User> users = new HashMap<>();
+        users.put(1, user);
+        users.put(2, user2);
 
         storage = new GymStorageImpl();
         storage.setUsers(users);
@@ -42,13 +36,14 @@ class DaoImplTest {
         daoUser.setStorage(storage);
 
     }
+
     @Test
     void setStorage() {
     }
 
     @Test
     void getNextId() {
-        assertEquals(daoUser.getNextId(),storage.getUsers().values().size());
+        assertEquals(daoUser.getNextId(), storage.getUsers().values().size());
     }
 
     @Test
@@ -58,7 +53,7 @@ class DaoImplTest {
 
     @Test
     void getAll() {
-        assertEquals(daoUser.getAll().size(),storage.getUsers().values().size());
+        assertEquals(daoUser.getAll().size(), storage.getUsers().values().size());
     }
 
     @Test
@@ -66,7 +61,8 @@ class DaoImplTest {
         int previousSize = daoUser.storageEntities.size();
         User newUser = new User();
         newUser.setId(2);
-        assertEquals(newUser.getId(),daoUser.save(new User()).getId());;
+        assertEquals(newUser.getId(), daoUser.save(new User()).getId());
+        ;
     }
 
     @Test
@@ -74,7 +70,7 @@ class DaoImplTest {
         User oldUser = user;
         User updatedUser = daoUser.update(1, user2);
         assertNotEquals(oldUser.getFirstName(), updatedUser.getFirstName());
-        assertEquals(oldUser.getId(),updatedUser.getId());
+        assertEquals(oldUser.getId(), updatedUser.getId());
 
     }
 

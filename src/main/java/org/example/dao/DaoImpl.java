@@ -9,28 +9,27 @@ import java.util.Optional;
 
 public class DaoImpl<T extends Entity>  implements Dao<T> {
     final Class<T> tClass;
-    protected List<T> entities = new ArrayList<>();
     protected Map<Integer, T> storageEntities;
 
 
     public void setStorage(Storage storage){
-        if(tClass.equals(new User().getClass())){
-            storageEntities = (Map<Integer, T>) storage.getUsers();
+        if(tClass.equals(User.class)){
+            storageEntities = (Map<Integer, T>)storage.getUsers();
             return;
         }
-        if(tClass.equals(new Trainee().getClass())){
+        if(tClass.equals(Trainee.class)){
             storageEntities = (Map<Integer, T>) storage.getTrainees();
             return;
         }
-        if(tClass.equals(new Trainer().getClass())){
+        if(tClass.equals(Trainer.class)){
             storageEntities = (Map<Integer, T>) storage.getTrainers();
             return;
         }
-        if(tClass.equals(new Training().getClass())){
+        if(tClass.equals(Training.class)){
             storageEntities = (Map<Integer, T>) storage.getTrainings();
             return;
         }
-        if(tClass.equals(new TrainingType().getClass())){
+        if(tClass.equals(TrainingType.class)){
             storageEntities = (Map<Integer, T>) storage.getTrainingTypes();
         }
     }

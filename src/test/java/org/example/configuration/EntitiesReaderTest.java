@@ -12,9 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class EntitiesReaderTest {
 
     EntitiesReader entitiesReader;
+
     @BeforeEach
     void setUp() {
-       entitiesReader = new EntitiesReader();
+        entitiesReader = new EntitiesReader();
     }
 
     @Test
@@ -22,7 +23,7 @@ class EntitiesReaderTest {
         List<User> users = new ArrayList<>();
         users.add(new User());
         entitiesReader.setUsers(users);
-        assertInstanceOf(User.class,entitiesReader.getUsers().get(0));
+        assertInstanceOf(User.class, entitiesReader.getUsers().get(0));
 
     }
 
@@ -31,7 +32,7 @@ class EntitiesReaderTest {
         List<Trainer> trainers = new ArrayList<>();
         trainers.add(new Trainer());
         entitiesReader.setTrainers(trainers);
-        assertInstanceOf(Trainer.class,entitiesReader.getTrainers().get(0));
+        assertInstanceOf(Trainer.class, entitiesReader.getTrainers().get(0));
     }
 
     @Test
@@ -39,7 +40,7 @@ class EntitiesReaderTest {
         List<Trainee> trainees = new ArrayList<>();
         trainees.add(new Trainee());
         entitiesReader.setTrainees(trainees);
-        assertInstanceOf(Trainee.class,entitiesReader.getTrainees().get(0));
+        assertInstanceOf(Trainee.class, entitiesReader.getTrainees().get(0));
     }
 
     @Test
@@ -47,7 +48,7 @@ class EntitiesReaderTest {
         List<Training> trainings = new ArrayList<>();
         trainings.add(new Training());
         entitiesReader.setTrainings(trainings);
-        assertInstanceOf(Training.class,entitiesReader.getTrainings().get(0));
+        assertInstanceOf(Training.class, entitiesReader.getTrainings().get(0));
     }
 
     @Test
@@ -55,6 +56,6 @@ class EntitiesReaderTest {
         List<TrainingType> trainingTypes = new ArrayList<>();
         trainingTypes.add(new TrainingType());
         entitiesReader.setTrainingTypes(trainingTypes);
-        assertInstanceOf(TrainingType.class,entitiesReader.getTrainingTypes().get(0));
+        assertInstanceOf(TrainingType.class, entitiesReader.getTrainingTypes().get(0));
     }
 }

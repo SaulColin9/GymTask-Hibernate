@@ -8,7 +8,6 @@ import org.example.service.TrainerService;
 import org.example.service.TrainingService;
 
 import java.util.Date;
-import java.util.List;
 
 public class GymFacadeImpl implements GymFacade {
     TraineeService traineeService;
