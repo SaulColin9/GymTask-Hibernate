@@ -30,7 +30,7 @@ class TrainingServiceImplTest {
     private TrainingServiceImpl trainingService;
     private Training trainingTest;
 
-    private final String TRAINING_NAME = "Test Training";
+    private static final String TRAINING_NAME = "Test Training";
 
     @BeforeEach
     public void setUp() {

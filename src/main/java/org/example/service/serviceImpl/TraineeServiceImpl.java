@@ -14,7 +14,7 @@ import java.util.Optional;
 public class TraineeServiceImpl implements TraineeService {
     private static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
 
-    private final String NO_ID_MSG = "Provided Trainee Id does not exist";
+    private static final String NO_ID_MSG = "Provided Trainee Id does not exist";
     private Dao<User> userDao;
     private Dao<Trainee> traineeDao;
 

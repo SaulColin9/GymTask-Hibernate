@@ -58,7 +58,6 @@ class DaoImplUserTest {
         User newUser = new User();
         newUser.setId(2);
         assertEquals(newUser.getId(), daoUser.save(new User()).getId());
-        ;
     }
 
     @Test

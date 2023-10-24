@@ -2,7 +2,6 @@ package org.example.dao;
 
 import org.example.configuration.GymStorageImpl;
 import org.example.model.Trainee;
-import org.example.model.Trainer;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

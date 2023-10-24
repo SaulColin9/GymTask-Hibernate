@@ -33,9 +33,9 @@ class GymFacadeImplTest {
     private Date date;
     private Training trainingTest;
     private Trainer trainerTest;
-    private final String TEST_ADDRESS = "Test Address";
-    private final String TEST_UPDATED_NAME = "Updated Name";
-    private final String TEST_UPDATED_LAST = "Updated Last";
+    private static final String TEST_ADDRESS = "Test Address";
+    private static final String TEST_UPDATED_NAME = "Updated Name";
+    private static final String TEST_UPDATED_LAST = "Updated Last";
 
     @BeforeEach
     public void setUp() {

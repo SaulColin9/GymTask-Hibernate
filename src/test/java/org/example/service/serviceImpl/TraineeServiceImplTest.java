@@ -27,6 +27,9 @@ class TraineeServiceImplTest {
     private TraineeServiceImpl traineeService;
     private User user;
     private Trainee traineeTest;
+    private static final String UPDATED_NAME = "Updated Name";
+    private static final String UPDATED_LAST = "Updated Last Name";
+    private static final String UPDATED_ADDRESS = "Updated Address";
 
 
     @BeforeEach
@@ -58,7 +61,7 @@ class TraineeServiceImplTest {
         String traineeTestUserName = oldTrainee.getUser().getUsername();
 
         Trainee updatedTrainee = traineeService
-                .updateTraineeProfile(1, "Updated Name", "Updated Last Name", false, new Date(), "Updated Addresss");
+                .updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS);
 
         assertNotEquals(traineeTestUserName, updatedTrainee.getUser().getUsername());
     }
@@ -67,8 +70,8 @@ class TraineeServiceImplTest {
     void deleteTraineeProfile() {
         when(traineeDao.delete(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
 
-        Trainee traineeTest = traineeService.selectTraineeProfile(1);
-        assertNotNull(traineeTest);
+        Trainee trainee = traineeService.selectTraineeProfile(1);
+        assertNotNull(trainee);
 
         traineeService.deleteTraineeProfile(1);
         verify(traineeDao, times(1)).delete(1);
@@ -87,16 +90,16 @@ class TraineeServiceImplTest {
     }
 
     @Test
-    void update_noTraineeFound_Should_Return_Null(){
+    void update_noTraineeFound_Should_Return_Null() {
         when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
-        assertNull(traineeService.updateTraineeProfile(1, "Updated Name", "Updated Last Name", false, new Date(), "Updated Addresss"));
+        assertNull(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
     }
 
     @Test
-    void update_noUserToUpdateFound_Should_Return_Null(){
+    void update_noUserToUpdateFound_Should_Return_Null() {
         when(userDao.get(anyInt())).thenReturn(Optional.empty());
         when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
-        assertNull(traineeService.updateTraineeProfile(1, "Updated Name", "Updated Last Name", false, new Date(), "Updated Addresss"));
+        assertNull(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
     }
 
 
