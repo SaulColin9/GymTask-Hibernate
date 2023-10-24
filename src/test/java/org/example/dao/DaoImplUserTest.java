@@ -11,7 +11,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DaoImplTest {
+class DaoImplUserTest {
     @InjectMocks
     DaoImpl<User> daoUser;
     @Mock
@@ -37,9 +37,6 @@ class DaoImplTest {
 
     }
 
-    @Test
-    void setStorage() {
-    }
 
     @Test
     void getNextId() {
@@ -58,7 +55,6 @@ class DaoImplTest {
 
     @Test
     void save() {
-        int previousSize = daoUser.storageEntities.size();
         User newUser = new User();
         newUser.setId(2);
         assertEquals(newUser.getId(), daoUser.save(new User()).getId());

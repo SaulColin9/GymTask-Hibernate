@@ -1,15 +1,17 @@
 package org.example.configuration;
 
 import org.example.model.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class GymStorageImpl implements Storage{
+public class GymStorageImpl implements Storage {
     public String getFilePath() {
         return filePath;
     }
 
     private String filePath;
+
     @Override
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -23,6 +25,18 @@ public class GymStorageImpl implements Storage{
 
     public void setUsers(Map<Integer, User> users) {
         this.users = users;
+    }
+
+    public void setTrainers(Map<Integer, Trainer> trainers) {
+        this.trainers = trainers;
+    }
+
+    public void setTrainingTypes(Map<Integer, TrainingType> trainingTypes) {
+        this.trainingTypes = trainingTypes;
+    }
+
+    public void setTrainees(Map<Integer, Trainee> trainees) {
+        this.trainees = trainees;
     }
 
     @Override

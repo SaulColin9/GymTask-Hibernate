@@ -15,9 +15,9 @@ import static org.mockito.Mockito.when;
 
 class UsernameGeneratorImplTest {
     private DaoImpl<User> userDao;
-    private final static String testName = "Test";
-    private final static String testLastName = "TestLast";
-    private final static String separator = ".";
+    private final static String TEST_NAME = "Test";
+    private final static String TEST_LASTNAME = "TestLast";
+    private final static String SEPARATOR = ".";
 
     @BeforeEach
     void setUp() {
@@ -25,23 +25,24 @@ class UsernameGeneratorImplTest {
         List<User> users;
         userDao = mock(DaoImpl.class);
         users = new ArrayList<>();
-        users.add(new User(testName, testLastName, separator));
-        users.add(new User(testName, testLastName, separator));
+        users.add(new User(TEST_NAME, TEST_LASTNAME, SEPARATOR));
+        users.add(new User(TEST_NAME, TEST_LASTNAME, SEPARATOR));
         when(userDao.getAll()).thenReturn(users);
     }
 
     @Test
     void userNameExists() {
-        int serial = UsernameGeneratorImpl.userNameExists(testName, testLastName, separator, userDao);
+        int serial = UsernameGeneratorImpl.userNameExists(TEST_NAME, TEST_LASTNAME, SEPARATOR, userDao);
         assertTrue(serial > 0);
 
     }
 
     @Test
     void generateUserName() {
-        String usernameGenerated = UsernameGeneratorImpl.generateUserName(testName, testLastName, separator, userDao);
+        String usernameGenerated = UsernameGeneratorImpl.generateUserName(TEST_NAME, TEST_LASTNAME, SEPARATOR, userDao);
         assertNotEquals(usernameGenerated, "Test.TestLast");
     }
+
 
 
 }

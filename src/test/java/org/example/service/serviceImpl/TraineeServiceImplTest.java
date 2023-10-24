@@ -84,7 +84,19 @@ class TraineeServiceImplTest {
         assertNotNull(traineeSelected);
         assertEquals(traineeTest.getId(), traineeSelected.getId());
         assertEquals(traineeTest.getUserId(), traineeSelected.getUserId());
+    }
 
+    @Test
+    void update_noTraineeFound_Should_Return_Null(){
+        when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
+        assertNull(traineeService.updateTraineeProfile(1, "Updated Name", "Updated Last Name", false, new Date(), "Updated Addresss"));
+    }
+
+    @Test
+    void update_noUserToUpdateFound_Should_Return_Null(){
+        when(userDao.get(anyInt())).thenReturn(Optional.empty());
+        when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
+        assertNull(traineeService.updateTraineeProfile(1, "Updated Name", "Updated Last Name", false, new Date(), "Updated Addresss"));
     }
 
 
