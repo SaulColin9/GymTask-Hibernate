@@ -22,6 +22,5 @@ public interface Storage extends InitializingBean {
 
     Map<Integer, TrainingType> getTrainingTypes();
 
-    List<Entity> writeEntities(String filePath, List<Entity> entities) throws IOException;
 
 }

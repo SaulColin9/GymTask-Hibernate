@@ -17,8 +17,5 @@ class DaoConnectionImplTest {
         assertThrows(RuntimeException.class,()->daoConnectionUsers.getEntities(""));
     }
 
-    @Test
-    void writeEntities() {
-        assertThrows(RuntimeException.class,()->daoConnectionUsers.writeEntities("", new ArrayList<>()));
-    }
+
 }

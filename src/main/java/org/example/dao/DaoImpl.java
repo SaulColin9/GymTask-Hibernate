@@ -71,6 +71,7 @@ public class DaoImpl<T extends Entity>  implements Dao<T> {
     public T update(int id, T t) {
         Optional<T> foundEntity = get(id);
         if(foundEntity.isPresent()){
+            t.setId(id);
             storageEntities.put(id, t);
             return t;
         }

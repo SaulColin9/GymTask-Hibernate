@@ -8,9 +8,7 @@ import org.example.model.User;
 import java.util.List;
 
 public class UsernameGeneratorImpl{
-    private UsernameGeneratorImpl(){
-        throw new IllegalStateException("Utility class");
-    }
+
     public static int userNameExists(String firstName, String lastName, String separator, Dao<User> userDao){
         int serial = 0;
         for (User user: userDao.getAll() ){

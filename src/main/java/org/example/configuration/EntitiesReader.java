@@ -30,4 +30,24 @@ public class EntitiesReader {
     public List<TrainingType> getTrainingTypes() {
         return trainingTypes;
     }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void setTrainers(List<Trainer> trainers) {
+        this.trainers = trainers;
+    }
+
+    public void setTrainees(List<Trainee> trainees) {
+        this.trainees = trainees;
+    }
+
+    public void setTrainings(List<Training> trainings) {
+        this.trainings = trainings;
+    }
+
+    public void setTrainingTypes(List<TrainingType> trainingTypes) {
+        this.trainingTypes = trainingTypes;
+    }
 }

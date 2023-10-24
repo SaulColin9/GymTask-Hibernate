@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,18 +24,19 @@ class UsernameGeneratorImplTest {
     private List<User> users;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         userDao = mock(DaoImpl.class);
         users = new ArrayList<>();
-        users.add(new User("Test","TestLast", "."));
-        users.add(new User("Test","TestLast", "."));
+        users.add(new User("Test", "TestLast", "."));
+        users.add(new User("Test", "TestLast", "."));
         when(userDao.getAll()).thenReturn(users);
     }
+
     @Test
     void userNameExists() {
         int serial = UsernameGeneratorImpl.userNameExists("Test", "TestLast", ".", userDao);
-        assertTrue(serial>0);
+        assertTrue(serial > 0);
 
     }
 
@@ -41,4 +45,6 @@ class UsernameGeneratorImplTest {
         String usernameGenerated = UsernameGeneratorImpl.generateUserName("Test", "TestLast", ".", userDao);
         assertNotEquals(usernameGenerated, "Test.TestLast");
     }
+
+
 }

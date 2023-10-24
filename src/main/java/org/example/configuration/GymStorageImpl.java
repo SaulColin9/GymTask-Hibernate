@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 public class GymStorageImpl implements Storage{
-    private static Logger logger = LoggerFactory.getLogger(DaoConnectionImpl.class);
+    public String getFilePath() {
+        return filePath;
+    }
+
     private String filePath;
     @Override
     public void setFilePath(String filePath) {
@@ -65,7 +68,7 @@ public class GymStorageImpl implements Storage{
         trainingTypes = new HashMap<>();
 
         StorageConnection<EntitiesReader> storageConnection = new StorageConnectionImpl<>(EntitiesReader.class);
-        EntitiesReader entitiesReader = (EntitiesReader) storageConnection.getEntities(filePath);
+        EntitiesReader entitiesReader = storageConnection.getEntities(filePath);
         entitiesReader.getUsers().forEach(user -> users.put(user.getId(), user));
         entitiesReader.getTrainees().forEach(trainee -> trainees.put(trainee.getId(), trainee));
         entitiesReader.getTrainers().forEach(trainer -> trainers.put(trainer.getId(), trainer));
@@ -74,15 +77,5 @@ public class GymStorageImpl implements Storage{
 
     }
 
-    @Override
-    public List<Entity> writeEntities(String filePath, List<Entity> entities) throws IOException {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(new File(filePath), entities);
-            return entities;
-        } catch (IOException e) {
-            logger.error("No file path specified for writeEntities");
-            throw new RuntimeException(e);
-        }
-    }
+
 }

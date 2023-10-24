@@ -8,10 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.swing.text.html.Option;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,14 +22,12 @@ class DaoImplTest {
     DaoImpl<User> daoUser;
     @Mock
     Map<Integer, User> storageEntities;
-//    @Mock
     GymStorageImpl storage;
     User user;
     User user2;
 
     @BeforeEach
     void setUp(){
-//        MockitoAnnotations.openMocks(this);
         user = new User("User Test", "User Test", ".");
         user.setId(1);
         user2 = new User("User Test2", "User Test2", ".");
@@ -39,18 +35,11 @@ class DaoImplTest {
         Map<Integer,User> users = new HashMap<>();
         users.put(1,user);
         users.put(2,user2);
-//        storage = mock(GymStorageImpl.class);
-//        when(storage.getUsers()).thenReturn(users);
-//        daoUser = new DaoImpl<>(User.class);
-//        daoUser.setStorage(storage);
-//
-//        daoUser.storageEntities = mock(HashMap.class);
-//        when(daoUser.storageEntities).thenReturn(users);
+
         storage = new GymStorageImpl();
         storage.setUsers(users);
         daoUser = new DaoImpl<>(User.class);
         daoUser.setStorage(storage);
-//        System.out.println(daoUser.get(1));
 
     }
     @Test
@@ -82,13 +71,17 @@ class DaoImplTest {
 
     @Test
     void update() {
+        User oldUser = user;
+        User updatedUser = daoUser.update(1, user2);
+        assertNotEquals(oldUser.getFirstName(), updatedUser.getFirstName());
+        assertEquals(oldUser.getId(),updatedUser.getId());
+
     }
 
     @Test
     void delete() {
+        Optional<User> deletedUser = daoUser.delete(1);
+        assertNotNull(deletedUser);
     }
 
-    @Test
-    void setId() {
-    }
 }

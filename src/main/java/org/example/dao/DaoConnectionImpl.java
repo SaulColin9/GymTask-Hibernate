@@ -38,15 +38,5 @@ public class DaoConnectionImpl<T extends Entity> implements DaoConnection<T>{
             throw new RuntimeException(e);
         }
     }
-    @Override
-    public List<T> writeEntities(String filePath, List<T> entities){
-        try{
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(new File(filePath), entities);
-            return entities;
-        }catch (IOException e){
-            logger.error("No file path specified for writeEntities");
-            throw new RuntimeException(e);
-        }
-    }
+
 }

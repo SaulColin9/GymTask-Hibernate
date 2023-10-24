@@ -8,7 +8,5 @@ import java.util.List;
 
 public interface DaoConnection<T extends Entity> {
     List<T> getEntities(String filePath) throws IOException;
-    List<T> writeEntities(String path, List<T> entities) throws IOException;
-
 
 }
