@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.configuration.GymStorageImpl;
+import org.example.dao.entities.TraineeDao;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,9 +35,9 @@ public class DaoImplTraineeTest {
         users.put(1, user);
         users.put(2, user2);
 
-        trainee = new Trainee(new Date(), "Test Address", 1, user);
+        trainee = new Trainee(new Date(), "Test Address", user);
         trainee.setId(1);
-        trainee2 = new Trainee(new Date(), "Test Address 2", 1, user2);
+        trainee2 = new Trainee(new Date(), "Test Address 2", user2);
         trainee2.setId(2);
         Map<Integer, Trainee> trainees = new HashMap<>();
         trainees.put(1, trainee);
@@ -44,14 +45,14 @@ public class DaoImplTraineeTest {
         storage = new GymStorageImpl();
         storage.setTrainees(trainees);
         storage.setUsers(users);
-        traineeDao = new DaoImpl<>(Trainee.class);
+        traineeDao = new TraineeDao();
         traineeDao.setStorage(storage);
 
     }
 
     @Test
     void getNextId() {
-        assertEquals(traineeDao.getNextId(), storage.getTrainees().values().size());
+        assertEquals(storage.getTrainees().values().size() + 1, traineeDao.getNextId());
     }
 
     @Test
@@ -67,7 +68,7 @@ public class DaoImplTraineeTest {
     @Test
     void save() {
         Trainee newTrainee = new Trainee();
-        newTrainee.setId(2);
+        newTrainee.setId(traineeDao.getNextId());
         assertEquals(newTrainee.getId(), traineeDao.save(new Trainee()).getId());
     }
 

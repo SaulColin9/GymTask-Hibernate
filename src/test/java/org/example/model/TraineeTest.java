@@ -14,7 +14,7 @@ class TraineeTest {
 
     @BeforeEach
     void setUp() {
-        trainee = new Trainee(new Date(), "Test Address", 1, new User());
+        trainee = new Trainee(new Date(), "Test Address", new User());
         trainee.setId(1);
     }
 
@@ -64,14 +64,7 @@ class TraineeTest {
     void getUserId() {
         int userId = 1;
         trainee.getUser().setId(1);
-        assertEquals(userId, trainee.getUserId());
-    }
-
-    @Test
-    void setUserId() {
-        int newUserId = 1;
-        trainee.setUserId(newUserId);
-        assertEquals(newUserId, trainee.getUserId());
+        assertEquals(userId, trainee.getUser().getId());
     }
 
     @Test

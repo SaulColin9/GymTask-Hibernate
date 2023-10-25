@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.configuration.GymStorageImpl;
+import org.example.dao.entities.TrainingTypeDao;
 import org.example.model.TrainingType;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ public class DaoImplTrainingTypeTest {
         trainingTypes.put(2, trainingType2);
         storage = new GymStorageImpl();
         storage.setTrainingTypes(trainingTypes);
-        daoTrainingType = new DaoImpl<>(TrainingType.class);
+        daoTrainingType = new TrainingTypeDao();
         daoTrainingType.setStorage(storage);
 
     }
@@ -43,7 +44,7 @@ public class DaoImplTrainingTypeTest {
 
     @Test
     void getNextId() {
-        assertEquals(daoTrainingType.getNextId(), storage.getTrainingTypes().values().size());
+        assertEquals(storage.getTrainingTypes().values().size() + 1, daoTrainingType.getNextId());
     }
 
     @Test
@@ -59,7 +60,7 @@ public class DaoImplTrainingTypeTest {
     @Test
     void save() {
         TrainingType newTrainigType = new TrainingType();
-        newTrainigType.setId(2);
+        newTrainigType.setId(daoTrainingType.getNextId());
         assertEquals(newTrainigType.getId(), daoTrainingType.save(new TrainingType()).getId());
     }
 

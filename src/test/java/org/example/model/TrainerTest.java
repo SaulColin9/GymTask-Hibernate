@@ -13,7 +13,7 @@ class TrainerTest {
 
     @BeforeEach
     void setUp() {
-        trainer = new Trainer(1, 1, new User());
+        trainer = new Trainer(1,  new User());
     }
 
     @Test

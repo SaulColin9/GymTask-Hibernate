@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.configuration.GymStorageImpl;
+import org.example.dao.entities.UserDao;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class DaoImplUserTest {
 
         storage = new GymStorageImpl();
         storage.setUsers(users);
-        daoUser = new DaoImpl<>(User.class);
+        daoUser = new UserDao();
         daoUser.setStorage(storage);
 
     }
@@ -40,7 +41,7 @@ class DaoImplUserTest {
 
     @Test
     void getNextId() {
-        assertEquals(daoUser.getNextId(), storage.getUsers().values().size());
+        assertEquals(storage.getUsers().values().size() + 1, daoUser.getNextId());
     }
 
     @Test
@@ -56,7 +57,7 @@ class DaoImplUserTest {
     @Test
     void save() {
         User newUser = new User();
-        newUser.setId(2);
+        newUser.setId(daoUser.getNextId());
         assertEquals(newUser.getId(), daoUser.save(new User()).getId());
     }
 

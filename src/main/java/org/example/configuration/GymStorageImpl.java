@@ -40,6 +40,10 @@ public class GymStorageImpl implements Storage {
         this.trainees = trainees;
     }
 
+    public void setTrainings(Map<Integer, Training> trainings) {
+        this.trainings = trainings;
+    }
+
     @Override
     public Map<Integer, User> getUsers() {
         return users;

@@ -31,7 +31,7 @@ class TrainerServiceImplTest {
         user = new User("first", "last", ".");
         user.setId(1);
 
-        trainerTest = new Trainer(1, 1);
+        trainerTest = new Trainer(1, user);
         trainerTest.setUser(user);
         trainerTest.setId(1);
 
@@ -44,29 +44,27 @@ class TrainerServiceImplTest {
     void createTrainerProfile() {
         when(userDao.save(any(User.class))).thenReturn(user);
         when(trainerDao.save(any(Trainer.class))).thenReturn(trainerTest);
-        Trainer createdTrainer = trainerService.createTrainerProfile("Test", "Test", 1);
-        assertNotNull(createdTrainer);
+        int createdTrainer = trainerService.createTrainerProfile("Test", "Test", 1);
+        assertTrue(createdTrainer>0);
     }
 
     @Test
     void updateTrainerProfile() {
         when(userDao.update(anyInt(), any(User.class))).thenReturn(user);
         when(trainerDao.update(anyInt(), any(Trainer.class))).thenReturn(trainerTest);
-        Trainer trainerToUpdate = trainerService.selectTrainerProfile(1);
-        String trainerTestUserName = trainerToUpdate.getUser().getUsername();
 
-        Trainer updatedTrainer = trainerService.updateTrainerProfile(1, "Updated Trainer Name", "Updated Trainer Last", false, 1);
-        assertNotEquals(trainerTestUserName, updatedTrainer.getUser().getUsername());
+        boolean updatedTrainer = trainerService.updateTrainerProfile(1, "Updated Trainer Name", "Updated Trainer Last", false, 1);
+        assertTrue(updatedTrainer);
     }
 
     @Test
     void selectTrainerProfile() {
-        Trainer trainerTest = new Trainer(1, 1);
+        Trainer trainerTest = new Trainer(1, user);
         trainerTest.setId(1);
         Trainer trainserSelected = trainerService.selectTrainerProfile(1);
 
         assertNotNull(trainserSelected);
         assertEquals(trainerTest.getId(), trainserSelected.getId());
-        assertEquals(trainerTest.getUserId(), trainserSelected.getUserId());
+        assertEquals(trainerTest.getUser().getId(), trainserSelected.getUser().getId());
     }
 }

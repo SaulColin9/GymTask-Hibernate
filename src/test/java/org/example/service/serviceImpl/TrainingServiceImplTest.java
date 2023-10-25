@@ -46,11 +46,11 @@ class TrainingServiceImplTest {
         user2 = new User("User Test2", "User Test2", ".");
         user2.setId(2);
 
-        traineeTest = new Trainee(new Date(), "Test Address", 1, user);
+        traineeTest = new Trainee(new Date(), "Test Address",  user);
         traineeTest = traineeTest.setId(1);
 
 
-        trainerTest = new Trainer(2, 2, user2);
+        trainerTest = new Trainer(2,  user2);
         trainerTest = trainerTest.setId(1);
 
         trainingTypeTest = new TrainingType("TestTrainingType");
@@ -77,10 +77,10 @@ class TrainingServiceImplTest {
     @Test
     void createTrainingProfileTest() {
         when(trainingDao.save(any(Training.class))).thenReturn(trainingTest);
-        Training trainingCreated = trainingService
+        int trainingCreated = trainingService
                 .createTrainingProfile(1, 1, TRAINING_NAME, 1, new Date(), 1);
 
-        assertNotNull(trainingCreated);
+        assertTrue(trainingCreated>0);
     }
 
     @Test

@@ -10,11 +10,10 @@ import java.util.Date;
 import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
-    Dao<Trainee> traineeDao;
-    Dao<Trainer> trainerDao;
-    Dao<TrainingType> trainingTypeDao;
-    Dao<Training> trainingDao;
-    Dao<User> userDao;
+    private Dao<Trainee> traineeDao;
+    private Dao<Trainer> trainerDao;
+    private Dao<TrainingType> trainingTypeDao;
+    private Dao<Training> trainingDao;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
 
@@ -66,7 +65,4 @@ public class TrainingServiceImpl implements TrainingService {
         this.trainingDao = trainingDao;
     }
 
-    public void setUserDao(Dao<User> userDao) {
-        this.userDao = userDao;
-    }
 }

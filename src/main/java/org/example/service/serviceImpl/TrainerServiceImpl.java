@@ -11,11 +11,9 @@ import java.util.Optional;
 
 
 public class TrainerServiceImpl implements TrainerService {
-    Dao<User> userDao;
+    private Dao<User> userDao;
+    private Dao<Trainer> trainerDao;
     private final UserUtils createUtils = new UserUtilsImpl();
-
-    Dao<Trainer> trainerDao;
-
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
 
     @Override

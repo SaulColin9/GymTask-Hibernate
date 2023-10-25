@@ -36,7 +36,6 @@ public class BeanConfiguration {
     @Bean
     public TrainingService trainingService(@Autowired Dao<User> userDao, @Autowired Dao<Trainee> traineeDao, @Autowired Dao<Trainer> trainerDao, @Autowired Dao<Training> trainingDao, @Autowired Dao<TrainingType> trainingTypeDao) {
         TrainingServiceImpl trainingService = new TrainingServiceImpl();
-        trainingService.setUserDao(userDao);
         trainingService.setTraineeDao(traineeDao);
         trainingService.setTrainerDao(trainerDao);
         trainingService.setTrainingDao(trainingDao);

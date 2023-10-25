@@ -33,7 +33,7 @@ class UsernameGeneratorImplTest {
     @Test
     void userNameExists() {
         UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
-        int serial = usernameGenerator.userNameExists(TEST_NAME, TEST_LASTNAME, SEPARATOR, userDao);
+        int serial = usernameGenerator.userNameExists(TEST_NAME, TEST_LASTNAME, userDao);
         assertTrue(serial > 0);
 
     }
@@ -41,7 +41,7 @@ class UsernameGeneratorImplTest {
     @Test
     void generateUserName() {
         UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
-        String usernameGenerated = usernameGenerator.generateUserName(TEST_NAME, TEST_LASTNAME, SEPARATOR, userDao);
+        String usernameGenerated = usernameGenerator.generateUserName(TEST_NAME, TEST_LASTNAME,  userDao);
         assertNotEquals(usernameGenerated, "Test.TestLast");
     }
 

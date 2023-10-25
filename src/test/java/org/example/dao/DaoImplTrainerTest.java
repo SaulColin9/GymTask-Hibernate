@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.configuration.GymStorageImpl;
+import org.example.dao.entities.TrainerDao;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +34,9 @@ public class DaoImplTrainerTest {
         users.put(1, user);
         users.put(2, user2);
 
-        trainer = new Trainer(1, 1, user);
+        trainer = new Trainer(1, user);
         trainer.setId(1);
-        trainer2 = new Trainer(2, 2, user2);
+        trainer2 = new Trainer(2, user2);
         trainer2.setId(2);
         Map<Integer, Trainer> trainers = new HashMap<>();
         trainers.put(1, trainer);
@@ -43,14 +44,14 @@ public class DaoImplTrainerTest {
         storage = new GymStorageImpl();
         storage.setTrainers(trainers);
         storage.setUsers(users);
-        trainerDao = new DaoImpl<>(Trainer.class);
+        trainerDao = new TrainerDao();
         trainerDao.setStorage(storage);
 
     }
 
     @Test
     void getNextId() {
-        assertEquals(trainerDao.getNextId(), storage.getTrainers().values().size());
+        assertEquals(storage.getTrainers().values().size() + 1, trainerDao.getNextId());
     }
 
     @Test
@@ -66,7 +67,7 @@ public class DaoImplTrainerTest {
     @Test
     void save() {
         Trainer newTrainer = new Trainer();
-        newTrainer.setId(2);
+        newTrainer.setId(trainerDao.getNextId());
         assertEquals(newTrainer.getId(), trainerDao.save(new Trainer()).getId());
     }
 

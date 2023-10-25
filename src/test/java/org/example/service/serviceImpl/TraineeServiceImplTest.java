@@ -37,7 +37,7 @@ class TraineeServiceImplTest {
         MockitoAnnotations.openMocks(this);
         user = new User("first", "last", ".");
         user.setId(1);
-        traineeTest = new Trainee(new Date(), "Test Address", 1);
+        traineeTest = new Trainee(new Date(), "Test Address", user);
         traineeTest.setUser(user);
         traineeTest.setId(1);
         when(userDao.get(anyInt())).thenReturn(Optional.ofNullable(user));
@@ -48,22 +48,18 @@ class TraineeServiceImplTest {
     void createTraineeProfile() {
         when(userDao.save(any(User.class))).thenReturn(user);
         when(traineeDao.save(any(Trainee.class))).thenReturn(traineeTest);
-        Trainee createdTrainee = traineeService.createTraineeProfile("Test", "Test", new Date(), "Test");
-        assertNotNull(createdTrainee);
+        int createdTrainee = traineeService.createTraineeProfile("Test", "Test", new Date(), "Test");
+        assertTrue(createdTrainee > 0);
     }
 
     @Test
     void updateTraineeProfile() {
         when(userDao.update(anyInt(), any(User.class))).thenReturn(user);
         when(traineeDao.update(anyInt(), any(Trainee.class))).thenReturn(traineeTest);
-        Trainee oldTrainee = traineeService.selectTraineeProfile(1);
-        oldTrainee = oldTrainee.setAddress("New Address Test");
-        String traineeTestUserName = oldTrainee.getUser().getUsername();
-
-        Trainee updatedTrainee = traineeService
+        boolean updatedTrainee = traineeService
                 .updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS);
 
-        assertNotEquals(traineeTestUserName, updatedTrainee.getUser().getUsername());
+        assertTrue(updatedTrainee);
     }
 
     @Test
@@ -79,27 +75,27 @@ class TraineeServiceImplTest {
 
     @Test
     void selectTraineeProfile() {
-        Trainee traineeTest = new Trainee(new Date(), "Test Address", 1);
+        Trainee traineeTest = new Trainee(new Date(), "Test Address", new User());
         traineeTest = traineeTest.setId(1);
         when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
         Trainee traineeSelected = traineeService.selectTraineeProfile(1);
 
         assertNotNull(traineeSelected);
         assertEquals(traineeTest.getId(), traineeSelected.getId());
-        assertEquals(traineeTest.getUserId(), traineeSelected.getUserId());
+        assertEquals(traineeTest.getUser().getId(), traineeSelected.getUser().getId());
     }
 
     @Test
     void update_noTraineeFound_Should_Return_Null() {
         when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
-        assertNull(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
+        assertFalse(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
     }
 
     @Test
     void update_noUserToUpdateFound_Should_Return_Null() {
         when(userDao.get(anyInt())).thenReturn(Optional.empty());
         when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
-        assertNull(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
+        assertFalse(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
     }
 
 
