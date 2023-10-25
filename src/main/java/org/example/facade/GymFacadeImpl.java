@@ -21,17 +21,17 @@ public class GymFacadeImpl implements GymFacade {
     }
 
     @Override
-    public Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address) {
+    public int addTrainee(String firstName, String lastName, Date dateOfBirth, String address) {
         return traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address);
     }
 
     @Override
-    public Trainee updateTrainee(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+    public boolean updateTrainee(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         return traineeService.updateTraineeProfile(id, firstName, lastName, isActive, dateOfBirth, address);
     }
 
     @Override
-    public Trainee deleteTrainee(int id) {
+    public boolean deleteTrainee(int id) {
         return traineeService.deleteTraineeProfile(id);
     }
 
@@ -42,12 +42,12 @@ public class GymFacadeImpl implements GymFacade {
 
 
     @Override
-    public Trainer addTrainer(String firstName, String lastName, int specialization) {
+    public int addTrainer(String firstName, String lastName, int specialization) {
         return trainerService.createTrainerProfile(firstName, lastName, specialization);
     }
 
     @Override
-    public Trainer updateTrainer(int id, String firstName, String lastName, boolean isActive, int specialization) {
+    public boolean updateTrainer(int id, String firstName, String lastName, boolean isActive, int specialization) {
         return trainerService.updateTrainerProfile(id, firstName, lastName, isActive, specialization);
     }
 
@@ -58,7 +58,7 @@ public class GymFacadeImpl implements GymFacade {
 
 
     @Override
-    public Training addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
+    public int addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
         return trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
 
     }

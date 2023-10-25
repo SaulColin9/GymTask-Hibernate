@@ -19,44 +19,44 @@ public class TraineeServiceImpl implements TraineeService {
     private Dao<User> userDao;
     private Dao<Trainee> traineeDao;
 
-    @Override
-    public void setUserDao(Dao<User> userDao) {
-        this.userDao = userDao;
-    }
 
     @Override
-    public void setTraineeDao(Dao<Trainee> traineeDao) {
-        this.traineeDao = traineeDao;
-    }
-
-
-    @Override
-    public Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
-        String username = usernameGenerator.generateUserName(firstName, lastName, ".", userDao);
+    public int createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
+        if (firstName == null || lastName == null || dateOfBirth == null || address == null) {
+            logger.error("The next fields were not provided: " +
+                    (firstName == null ? "firstName, " : "") +
+                    (lastName == null ? "lastName, " : "") +
+                    (dateOfBirth == null ? "dateOfBirth, " : "") +
+                    (address == null ? "address " : "")
+            );
+            return -1;
+        }
+        String username = usernameGenerator.generateUserName(firstName, lastName, userDao);
         String password = passwordGenerator.generatePassword(10);
         User newUser = userDao
                 .save(new User(firstName, lastName, username, password, true));
         logger.info("Creating Trainee Profile with id " + newUser.getId());
-        return traineeDao.save(new Trainee(dateOfBirth, address, newUser.getId(), newUser));
+        Trainee newTrainee = traineeDao.save(new Trainee(dateOfBirth, address, newUser.getId(), newUser));
+        return newTrainee.getId();
     }
 
     @Override
-    public Trainee updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+    public boolean updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
         if (traineeToUpdate.isEmpty()) {
             logger.error(NO_ID_MSG);
-            return null;
+            return false;
         }
         Optional<User> userToUpdate = userDao.get(traineeToUpdate.get().getUserId());
         if (userToUpdate.isEmpty()) {
             logger.error("Trainee Profile User Id does not exist");
-            return null;
+            return false;
         }
 
         userToUpdate.get().setFirstName(firstName);
         userToUpdate.get().setLastName(lastName);
         userToUpdate.get().setIsActive(isActive);
-        String newUserName = usernameGenerator.generateUserName(firstName, lastName, ".", userDao);
+        String newUserName = usernameGenerator.generateUserName(firstName, lastName, userDao);
         userToUpdate.get().setUsername(newUserName);
 
         userDao.update(traineeToUpdate.get().getUserId(), userToUpdate.get());
@@ -66,19 +66,19 @@ public class TraineeServiceImpl implements TraineeService {
         traineeToUpdate.get().setUser(userToUpdate.get());
 
         logger.info("Updating Trainee Profile with id " + id);
-        return traineeDao.update(id, traineeToUpdate.get());
+        return traineeDao.update(id, traineeToUpdate.get()) != null;
     }
 
     @Override
-    public Trainee deleteTraineeProfile(int id) {
+    public boolean deleteTraineeProfile(int id) {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
         if (traineeToDelete.isEmpty()) {
             logger.error(NO_ID_MSG);
-            return null;
+            return false;
         }
         logger.info("Deleting Trainee Profile with id " + id);
         Optional<Trainee> deletedTrainee = traineeDao.delete(id);
-        return deletedTrainee.orElse(null);
+        return deletedTrainee.isPresent();
     }
 
     @Override
@@ -89,11 +89,15 @@ public class TraineeServiceImpl implements TraineeService {
             return null;
         }
         logger.info("Selecting Trainee Profile with id " + id);
-        Trainee selectedTrainee = traineeDao.get(id).orElse(null);
-        assert selectedTrainee != null;
-        Optional<User> traineesUser = userDao.get(selectedTrainee.getUserId());
-        selectedTrainee.setUser(traineesUser.orElse(null));
-        return selectedTrainee;
+        return trainee.get();
+    }
+
+    public void setUserDao(Dao<User> userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setTraineeDao(Dao<Trainee> traineeDao) {
+        this.traineeDao = traineeDao;
     }
 
 }

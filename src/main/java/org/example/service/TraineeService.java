@@ -1,21 +1,16 @@
 package org.example.service;
 
-import org.example.dao.Dao;
 import org.example.model.Trainee;
-import org.example.model.User;
 
 import java.util.Date;
 
 public interface TraineeService {
-    Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address);
+    int createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address);
 
-    Trainee updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
+    boolean updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
 
-    Trainee deleteTraineeProfile(int id);
+    boolean deleteTraineeProfile(int id);
 
     Trainee selectTraineeProfile(int id);
 
-    void setTraineeDao(Dao<Trainee> traineeDao);
-
-    void setUserDao(Dao<User> userDao);
 }

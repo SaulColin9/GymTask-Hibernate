@@ -7,21 +7,21 @@ import org.example.model.Training;
 import java.util.Date;
 
 public interface GymFacade {
-    Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address);
+    int addTrainee(String firstName, String lastName, Date dateOfBirth, String address);
 
-    Trainee updateTrainee(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
+    boolean updateTrainee(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
 
-    Trainee deleteTrainee(int id);
+    boolean deleteTrainee(int id);
 
     Trainee getTrainee(int id);
 
-    Trainer addTrainer(String firstName, String lastName, int specialization);
+    int addTrainer(String firstName, String lastName, int specialization);
 
-    Trainer updateTrainer(int id, String firstName, String lastName, boolean isActive, int specialization);
+    boolean updateTrainer(int id, String firstName, String lastName, boolean isActive, int specialization);
 
     Trainer getTrainer(int id);
 
-    Training addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
+    int addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
 
     Training getTraining(int id);
 

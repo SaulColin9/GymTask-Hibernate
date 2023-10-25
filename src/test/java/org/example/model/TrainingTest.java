@@ -15,9 +15,12 @@ class TrainingTest {
 
     @BeforeEach
     void setUp() {
-        training =
-                new Training(1, 1, "TrainingName",
-                        1, new Date(), 1);
+        training = new Training();
+        training.setTrainee(new Trainee());
+        training.setTrainer(new Trainer());
+        training.setTrainingName("TrainingName");
+        training.setTrainingDate(new Date());
+        training.setTrainingDuration(1);
         training.setId(1);
     }
 

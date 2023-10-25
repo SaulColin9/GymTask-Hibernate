@@ -14,9 +14,12 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
         GymFacade gymFacade = context.getBean("gymFacade", GymFacadeImpl.class);
-//        System.out.println(gymFacade.getTrainee(1));
-//        System.out.println(gymFacade.addTrainee("New Trainee", "Last Name", new Date(), "Test Address"));
-//        System.out.println(gymFacade.getTrainer(2));
+        System.out.println(gymFacade.getTrainee(1));
+        int newTrianeeId = gymFacade.addTrainee(null, "Last Name", new Date(), "Test Address");
+        gymFacade.updateTrainee(2, "Updated", "Trainee", true, new Date(), "address");
+        System.out.println(gymFacade.getTrainee(newTrianeeId));
+
+
         System.out.println(gymFacade.getTraining(1));
     }
 }

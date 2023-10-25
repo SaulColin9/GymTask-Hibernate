@@ -53,13 +53,18 @@ class TrainingServiceImplTest {
         trainerTest = new Trainer(2, 2, user2);
         trainerTest = trainerTest.setId(1);
 
-        trainingTest = new Training(1, 1, TRAINING_NAME, 1, new Date(), 1);
-        trainingTest.setId(1);
-        trainingTest.setTrainer(trainerTest);
-        trainingTest.setTrainee(traineeTest);
-
         trainingTypeTest = new TrainingType("TestTrainingType");
         trainingTypeTest.setId(1);
+
+        trainingTest = new Training();
+        trainingTest.setTrainingName(TRAINING_NAME);
+        trainingTest.setId(1);
+        trainingTest.setTrainingType(trainingTypeTest);
+        trainingTest.setTrainingDate(new Date());
+        trainingTest.setTrainer(trainerTest);
+        trainingTest.setTrainee(traineeTest);
+        trainingTest.setTrainingDuration(1);
+
 
         when(userDao.get(1)).thenReturn(Optional.of(user));
         when(traineeDao.get(anyInt())).thenReturn(Optional.of(traineeTest));
@@ -80,7 +85,7 @@ class TrainingServiceImplTest {
 
     @Test
     void selectTrainingProfileTest() {
-        Training training = new Training(1, 1, TRAINING_NAME, 1, new Date(), 1);
+        Training training = trainingTest;
         training.setId(1);
 
         Training trainingSelected = trainingService.selectTrainingProfile(1);

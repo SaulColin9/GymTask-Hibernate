@@ -34,7 +34,7 @@ public class BeanConfiguration {
 
     @Bean
     public TrainingService trainingService(@Autowired Dao<User> userDao, @Autowired Dao<Trainee> traineeDao, @Autowired Dao<Trainer> trainerDao, @Autowired Dao<Training> trainingDao, @Autowired Dao<TrainingType> trainingTypeDao) {
-        TrainingService trainingService = new TrainingServiceImpl();
+        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         trainingService.setUserDao(userDao);
         trainingService.setTraineeDao(traineeDao);
         trainingService.setTrainerDao(trainerDao);
@@ -45,7 +45,7 @@ public class BeanConfiguration {
 
     @Bean
     public TrainerService trainerService(@Autowired Storage storage, @Autowired Dao<Trainer> trainerDao, @Autowired Dao<User> userDao) {
-        TrainerService trainerService = new TrainerServiceImpl();
+        TrainerServiceImpl trainerService = new TrainerServiceImpl();
         trainerService.setTrainerDao(trainerDao);
         trainerService.setUserDao(userDao);
         return trainerService;
@@ -53,7 +53,7 @@ public class BeanConfiguration {
 
     @Bean
     TraineeService traineeService(@Autowired Storage storage, @Autowired Dao<Trainee> traineeDao, @Autowired Dao<User> userDao) {
-        TraineeService traineeService = new TraineeServiceImpl();
+        TraineeServiceImpl traineeService = new TraineeServiceImpl();
         traineeService.setTraineeDao(traineeDao);
         traineeService.setUserDao(userDao);
         return traineeService;

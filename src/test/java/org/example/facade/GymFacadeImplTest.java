@@ -61,8 +61,11 @@ class GymFacadeImplTest {
         trainerTest = trainerTest.setId(1);
         trainerTest.setUser(userTest2);
 
-        trainingTest = new Training(1, 1, "Test Training", 1, new Date(), 1);
+        trainingTest = new Training();
+        trainingTest.setTrainingName("Test Training");
         trainingTest.setId(1);
+        trainingTest.setTrainingDate(new Date());
+        trainingTest.setTrainingDuration(1);
         trainingTest.setTrainee(traineeTest);
         trainingTest.setTrainer(trainerTest);
 
