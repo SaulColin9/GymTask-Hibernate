@@ -15,8 +15,8 @@ public class Main {
         ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
         GymFacade gymFacade = context.getBean("gymFacade", GymFacadeImpl.class);
         System.out.println(gymFacade.getTrainee(1));
-        int newTrianeeId = gymFacade.addTrainee(null, "Last Name", new Date(), "Test Address");
-        gymFacade.updateTrainee(2, "Updated", "Trainee", true, new Date(), "address");
+        int newTrianeeId = gymFacade.addTrainee("Saul", "Last Name", new Date(), "Test Address");
+        gymFacade.updateTrainee(2, "Alejandro", "Trainee", true, new Date(), "address");
         System.out.println(gymFacade.getTrainee(newTrianeeId));
 
 

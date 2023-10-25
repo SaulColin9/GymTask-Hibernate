@@ -85,7 +85,6 @@
     {
       "id": 1,
       "specialization": 1,
-      "userId": 6,
       "user": {
         "id": 6,
         "firstName": "UpdatedTrainerName",
@@ -101,7 +100,6 @@
       "id": 1,
       "dateOfBirth": 1698096231546,
       "address": "Address",
-      "userId": 1,
       "user": {
         "id": 1,
         "firstName": "Annadiane",
@@ -119,7 +117,6 @@
         "id": 1,
         "dateOfBirth": 1698096231546,
         "address": "Address",
-        "userId": 1,
         "user": {
           "id": 1,
           "firstName": "Annadiane",
@@ -132,7 +129,6 @@
       "trainer": {
         "id": 1,
         "specialization": 1,
-        "userId": 6,
         "user": {
           "id": 6,
           "firstName": "UpdatedTrainerName",

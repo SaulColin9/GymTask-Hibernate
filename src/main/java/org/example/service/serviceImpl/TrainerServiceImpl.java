@@ -11,9 +11,8 @@ import java.util.Optional;
 
 
 public class TrainerServiceImpl implements TrainerService {
-    private final UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
-    private final PasswordGenerator passwordGenerator = new PasswordGeneratorImpl();
     Dao<User> userDao;
+    private final UserUtils createUtils = new UserUtilsImpl();
 
     Dao<Trainer> trainerDao;
 
@@ -21,20 +20,20 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public int createTrainerProfile(String firstName, String lastName, int specialization) {
-        if (firstName == null|| lastName == null|| specialization <= 0) {
+        if (firstName == null || lastName == null || specialization <= 0) {
             logger.error("The next fields were not provided: " +
-                    (firstName == null? "firstName, " : "") +
-                    (lastName == null? "lastName, " : "") +
+                    (firstName == null ? "firstName, " : "") +
+                    (lastName == null ? "lastName, " : "") +
                     (specialization == 0 ? "specialization, " : "")
             );
             return -1;
         }
-        String username = usernameGenerator.generateUserName(firstName, lastName, userDao);
-        String password = passwordGenerator.generatePassword(10);
+
         User newUser = userDao
-                .save(new User(firstName, lastName, username, password, true));
+                .save(createUtils.createUser(firstName, lastName, userDao));
+
         logger.info("Creating Trainer Profile with id " + newUser.getId());
-        Trainer newTrainer = trainerDao.save(new Trainer(specialization, newUser.getId(), newUser));
+        Trainer newTrainer = trainerDao.save(new Trainer(specialization, newUser));
         return newTrainer.getId();
     }
 
@@ -45,22 +44,12 @@ public class TrainerServiceImpl implements TrainerService {
             logger.error("Provided Trainer Id does not exist");
             return false;
         }
-        Optional<User> userToUpdate = userDao.get(trainerToUpdate.get().getUserId());
-        if (userToUpdate.isEmpty()) {
-            logger.error("Trainer Profile User Id does not exist");
-            return false;
-        }
 
-        userToUpdate.get().setFirstName(firstName);
-        userToUpdate.get().setLastName(lastName);
-        userToUpdate.get().setIsActive(isActive);
-        String newUserName = usernameGenerator.generateUserName(firstName, lastName, userDao);
-        userToUpdate.get().setUsername(newUserName);
-
-        userDao.update(trainerToUpdate.get().getUserId(), userToUpdate.get());
+        int userId = trainerToUpdate.get().getUser().getId();
+        User updatedUser = createUtils.updateUser(userId, firstName, lastName, userDao);
 
         trainerToUpdate.get().setSpecialization(specialization);
-        trainerToUpdate.get().setUser(userToUpdate.get());
+        trainerToUpdate.get().setUser(updatedUser);
 
         logger.info("Updating Trainer Profile with id " + id);
         return trainerDao.update(id, trainerToUpdate.get()) != null;

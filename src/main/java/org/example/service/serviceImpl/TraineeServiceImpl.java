@@ -11,12 +11,11 @@ import java.util.Date;
 import java.util.Optional;
 
 public class TraineeServiceImpl implements TraineeService {
+    private Dao<User> userDao;
+    private final UserUtils createUtils = new UserUtilsImpl();
     private static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
 
-    private final UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
-    private final PasswordGenerator passwordGenerator = new PasswordGeneratorImpl();
     private static final String NO_ID_MSG = "Provided Trainee Id does not exist";
-    private Dao<User> userDao;
     private Dao<Trainee> traineeDao;
 
 
@@ -31,12 +30,11 @@ public class TraineeServiceImpl implements TraineeService {
             );
             return -1;
         }
-        String username = usernameGenerator.generateUserName(firstName, lastName, userDao);
-        String password = passwordGenerator.generatePassword(10);
         User newUser = userDao
-                .save(new User(firstName, lastName, username, password, true));
+                .save(createUtils.createUser(firstName, lastName, userDao));
+
         logger.info("Creating Trainee Profile with id " + newUser.getId());
-        Trainee newTrainee = traineeDao.save(new Trainee(dateOfBirth, address, newUser.getId(), newUser));
+        Trainee newTrainee = traineeDao.save(new Trainee(dateOfBirth, address, newUser));
         return newTrainee.getId();
     }
 
@@ -47,23 +45,13 @@ public class TraineeServiceImpl implements TraineeService {
             logger.error(NO_ID_MSG);
             return false;
         }
-        Optional<User> userToUpdate = userDao.get(traineeToUpdate.get().getUserId());
-        if (userToUpdate.isEmpty()) {
-            logger.error("Trainee Profile User Id does not exist");
-            return false;
-        }
 
-        userToUpdate.get().setFirstName(firstName);
-        userToUpdate.get().setLastName(lastName);
-        userToUpdate.get().setIsActive(isActive);
-        String newUserName = usernameGenerator.generateUserName(firstName, lastName, userDao);
-        userToUpdate.get().setUsername(newUserName);
-
-        userDao.update(traineeToUpdate.get().getUserId(), userToUpdate.get());
+        int userId = traineeToUpdate.get().getUser().getId();
+        User updatedUser = createUtils.updateUser(userId, firstName, lastName, userDao);
 
         traineeToUpdate.get().setDateOfBirth(dateOfBirth);
         traineeToUpdate.get().setAddress(address);
-        traineeToUpdate.get().setUser(userToUpdate.get());
+        traineeToUpdate.get().setUser(updatedUser);
 
         logger.info("Updating Trainee Profile with id " + id);
         return traineeDao.update(id, traineeToUpdate.get()) != null;

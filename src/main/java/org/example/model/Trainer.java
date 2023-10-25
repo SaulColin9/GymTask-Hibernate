@@ -3,21 +3,18 @@ package org.example.model;
 public class Trainer implements Entity {
     int id;
     int specialization;
-    int userId;
     private User user;
 
 
     public Trainer() {
     }
 
-    public Trainer(int specialization, int userId) {
+    public Trainer(int specialization) {
         this.specialization = specialization;
-        this.userId = userId;
     }
 
-    public Trainer(int specialization, int userId, User user) {
+    public Trainer(int specialization, User user) {
         this.specialization = specialization;
-        this.userId = userId;
         this.user = user;
     }
 
@@ -44,13 +41,6 @@ public class Trainer implements Entity {
         return this;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public void setUser(User user) {
         this.user = user;
@@ -61,7 +51,6 @@ public class Trainer implements Entity {
         return "Trainer{" +
                 "id=" + id +
                 ", specialization=" + specialization +
-                ", userId=" + userId +
                 ", user=" + user +
                 '}';
     }

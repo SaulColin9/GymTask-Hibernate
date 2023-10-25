@@ -6,22 +6,19 @@ public class Trainee implements Entity {
     private int id;
     private Date dateOfBirth;
     private String address;
-    private int userId;
     private User user;
 
     public Trainee() {
     }
 
-    public Trainee(Date dateOfBirth, String address, int userId) {
+    public Trainee(Date dateOfBirth, String address) {
         this.dateOfBirth = dateOfBirth;
         this.address = address;
-        this.userId = userId;
     }
 
-    public Trainee(Date dateOfBirth, String address, int userId, User user) {
+    public Trainee(Date dateOfBirth, String address, User user) {
         this.dateOfBirth = dateOfBirth;
         this.address = address;
-        this.userId = userId;
         this.user = user;
     }
 
@@ -57,13 +54,6 @@ public class Trainee implements Entity {
         return this;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public void setUser(User user) {
         this.user = user;
@@ -75,7 +65,6 @@ public class Trainee implements Entity {
                 "id=" + id +
                 ", dateOfBirth=" + dateOfBirth +
                 ", address='" + address + '\'' +
-                ", userId=" + userId +
                 ", user=" + user +
                 '}';
     }
