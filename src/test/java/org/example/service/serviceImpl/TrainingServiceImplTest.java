@@ -41,9 +41,9 @@ class TrainingServiceImplTest {
         TrainingType trainingTypeTest;
         MockitoAnnotations.openMocks(this);
 
-        user = new User("User Test", "User Test", ".");
+        user = new User("User Test", "User Test");
         user.setId(1);
-        user2 = new User("User Test2", "User Test2", ".");
+        user2 = new User("User Test2", "User Test2");
         user2.setId(2);
 
         traineeTest = new Trainee(new Date(), "Test Address", user);

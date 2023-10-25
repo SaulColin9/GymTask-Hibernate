@@ -35,7 +35,7 @@ class TraineeServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        user = new User("first", "last", ".");
+        user = new User("first", "last");
         user.setId(1);
         traineeTest = new Trainee(new Date(), "Test Address", user);
         traineeTest.setUser(user);

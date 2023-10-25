@@ -23,9 +23,9 @@ class DaoImplUserTest {
 
     @BeforeEach
     void setUp() {
-        user = new User("User Test", "User Test", ".");
+        user = new User("User Test", "User Test");
         user.setId(1);
-        user2 = new User("User Test2", "User Test2", ".");
+        user2 = new User("User Test2", "User Test2");
         user2.setId(2);
         Map<Integer, User> users = new HashMap<>();
         users.put(1, user);

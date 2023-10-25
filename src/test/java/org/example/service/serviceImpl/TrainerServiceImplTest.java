@@ -28,7 +28,7 @@ class TrainerServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        user = new User("first", "last", ".");
+        user = new User("first", "last");
         user.setId(1);
 
         trainerTest = new Trainer(1, user);

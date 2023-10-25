@@ -17,7 +17,6 @@ class UsernameGeneratorImplTest {
     private DaoImpl<User> userDao;
     private static final String TEST_NAME = "Test";
     private static final String TEST_LASTNAME = "TestLast";
-    private static final String SEPARATOR = ".";
 
     @BeforeEach
     void setUp() {
@@ -25,8 +24,8 @@ class UsernameGeneratorImplTest {
         List<User> users;
         userDao = mock(DaoImpl.class);
         users = new ArrayList<>();
-        users.add(new User(TEST_NAME, TEST_LASTNAME, SEPARATOR));
-        users.add(new User(TEST_NAME, TEST_LASTNAME, SEPARATOR));
+        users.add(new User(TEST_NAME, TEST_LASTNAME));
+        users.add(new User(TEST_NAME, TEST_LASTNAME));
         when(userDao.getAll()).thenReturn(users);
     }
 

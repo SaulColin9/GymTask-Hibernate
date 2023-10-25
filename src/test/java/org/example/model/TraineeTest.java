@@ -69,7 +69,7 @@ class TraineeTest {
 
     @Test
     void setUser() {
-        User newUser = new User("TestName", "TestLast", ".");
+        User newUser = new User("TestName", "TestLast");
         trainee.setUser(newUser);
         assertEquals(newUser, trainee.getUser());
     }

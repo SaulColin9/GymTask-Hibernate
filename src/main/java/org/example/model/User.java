@@ -21,11 +21,11 @@ public class User implements Entity {
         this.isActive = isActive;
     }
 
-    public User(String firstName, String lastName, String separator) {
+    public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = true;
-        this.username = firstName + separator + lastName;
+        this.username = firstName + "." + lastName;
     }
 
     @Override

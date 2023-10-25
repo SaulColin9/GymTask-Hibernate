@@ -45,10 +45,10 @@ class GymFacadeImplTest {
 
         date = new Date();
 
-        User userTest = new User("User Test", "User Test", ".");
+        User userTest = new User("User Test", "User Test");
         userTest.setId(1);
 
-        User userTest2 = new User("User Test 2", "User Test 2", ".");
+        User userTest2 = new User("User Test 2", "User Test 2");
         userTest2.setId(2);
 
 
@@ -82,7 +82,7 @@ class GymFacadeImplTest {
 
     @Test
     void updateTrainee() {
-        traineeTest.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST, "."));
+        traineeTest.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST));
         when(traineeService.updateTraineeProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, date, TEST_ADDRESS))
                 .thenReturn(true);
         boolean updatedTrainee = gymFacade.updateTrainee(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST,
@@ -115,7 +115,7 @@ class GymFacadeImplTest {
     @Test
     void updateTrainer() {
         Trainer oldTrainer = trainerTest;
-        oldTrainer.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST, "."));
+        oldTrainer.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST));
         when(trainerService.updateTrainerProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, 2))
                 .thenReturn(true);
         boolean updatedTrainer = gymFacade
