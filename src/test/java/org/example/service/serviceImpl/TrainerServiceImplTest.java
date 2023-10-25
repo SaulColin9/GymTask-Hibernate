@@ -67,4 +67,23 @@ class TrainerServiceImplTest {
         assertEquals(trainerTest.getId(), trainserSelected.getId());
         assertEquals(trainerTest.getUser().getId(), trainserSelected.getUser().getId());
     }
+
+    @Test
+    void nullParameter_ShouldReturn_Invalid_Id(){
+        int createdTrainer = trainerService.createTrainerProfile(null, "", 1);
+        assertTrue(createdTrainer<0);
+    }
+
+    @Test
+    void provided_Select_Id_Not_Found(){
+        when(trainerDao.get(anyInt())).thenReturn(Optional.empty());
+        assertNull(trainerService.selectTrainerProfile(100));
+    }
+
+    @Test
+    void provided_Update_Id_Not_Found(){
+        when(trainerDao.get(anyInt())).thenReturn(Optional.empty());
+        assertFalse(trainerService
+                .updateTrainerProfile(100, "First", "Last", true,1));
+    }
 }

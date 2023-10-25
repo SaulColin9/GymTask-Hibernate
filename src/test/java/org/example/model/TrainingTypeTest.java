@@ -23,6 +23,7 @@ class TrainingTypeTest {
         assertEquals(trainingType.getTrainingTypeName(), "Test Training Type");
     }
 
+
     @Test
     void testToString() {
         assertTrue(trainingType.toString().contains("TrainingType"));

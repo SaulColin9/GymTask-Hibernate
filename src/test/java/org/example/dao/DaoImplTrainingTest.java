@@ -108,4 +108,6 @@ public class DaoImplTrainingTest {
         Optional<Training> deletedTraining = trainingDao.delete(1);
         assertNotNull(deletedTraining);
     }
+
+
 }

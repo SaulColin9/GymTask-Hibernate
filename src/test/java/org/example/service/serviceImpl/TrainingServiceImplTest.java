@@ -94,6 +94,20 @@ class TrainingServiceImplTest {
         assertEquals(training.getId(), trainingSelected.getId());
         assertEquals(training.getTrainingName(), trainingSelected.getTrainingName());
     }
+    @Test
+    void nullParameter_ShouldReturn_Invalid_Id(){
+        int createdTraining = trainingService.createTrainingProfile(0, 1,"", 1, new Date(), -1);
+        assertTrue(createdTraining<0);
+    }
+
+    @Test
+    void no_getEntity_Found(){
+        when(traineeDao.get(anyInt())).thenReturn((Optional.empty()));
+        int createdTraining = trainingService.createTrainingProfile(100, 1,"Name", 1, new Date(), 1);
+        assertTrue(createdTraining<0);
+
+    }
+
 
 
 }

@@ -19,16 +19,28 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public int createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
+        if (traineeId <= 0 || trainerId < 0 || trainingName == null ||
+                trainingTypeId < 0 || trainingDate == null || trainingDuration < 0) {
+            logger.error("The next fields were not provided or have invalid type: " +
+                    (traineeId <= 0 ? "traineeId, " : "") +
+                    (trainerId <= 0 ? "trainerId, " : "") +
+                    (trainingName == null ? "trainingName, " : "") +
+                    (trainingDate == null ? "trainingDate, " : "") +
+                    (trainingDuration < 0 ? "trainingDuration " : "")
+            );
+            return -1;
+        }
         Optional<Trainee> trainee = traineeDao.get(traineeId);
         Optional<Trainer> trainer = trainerDao.get(trainerId);
         Optional<TrainingType> trainingType = trainingTypeDao.get(trainingTypeId);
+        System.out.println(trainee);
         if (trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()) {
             logger.error("The next Ids do not exist: " +
                     (trainee.isEmpty() ? "traineeId, " : "") +
                     (trainer.isEmpty() ? "trainerId, " : "") +
                     (trainingType.isEmpty() ? "trainingTypeId " : "")
             );
-            return 0;
+            return -1;
         }
         Training newTraining = trainingDao.save(
                 new Training(trainee.get(), trainer.get(),

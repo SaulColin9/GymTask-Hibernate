@@ -98,5 +98,23 @@ class TraineeServiceImplTest {
         assertFalse(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
     }
 
+    @Test
+    void nullParameter_ShouldReturn_Invalid_Id(){
+        int createdTrainee = traineeService.createTraineeProfile(null, "", new Date(), "Address");
+        assertTrue(createdTrainee<0);
+    }
+
+    @Test
+    void provided_Select_Id_Not_Found(){
+        when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
+        assertNull(traineeService.selectTraineeProfile(100));
+    }
+
+
+    @Test
+    void user_To_Delete_Not_Found(){
+        when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
+        assertFalse(traineeService.deleteTraineeProfile(1));
+    }
 
 }

@@ -16,11 +16,13 @@ class TrainingTest {
     @BeforeEach
     void setUp() {
         training = new Training();
-        training.setTrainee(new Trainee());
-        training.setTrainer(new Trainer());
+        training.setTrainee(new Trainee(new Date(), "Address"));
+        training.setTrainer(new Trainer(1));
+        training.setTrainingType(new TrainingType("TrainingTypeName"));
         training.setTrainingName("TrainingName");
         training.setTrainingDate(new Date());
         training.setTrainingDuration(1);
+        training.setTrainingTypeId(1);
         training.setId(1);
     }
 
@@ -37,6 +39,25 @@ class TrainingTest {
         assertEquals(training.getTrainingDuration(), trainingDuration);
     }
 
+    @Test
+    void getTrainingTypeId(){
+        assertEquals(training.getTrainingTypeId(), 1);
+    }
+
+    @Test
+    void getTrainee(){
+        assertNotNull(training.getTrainee());
+    }
+
+    @Test
+    void getTrainer(){
+        assertNotNull(training.getTrainer());
+    }
+
+    @Test
+    void getTrainingType(){
+        assertNotNull(training.getTrainingType());
+    }
     @Test
     void testToString() {
         assertTrue(training.toString().contains("Training"));
