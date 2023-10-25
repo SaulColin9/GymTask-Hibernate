@@ -46,11 +46,11 @@ class TrainingServiceImplTest {
         user2 = new User("User Test2", "User Test2", ".");
         user2.setId(2);
 
-        traineeTest = new Trainee(new Date(), "Test Address",  user);
+        traineeTest = new Trainee(new Date(), "Test Address", user);
         traineeTest = traineeTest.setId(1);
 
 
-        trainerTest = new Trainer(2,  user2);
+        trainerTest = new Trainer(2, user2);
         trainerTest = trainerTest.setId(1);
 
         trainingTypeTest = new TrainingType("TestTrainingType");
@@ -80,7 +80,7 @@ class TrainingServiceImplTest {
         int trainingCreated = trainingService
                 .createTrainingProfile(1, 1, TRAINING_NAME, 1, new Date(), 1);
 
-        assertTrue(trainingCreated>0);
+        assertTrue(trainingCreated > 0);
     }
 
     @Test
@@ -94,20 +94,20 @@ class TrainingServiceImplTest {
         assertEquals(training.getId(), trainingSelected.getId());
         assertEquals(training.getTrainingName(), trainingSelected.getTrainingName());
     }
+
     @Test
-    void nullParameter_ShouldReturn_Invalid_Id(){
-        int createdTraining = trainingService.createTrainingProfile(0, 1,"", 1, new Date(), -1);
-        assertTrue(createdTraining<0);
+    void nullParameter_ShouldReturn_Invalid_Id() {
+        int createdTraining = trainingService.createTrainingProfile(0, 1, "", 1, new Date(), -1);
+        assertTrue(createdTraining < 0);
     }
 
     @Test
-    void no_getEntity_Found(){
+    void no_getEntity_Found() {
         when(traineeDao.get(anyInt())).thenReturn((Optional.empty()));
-        int createdTraining = trainingService.createTrainingProfile(100, 1,"Name", 1, new Date(), 1);
-        assertTrue(createdTraining<0);
+        int createdTraining = trainingService.createTrainingProfile(100, 1, "Name", 1, new Date(), 1);
+        assertTrue(createdTraining < 0);
 
     }
-
 
 
 }

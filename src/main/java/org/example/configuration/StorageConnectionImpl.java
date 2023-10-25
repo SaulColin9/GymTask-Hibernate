@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class StorageConnectionImpl<T> implements StorageConnection<T> {
     private final Class<T> tClass;

@@ -15,9 +15,9 @@ import static org.mockito.Mockito.when;
 
 class UsernameGeneratorImplTest {
     private DaoImpl<User> userDao;
-    private final static String TEST_NAME = "Test";
-    private final static String TEST_LASTNAME = "TestLast";
-    private final static String SEPARATOR = ".";
+    private static final String TEST_NAME = "Test";
+    private static final String TEST_LASTNAME = "TestLast";
+    private static final String SEPARATOR = ".";
 
     @BeforeEach
     void setUp() {
@@ -41,7 +41,7 @@ class UsernameGeneratorImplTest {
     @Test
     void generateUserName() {
         UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
-        String usernameGenerated = usernameGenerator.generateUserName(TEST_NAME, TEST_LASTNAME,  userDao);
+        String usernameGenerated = usernameGenerator.generateUserName(TEST_NAME, TEST_LASTNAME, userDao);
         assertNotEquals(usernameGenerated, "Test.TestLast");
     }
 

@@ -45,7 +45,7 @@ class TrainerServiceImplTest {
         when(userDao.save(any(User.class))).thenReturn(user);
         when(trainerDao.save(any(Trainer.class))).thenReturn(trainerTest);
         int createdTrainer = trainerService.createTrainerProfile("Test", "Test", 1);
-        assertTrue(createdTrainer>0);
+        assertTrue(createdTrainer > 0);
     }
 
     @Test
@@ -69,21 +69,21 @@ class TrainerServiceImplTest {
     }
 
     @Test
-    void nullParameter_ShouldReturn_Invalid_Id(){
+    void nullParameter_ShouldReturn_Invalid_Id() {
         int createdTrainer = trainerService.createTrainerProfile(null, "", 1);
-        assertTrue(createdTrainer<0);
+        assertTrue(createdTrainer < 0);
     }
 
     @Test
-    void provided_Select_Id_Not_Found(){
+    void provided_Select_Id_Not_Found() {
         when(trainerDao.get(anyInt())).thenReturn(Optional.empty());
         assertNull(trainerService.selectTrainerProfile(100));
     }
 
     @Test
-    void provided_Update_Id_Not_Found(){
+    void provided_Update_Id_Not_Found() {
         when(trainerDao.get(anyInt())).thenReturn(Optional.empty());
         assertFalse(trainerService
-                .updateTrainerProfile(100, "First", "Last", true,1));
+                .updateTrainerProfile(100, "First", "Last", true, 1));
     }
 }

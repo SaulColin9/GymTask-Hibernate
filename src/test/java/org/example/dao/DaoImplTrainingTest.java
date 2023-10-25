@@ -96,7 +96,6 @@ public class DaoImplTrainingTest {
     void update() {
         Training oldTraining = training;
         training2.setTrainingName("Updated");
-        System.out.println(training2);
         Training updatedTraining = trainingDao.update(1, training2);
         assertNotEquals(oldTraining.getTrainingName(), updatedTraining.getTrainingName());
         assertEquals(oldTraining.getId(), updatedTraining.getId());

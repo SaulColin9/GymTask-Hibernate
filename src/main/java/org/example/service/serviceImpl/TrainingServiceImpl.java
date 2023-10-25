@@ -19,13 +19,18 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public int createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        if (traineeId <= 0 || trainerId < 0 || trainingName == null ||
-                trainingTypeId < 0 || trainingDate == null || trainingDuration < 0) {
-            logger.error("The next fields were not provided or have invalid type: " +
+        if (trainingName == null ||
+                trainingTypeId < 0 || trainingDate == null) {
+            logger.error("The next fields were not provided " +
+                    (trainingName == null ? "trainingName, " : "") +
+                    (trainingDate == null ? "trainingDate, " : "")
+            );
+            return -1;
+        }
+        if (traineeId <= 0 || trainingTypeId <= 0 || traineeId <= 0) {
+            logger.error("The next fields are invalid" +
                     (traineeId <= 0 ? "traineeId, " : "") +
                     (trainerId <= 0 ? "trainerId, " : "") +
-                    (trainingName == null ? "trainingName, " : "") +
-                    (trainingDate == null ? "trainingDate, " : "") +
                     (trainingDuration < 0 ? "trainingDuration " : "")
             );
             return -1;
@@ -33,7 +38,6 @@ public class TrainingServiceImpl implements TrainingService {
         Optional<Trainee> trainee = traineeDao.get(traineeId);
         Optional<Trainer> trainer = trainerDao.get(trainerId);
         Optional<TrainingType> trainingType = trainingTypeDao.get(trainingTypeId);
-        System.out.println(trainee);
         if (trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()) {
             logger.error("The next Ids do not exist: " +
                     (trainee.isEmpty() ? "traineeId, " : "") +

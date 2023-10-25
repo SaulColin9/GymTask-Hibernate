@@ -1,6 +1,5 @@
 package org.example.dao;
 
-import org.example.configuration.Storage;
 import org.example.model.*;
 
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.Optional;
 
 public abstract class DaoImpl<T extends Entity> implements Dao<T> {
     private Map<Integer, T> storageEntities;
+
     @Override
     public int getNextId() {
         if (storageEntities.isEmpty()) {

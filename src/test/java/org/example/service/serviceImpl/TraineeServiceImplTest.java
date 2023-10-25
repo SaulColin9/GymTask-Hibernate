@@ -75,14 +75,14 @@ class TraineeServiceImplTest {
 
     @Test
     void selectTraineeProfile() {
-        Trainee traineeTest = new Trainee(new Date(), "Test Address", new User());
-        traineeTest = traineeTest.setId(1);
-        when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
+        Trainee trainee = new Trainee(new Date(), "Test Address", new User());
+        trainee = trainee.setId(1);
+        when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(trainee));
         Trainee traineeSelected = traineeService.selectTraineeProfile(1);
 
         assertNotNull(traineeSelected);
-        assertEquals(traineeTest.getId(), traineeSelected.getId());
-        assertEquals(traineeTest.getUser().getId(), traineeSelected.getUser().getId());
+        assertEquals(trainee.getId(), traineeSelected.getId());
+        assertEquals(trainee.getUser().getId(), traineeSelected.getUser().getId());
     }
 
     @Test
@@ -99,20 +99,20 @@ class TraineeServiceImplTest {
     }
 
     @Test
-    void nullParameter_ShouldReturn_Invalid_Id(){
+    void nullParameter_ShouldReturn_Invalid_Id() {
         int createdTrainee = traineeService.createTraineeProfile(null, "", new Date(), "Address");
-        assertTrue(createdTrainee<0);
+        assertTrue(createdTrainee < 0);
     }
 
     @Test
-    void provided_Select_Id_Not_Found(){
+    void provided_Select_Id_Not_Found() {
         when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
         assertNull(traineeService.selectTraineeProfile(100));
     }
 
 
     @Test
-    void user_To_Delete_Not_Found(){
+    void user_To_Delete_Not_Found() {
         when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
         assertFalse(traineeService.deleteTraineeProfile(1));
     }

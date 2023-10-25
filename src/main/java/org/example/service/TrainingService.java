@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.dao.Dao;
 import org.example.model.*;
 
 import java.util.Date;

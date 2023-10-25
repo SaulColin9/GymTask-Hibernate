@@ -2,7 +2,7 @@ package org.example.service;
 
 import java.security.SecureRandom;
 
-public class PasswordGeneratorImpl implements PasswordGenerator{
+public class PasswordGeneratorImpl implements PasswordGenerator {
     public String generatePassword(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();

@@ -57,7 +57,7 @@ class GymFacadeImplTest {
         traineeTest.setUser(userTest);
 
 
-        trainerTest = new Trainer(2,  userTest2);
+        trainerTest = new Trainer(2, userTest2);
         trainerTest = trainerTest.setId(1);
         trainerTest.setUser(userTest2);
 
@@ -77,13 +77,12 @@ class GymFacadeImplTest {
         when(traineeService.createTraineeProfile("New Test Trainee", "Test Last", date, TEST_ADDRESS))
                 .thenReturn(1);
         int newTraineeId = gymFacade.addTrainee("New Test Trainee", "Test Last", date, TEST_ADDRESS);
-        assertTrue(newTraineeId>0);
+        assertTrue(newTraineeId > 0);
     }
 
     @Test
     void updateTrainee() {
         Trainee oldTrainee = traineeTest;
-        String oldTraineeName = oldTrainee.getUser().getUsername();
         traineeTest.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST, "."));
         when(traineeService.updateTraineeProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, date, TEST_ADDRESS))
                 .thenReturn(true);
@@ -111,13 +110,12 @@ class GymFacadeImplTest {
     void addTrainer() {
         when(trainerService.createTrainerProfile(anyString(), anyString(), anyInt())).thenReturn(1);
         int newTrainer = gymFacade.addTrainer("New Trainer", "New Trainer Last", 1);
-        assertTrue(newTrainer>0);
+        assertTrue(newTrainer > 0);
     }
 
     @Test
     void updateTrainer() {
         Trainer oldTrainer = trainerTest;
-        String oldTrainerName = oldTrainer.getUser().getUsername();
         oldTrainer.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST, "."));
         when(trainerService.updateTrainerProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, 2))
                 .thenReturn(true);
@@ -142,7 +140,7 @@ class GymFacadeImplTest {
                 .thenReturn(1);
         int newTraining = gymFacade
                 .addTraining(1, 1, "New Training", 1, date, 1);
-        assertTrue(newTraining>0);
+        assertTrue(newTraining > 0);
     }
 
     @Test

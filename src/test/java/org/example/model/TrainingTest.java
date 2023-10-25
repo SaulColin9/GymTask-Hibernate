@@ -40,24 +40,25 @@ class TrainingTest {
     }
 
     @Test
-    void getTrainingTypeId(){
+    void getTrainingTypeId() {
         assertEquals(training.getTrainingTypeId(), 1);
     }
 
     @Test
-    void getTrainee(){
+    void getTrainee() {
         assertNotNull(training.getTrainee());
     }
 
     @Test
-    void getTrainer(){
+    void getTrainer() {
         assertNotNull(training.getTrainer());
     }
 
     @Test
-    void getTrainingType(){
+    void getTrainingType() {
         assertNotNull(training.getTrainingType());
     }
+
     @Test
     void testToString() {
         assertTrue(training.toString().contains("Training"));
