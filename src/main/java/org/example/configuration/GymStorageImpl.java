@@ -23,6 +23,7 @@ public class GymStorageImpl implements Storage {
     private Map<Integer, Training> trainings;
     private Map<Integer, TrainingType> trainingTypes;
 
+
     public void setUsers(Map<Integer, User> users) {
         this.users = users;
     }

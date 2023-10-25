@@ -42,17 +42,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training selectTrainingProfile(int id) {
         Training training = trainingDao.get(id).orElse(null);
-        Optional<Trainer> trainer = trainerDao.get(training.getTrainerId());
-        Optional<User> trainersUser = userDao.get(trainer.get().getUserId());
-        trainer.get().setUser(trainersUser.orElse(null));
-        Optional<Trainee> trainee = traineeDao.get(training.getTraineeId());
-        Optional<User> traineesUser = userDao.get(trainee.get().getUserId());
-        trainee.get().setUser(traineesUser.orElse(null));
-        Optional<TrainingType> trainingType = trainingTypeDao.get(training.getTrainingTypeId());
-
-        training.setTrainer(trainer.orElse(null));
-        training.setTrainee(trainee.orElse(null));
-        training.setTrainingType(trainingType.orElse(null));
+        Trainer trainer = training.getTrainer();
+        User trainersUser = trainer.getUser();
+        Trainee trainee = training.getTrainee();
+        User traineesUser = trainee.getUser();
+        TrainingType trainingType = training.getTrainingType();
 
         logger.info("Selecting Training Profile with id " + id);
         return training;

@@ -108,6 +108,18 @@ public class Training implements Entity {
         this.trainingType = trainingType;
     }
 
+    public Trainee getTrainee() {
+        return trainee;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public TrainingType getTrainingType() {
+        return trainingType;
+    }
+
     @Override
     public String toString() {
         return "Training{" +

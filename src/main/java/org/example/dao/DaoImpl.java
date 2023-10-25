@@ -14,6 +14,7 @@ public class DaoImpl<T extends Entity> implements Dao<T> {
 
 
     public void setStorage(Storage storage) {
+
         if (tClass.equals(User.class)) {
             storageEntities = (Map<Integer, T>) storage.getUsers();
             return;
@@ -41,10 +42,14 @@ public class DaoImpl<T extends Entity> implements Dao<T> {
 
     @Override
     public int getNextId() {
-        if (storageEntities.values().isEmpty()) {
+        if (storageEntities.isEmpty()) {
             return 1;
+        } else {
+            int maxId = storageEntities.keySet().stream()
+                    .max(Integer::compare)
+                    .orElse(0);
+            return maxId + 1;
         }
-        return storageEntities.get(storageEntities.values().size() - 1).getId() + 1;
     }
 
     @Override
@@ -65,9 +70,9 @@ public class DaoImpl<T extends Entity> implements Dao<T> {
 
     @Override
     public T save(T t) {
-        T newT = setId(t, getNextId());
-        storageEntities.put(newT.getId(), newT);
-        return newT;
+        t.setId(getNextId());
+        storageEntities.put(t.getId(), t);
+        return t;
 
     }
 
@@ -90,11 +95,5 @@ public class DaoImpl<T extends Entity> implements Dao<T> {
         }
         return foundEntity;
     }
-
-    public T setId(T t, int id) {
-        t.setId(id);
-        return t;
-    }
-
 
 }

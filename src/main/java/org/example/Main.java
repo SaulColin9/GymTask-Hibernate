@@ -6,14 +6,17 @@ import org.example.facade.GymFacadeImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.Date;
+
 
 public class Main {
 
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
         GymFacade gymFacade = context.getBean("gymFacade", GymFacadeImpl.class);
-        System.out.println(gymFacade.getTrainee(1));
-        System.out.println(gymFacade.getTrainer(1));
+//        System.out.println(gymFacade.getTrainee(1));
+//        System.out.println(gymFacade.addTrainee("New Trainee", "Last Name", new Date(), "Test Address"));
+//        System.out.println(gymFacade.getTrainer(2));
         System.out.println(gymFacade.getTraining(1));
     }
 }

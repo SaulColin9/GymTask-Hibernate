@@ -3,9 +3,7 @@ package org.example.service.serviceImpl;
 import org.example.dao.Dao;
 import org.example.model.Trainer;
 import org.example.model.User;
-import org.example.service.PasswordGeneratorImpl;
-import org.example.service.TrainerService;
-import org.example.service.UsernameGeneratorImpl;
+import org.example.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +11,8 @@ import java.util.Optional;
 
 
 public class TrainerServiceImpl implements TrainerService {
+    private final UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
+    private final PasswordGenerator passwordGenerator = new PasswordGeneratorImpl();
     Dao<User> userDao;
 
     Dao<Trainer> trainerDao;
@@ -21,8 +21,8 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer createTrainerProfile(String firstName, String lastName, int specialization) {
-        String username = UsernameGeneratorImpl.generateUserName(firstName, lastName, ".", userDao);
-        String password = PasswordGeneratorImpl.generatePassword(10);
+        String username = usernameGenerator.generateUserName(firstName, lastName, ".", userDao);
+        String password = passwordGenerator.generatePassword(10);
         User newUser = userDao
                 .save(new User(firstName, lastName, username, password, true));
         logger.info("Creating Trainer Profile with id " + newUser.getId());
@@ -45,7 +45,7 @@ public class TrainerServiceImpl implements TrainerService {
         userToUpdate.get().setFirstName(firstName);
         userToUpdate.get().setLastName(lastName);
         userToUpdate.get().setIsActive(isActive);
-        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName, ".", userDao);
+        String newUserName = usernameGenerator.generateUserName(firstName, lastName, ".", userDao);
         userToUpdate.get().setUsername(newUserName);
 
         userDao.update(trainerToUpdate.get().getUserId(), userToUpdate.get());

@@ -3,9 +3,7 @@ package org.example.service.serviceImpl;
 import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
-import org.example.service.PasswordGeneratorImpl;
-import org.example.service.TraineeService;
-import org.example.service.UsernameGeneratorImpl;
+import org.example.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +13,8 @@ import java.util.Optional;
 public class TraineeServiceImpl implements TraineeService {
     private static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
 
+    private final UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
+    private final PasswordGenerator passwordGenerator = new PasswordGeneratorImpl();
     private static final String NO_ID_MSG = "Provided Trainee Id does not exist";
     private Dao<User> userDao;
     private Dao<Trainee> traineeDao;
@@ -32,8 +32,8 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
-        String username = UsernameGeneratorImpl.generateUserName(firstName, lastName, ".", userDao);
-        String password = PasswordGeneratorImpl.generatePassword(10);
+        String username = usernameGenerator.generateUserName(firstName, lastName, ".", userDao);
+        String password = passwordGenerator.generatePassword(10);
         User newUser = userDao
                 .save(new User(firstName, lastName, username, password, true));
         logger.info("Creating Trainee Profile with id " + newUser.getId());
@@ -56,7 +56,7 @@ public class TraineeServiceImpl implements TraineeService {
         userToUpdate.get().setFirstName(firstName);
         userToUpdate.get().setLastName(lastName);
         userToUpdate.get().setIsActive(isActive);
-        String newUserName = UsernameGeneratorImpl.generateUserName(firstName, lastName, ".", userDao);
+        String newUserName = usernameGenerator.generateUserName(firstName, lastName, ".", userDao);
         userToUpdate.get().setUsername(newUserName);
 
         userDao.update(traineeToUpdate.get().getUserId(), userToUpdate.get());
