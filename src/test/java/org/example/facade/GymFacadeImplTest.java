@@ -82,7 +82,6 @@ class GymFacadeImplTest {
 
     @Test
     void updateTrainee() {
-        Trainee oldTrainee = traineeTest;
         traineeTest.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST, "."));
         when(traineeService.updateTraineeProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, date, TEST_ADDRESS))
                 .thenReturn(true);

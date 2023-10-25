@@ -59,13 +59,13 @@ class TrainerServiceImplTest {
 
     @Test
     void selectTrainerProfile() {
-        Trainer trainerTest = new Trainer(1, user);
-        trainerTest.setId(1);
+        Trainer trainer = new Trainer(1, user);
+        trainer.setId(1);
         Trainer trainserSelected = trainerService.selectTrainerProfile(1);
 
         assertNotNull(trainserSelected);
-        assertEquals(trainerTest.getId(), trainserSelected.getId());
-        assertEquals(trainerTest.getUser().getId(), trainserSelected.getUser().getId());
+        assertEquals(trainer.getId(), trainserSelected.getId());
+        assertEquals(trainer.getUser().getId(), trainserSelected.getUser().getId());
     }
 
     @Test
