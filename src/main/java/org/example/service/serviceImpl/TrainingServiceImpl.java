@@ -19,23 +19,10 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public int createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        if (trainingName == null || trainingDate == null) {
-            logger.error("The next fields were not provided " +
-                    (trainingName == null ? "trainingName, " : "") +
-                    (trainingDate == null ? "trainingDate, " : "")
-            );
+        if(!validateFields(trainingName, trainingDate) || !validateIds(traineeId, trainerId, trainingTypeId, trainingDuration)){
             return -1;
         }
-        if (traineeId <= 0 || trainingTypeId <= 0 || trainerId <= 0
-                || trainingDuration < 0) {
-            logger.error("The next fields are invalid" +
-                    (traineeId <= 0 ? "traineeId, " : "") +
-                    (trainerId <= 0 ? "trainerId, " : "") +
-                    (trainingTypeId <= 0 ? "trainingTypeId, " : "") +
-                    (trainingDuration < 0 ? "trainingDuration " : "")
-            );
-            return -1;
-        }
+
         Optional<Trainee> trainee = traineeDao.get(traineeId);
         Optional<Trainer> trainer = trainerDao.get(trainerId);
         Optional<TrainingType> trainingType = trainingTypeDao.get(trainingTypeId);
@@ -66,6 +53,30 @@ public class TrainingServiceImpl implements TrainingService {
         return training.get();
     }
 
+    private boolean validateFields(String trainingName, Date trainingDate) {
+        if (trainingName == null || trainingDate == null) {
+            logger.error("The following fields were not provided: " +
+                    (trainingName == null ? "trainingName, " : "") +
+                    (trainingDate == null ? "trainingDate" : "")
+            );
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateIds(int traineeId, int trainerId, int trainingTypeId, double trainingDuration) {
+        if (traineeId <= 0 || trainerId <= 0 || trainingTypeId <= 0 || trainingDuration < 0) {
+            logger.error("The following fields are invalid: " +
+                    (traineeId <= 0 ? "traineeId, " : "") +
+                    (trainerId <= 0 ? "trainerId, " : "") +
+                    (trainingTypeId <= 0 ? "trainingTypeId, " : "") +
+                    (trainingDuration < 0 ? "trainingDuration" : "")
+            );
+            return false;
+        }
+        return true;
+    }
+
     public void setTraineeDao(Dao<Trainee> traineeDao) {
         this.traineeDao = traineeDao;
     }
@@ -81,5 +92,6 @@ public class TrainingServiceImpl implements TrainingService {
     public void setTrainingDao(Dao<Training> trainingDao) {
         this.trainingDao = trainingDao;
     }
+
 
 }
