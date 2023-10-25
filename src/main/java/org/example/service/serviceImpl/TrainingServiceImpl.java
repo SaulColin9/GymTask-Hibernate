@@ -19,18 +19,19 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public int createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        if (trainingName == null ||
-                trainingTypeId < 0 || trainingDate == null) {
+        if (trainingName == null || trainingDate == null) {
             logger.error("The next fields were not provided " +
                     (trainingName == null ? "trainingName, " : "") +
                     (trainingDate == null ? "trainingDate, " : "")
             );
             return -1;
         }
-        if (traineeId <= 0 || trainingTypeId <= 0 || traineeId <= 0) {
+        if (traineeId <= 0 || trainingTypeId <= 0 || trainerId <= 0
+                || trainingDuration < 0) {
             logger.error("The next fields are invalid" +
                     (traineeId <= 0 ? "traineeId, " : "") +
                     (trainerId <= 0 ? "trainerId, " : "") +
+                    (trainingTypeId <= 0 ? "trainingTypeId, " : "") +
                     (trainingDuration < 0 ? "trainingDuration " : "")
             );
             return -1;
