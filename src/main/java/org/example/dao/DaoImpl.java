@@ -8,38 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class DaoImpl<T extends Entity> implements Dao<T> {
-    final Class<T> tClass;
-    protected Map<Integer, T> storageEntities;
-
-
-    public void setStorage(Storage storage) {
-
-        if (tClass.equals(User.class)) {
-            storageEntities = (Map<Integer, T>) storage.getUsers();
-            return;
-        }
-        if (tClass.equals(Trainee.class)) {
-            storageEntities = (Map<Integer, T>) storage.getTrainees();
-            return;
-        }
-        if (tClass.equals(Trainer.class)) {
-            storageEntities = (Map<Integer, T>) storage.getTrainers();
-            return;
-        }
-        if (tClass.equals(Training.class)) {
-            storageEntities = (Map<Integer, T>) storage.getTrainings();
-            return;
-        }
-        if (tClass.equals(TrainingType.class)) {
-            storageEntities = (Map<Integer, T>) storage.getTrainingTypes();
-        }
-    }
-
-    public DaoImpl(Class<T> tClass) {
-        this.tClass = tClass;
-    }
-
+public abstract class DaoImpl<T extends Entity> implements Dao<T> {
+    private Map<Integer, T> storageEntities;
     @Override
     public int getNextId() {
         if (storageEntities.isEmpty()) {
@@ -96,4 +66,7 @@ public class DaoImpl<T extends Entity> implements Dao<T> {
         return foundEntity;
     }
 
+    public void setStorageEntities(Map<Integer, T> storageEntities) {
+        this.storageEntities = storageEntities;
+    }
 }

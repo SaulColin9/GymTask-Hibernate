@@ -2,6 +2,7 @@ package org.example.configuration;
 
 import org.example.dao.Dao;
 import org.example.dao.DaoImpl;
+import org.example.dao.entities.*;
 import org.example.facade.GymFacade;
 import org.example.facade.GymFacadeImpl;
 import org.example.model.*;
@@ -61,35 +62,35 @@ public class BeanConfiguration {
 
     @Bean("users")
     public Dao<User> userDao(@Autowired Storage storage) {
-        Dao<User> userDao = new DaoImpl<>(User.class);
+        Dao<User> userDao = new UserDao();
         userDao.setStorage(storage);
         return userDao;
     }
 
     @Bean("trainings")
     public Dao<Training> trainingDao(@Autowired Storage storage) {
-        Dao<Training> trainingDao = new DaoImpl<>(Training.class);
+        Dao<Training> trainingDao = new TrainingDao();
         trainingDao.setStorage(storage);
         return trainingDao;
     }
 
     @Bean("trainingTypes")
     public Dao<TrainingType> trainingTypesDao(@Autowired Storage storage) {
-        Dao<TrainingType> trainingTypesDao = new DaoImpl<>(TrainingType.class);
+        Dao<TrainingType> trainingTypesDao = new TrainingTypeDao();
         trainingTypesDao.setStorage(storage);
         return trainingTypesDao;
     }
 
     @Bean("trainers")
     public Dao<Trainer> trainerDao(@Autowired Storage storage) {
-        Dao<Trainer> trainerDao = new DaoImpl<>(Trainer.class);
+        Dao<Trainer> trainerDao = new TrainerDao();
         trainerDao.setStorage(storage);
         return trainerDao;
     }
 
     @Bean("trainees")
     public Dao<Trainee> traineeDao(@Autowired Storage storage) {
-        Dao<Trainee> traineeDao = new DaoImpl<>(Trainee.class);
+        Dao<Trainee> traineeDao = new TraineeDao();
         traineeDao.setStorage(storage);
         return traineeDao;
     }
