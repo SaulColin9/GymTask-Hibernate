@@ -38,18 +38,18 @@ public class TrainerServiceImpl implements TrainerService {
     public boolean updateTrainerProfile(int id, String firstName, String lastName, boolean isActive, int specialization) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
         if (trainerToUpdate.isEmpty()) {
-            logger.error("Provided Trainer Id does not exist");
+            logger.error(NO_ID_MSG);
             throw new IllegalArgumentException(NO_ID_MSG);
         }
         Trainer foundTrainer = trainerToUpdate.get();
-        if (firstName != null || lastName != null) {
-            int userId = foundTrainer.getUser().getId();
-            User updatedUser = userUtils.updateUser(userId,
-                    firstName == null ? foundTrainer.getUser().getFirstName() : firstName,
-                    lastName == null ? foundTrainer.getUser().getLastName() : lastName
-            );
-            foundTrainer.setUser(updatedUser);
-        }
+
+        int userId = foundTrainer.getUser().getId();
+        User updatedUser = userUtils.updateUser(userId,
+                firstName == null ? foundTrainer.getUser().getFirstName() : firstName,
+                lastName == null ? foundTrainer.getUser().getLastName() : lastName,
+                isActive
+        );
+        foundTrainer.setUser(updatedUser);
 
         foundTrainer.setSpecialization(specialization);
 
@@ -61,7 +61,7 @@ public class TrainerServiceImpl implements TrainerService {
     public Trainer selectTrainerProfile(int id) {
         Optional<Trainer> trainer = trainerDao.get(id);
         if (trainer.isEmpty()) {
-            logger.info("Provided Trainer Id does not exist" + id);
+            logger.info(NO_ID_MSG);
             throw new IllegalArgumentException(NO_ID_MSG);
         }
         logger.info("Selecting Trainer Profile with id {}", id);

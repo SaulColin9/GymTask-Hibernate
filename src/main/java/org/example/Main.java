@@ -22,7 +22,6 @@ public class Main {
                 newTrainee.getUser().getIsActive(), new Date(), "Test Street");
         System.out.println(gymFacade.getTrainee(newTraineeId));
         System.out.println(gymFacade.deleteTrainee(newTraineeId));
-//        System.out.println(gymFacade.getTrainee(newTraineeId));
 
 
         int newTrainerId = gymFacade.addTrainer("Saul", "Colin", 1);
@@ -31,13 +30,9 @@ public class Main {
         System.out.println(gymFacade.getTrainer(newTrainerId));
 
 
+        int newTrainingId = gymFacade.addTraining(1, 1, "New Training",
+                1, new Date(), 1);
+        System.out.println(gymFacade.getTraining(newTrainingId));
 
-//        System.out.println(gymFacade.getTrainee(1));
-//        int newTrianeeId = gymFacade.addTrainee("Saul", "Last Name", new Date(), "Test Address");
-//        gymFacade.updateTrainee(2, "Alejandro", "Trainee", true, new Date(), "address");
-//        System.out.println(gymFacade.getTrainee(newTrianeeId));
-//
-//
-//        System.out.println(gymFacade.getTraining(1));
     }
 }

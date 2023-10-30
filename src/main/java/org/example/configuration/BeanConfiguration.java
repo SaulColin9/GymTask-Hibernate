@@ -20,7 +20,7 @@ import org.springframework.context.annotation.*;
 public class BeanConfiguration {
     @Bean
     public Storage storage(@Value("${entities.source}") String filePath) {
-        GymStorageImpl gymStorage =  new GymStorageImpl();
+        GymStorageImpl gymStorage = new GymStorageImpl();
         gymStorage.setFilePath(filePath);
         return gymStorage;
     }
@@ -33,8 +33,10 @@ public class BeanConfiguration {
 
     @Bean
     public TrainingService trainingService(@Autowired Dao<Trainee> traineeDao,
-                                           @Autowired Dao<Trainer> trainerDao, @Autowired Dao<Training> trainingDao,
-                                           @Autowired Dao<TrainingType> trainingTypeDao) {
+                                           @Autowired Dao<Trainer> trainerDao,
+                                           @Autowired Dao<Training> trainingDao,
+                                           @Autowired Dao<TrainingType> trainingTypeDao
+    ) {
         TrainingServiceImpl trainingService = new TrainingServiceImpl();
         trainingService.setTraineeDao(traineeDao);
         trainingService.setTrainerDao(trainerDao);
@@ -107,7 +109,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    UserUtils userUtils(@Autowired UsernameGenerator usernameGenerator, @Autowired PasswordGenerator passwordGenerator,
+    UserUtils userUtils(@Autowired UsernameGenerator usernameGenerator,
+                        @Autowired PasswordGenerator passwordGenerator,
                         @Autowired Dao<User> userDao) {
         UserUtilsImpl userUtils = new UserUtilsImpl();
         userUtils.setUserDao(userDao);

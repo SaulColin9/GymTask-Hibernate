@@ -21,9 +21,10 @@ public class UserUtilsImpl implements UserUtils {
     }
 
     @Override
-    public User updateUser(int userId, String newFirstName, String newLastName) {
+    public User updateUser(int userId, String newFirstName, String newLastName, boolean isActive) {
         User updatedUser = createUser(newFirstName, newLastName);
         updatedUser = updatedUser.setId(userId);
+        updatedUser.setIsActive(isActive);
         userDao.update(userId, updatedUser);
         return updatedUser;
     }

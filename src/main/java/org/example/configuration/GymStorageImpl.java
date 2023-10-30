@@ -68,7 +68,6 @@ public class GymStorageImpl implements Storage, InitializingBean {
 
     @Override
     public Map<Integer, Trainer> getTrainers() {
-
         return trainers;
     }
 

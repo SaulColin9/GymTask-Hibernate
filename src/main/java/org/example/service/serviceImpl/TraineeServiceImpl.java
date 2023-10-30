@@ -43,17 +43,16 @@ public class TraineeServiceImpl implements TraineeService {
         Trainee foundTrainee = traineeToUpdate.get();
 
 
-        if (firstName != null || lastName != null) {
-            int userId = foundTrainee.getUser().getId();
-            User updatedUser = userUtils.updateUser(userId,
-                    firstName == null ? foundTrainee.getUser().getFirstName() : firstName,
-                    lastName == null ? foundTrainee.getUser().getLastName() : lastName
-            );
-            foundTrainee.setUser(updatedUser);
-        }
+        int userId = foundTrainee.getUser().getId();
+        User updatedUser = userUtils.updateUser(userId,
+                firstName == null ? foundTrainee.getUser().getFirstName() : firstName,
+                lastName == null ? foundTrainee.getUser().getLastName() : lastName,
+                isActive
+        );
+        foundTrainee.setUser(updatedUser);
 
-        foundTrainee.setDateOfBirth(dateOfBirth);
-        foundTrainee.setAddress(address);
+        foundTrainee.setDateOfBirth(dateOfBirth == null ? foundTrainee.getDateOfBirth() : dateOfBirth);
+        foundTrainee.setAddress(address == null ? foundTrainee.getAddress() : address);
 
         logger.info("Updating Trainee Profile with id {}", id);
         return traineeDao.update(id, foundTrainee) != null;
