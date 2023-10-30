@@ -15,12 +15,14 @@ public class TrainingServiceImpl implements TrainingService {
     private Dao<TrainingType> trainingTypeDao;
     private Dao<Training> trainingDao;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
+    private static final String NO_ID_MSG = "Provided Training Id does not exist";
+
 
 
     @Override
     public int createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        if(!validateFields(trainingName, trainingDate) || !validateIds(traineeId, trainerId, trainingTypeId, trainingDuration)){
-            return -1;
+        if (!validateFields(trainingName, trainingDate) || !validateIds(traineeId, trainerId, trainingTypeId, trainingDuration)) {
+            throw new IllegalArgumentException("Invalid fields were provided");
         }
 
         Optional<Trainee> trainee = traineeDao.get(traineeId);
@@ -32,7 +34,8 @@ public class TrainingServiceImpl implements TrainingService {
                     (trainer.isEmpty() ? "trainerId, " : "") +
                     (trainingType.isEmpty() ? "trainingTypeId " : "")
             );
-            return -1;
+            throw new IllegalArgumentException("Provided ids were not found");
+
         }
         Training newTraining = trainingDao.save(
                 new Training(trainee.get(), trainer.get(),
@@ -46,8 +49,8 @@ public class TrainingServiceImpl implements TrainingService {
     public Training selectTrainingProfile(int id) {
         Optional<Training> training = trainingDao.get(id);
         if (training.isEmpty()) {
-            logger.info("Provided Training Id does not exist" + id);
-            return null;
+            logger.info(NO_ID_MSG);
+            throw new IllegalArgumentException(NO_ID_MSG);
         }
         logger.info("Selecting Training Profile with id " + id);
         return training.get();

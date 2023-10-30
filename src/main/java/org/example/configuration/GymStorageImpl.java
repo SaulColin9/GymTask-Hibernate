@@ -1,28 +1,36 @@
 package org.example.configuration;
 
 import org.example.model.*;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class GymStorageImpl implements Storage {
-    public String getFilePath() {
-        return filePath;
-    }
-
+public class GymStorageImpl implements Storage, InitializingBean {
     private String filePath;
-
-    @Override
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
     private Map<Integer, User> users;
     private Map<Integer, Trainee> trainees;
     private Map<Integer, Trainer> trainers;
     private Map<Integer, Training> trainings;
     private Map<Integer, TrainingType> trainingTypes;
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        users = new HashMap<>();
+        trainees = new HashMap<>();
+        trainers = new HashMap<>();
+        trainings = new HashMap<>();
+        trainingTypes = new HashMap<>();
+
+        StorageConnection<EntitiesReader> storageConnection = new StorageConnectionImpl<>(EntitiesReader.class);
+        EntitiesReader entitiesReader = storageConnection.getEntities(filePath);
+        entitiesReader.getUsers().forEach(user -> users.put(user.getId(), user));
+        entitiesReader.getTrainees().forEach(trainee -> trainees.put(trainee.getId(), trainee));
+        entitiesReader.getTrainers().forEach(trainer -> trainers.put(trainer.getId(), trainer));
+        entitiesReader.getTrainings().forEach(training -> trainings.put(training.getId(), training));
+        entitiesReader.getTrainingTypes().forEach(trainingType -> trainingTypes.put(trainingType.getId(), trainingType));
+
+    }
 
     public void setUsers(Map<Integer, User> users) {
         this.users = users;
@@ -42,6 +50,10 @@ public class GymStorageImpl implements Storage {
 
     public void setTrainings(Map<Integer, Training> trainings) {
         this.trainings = trainings;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     @Override
@@ -68,24 +80,6 @@ public class GymStorageImpl implements Storage {
     @Override
     public Map<Integer, TrainingType> getTrainingTypes() {
         return trainingTypes;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        users = new HashMap<>();
-        trainees = new HashMap<>();
-        trainers = new HashMap<>();
-        trainings = new HashMap<>();
-        trainingTypes = new HashMap<>();
-
-        StorageConnection<EntitiesReader> storageConnection = new StorageConnectionImpl<>(EntitiesReader.class);
-        EntitiesReader entitiesReader = storageConnection.getEntities(filePath);
-        entitiesReader.getUsers().forEach(user -> users.put(user.getId(), user));
-        entitiesReader.getTrainees().forEach(trainee -> trainees.put(trainee.getId(), trainee));
-        entitiesReader.getTrainers().forEach(trainer -> trainers.put(trainer.getId(), trainer));
-        entitiesReader.getTrainings().forEach(training -> trainings.put(training.getId(), training));
-        entitiesReader.getTrainingTypes().forEach(trainingType -> trainingTypes.put(trainingType.getId(), trainingType));
-
     }
 
 

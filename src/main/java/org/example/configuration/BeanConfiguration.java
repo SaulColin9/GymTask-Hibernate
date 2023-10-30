@@ -6,9 +6,7 @@ import org.example.dao.entities.*;
 import org.example.facade.GymFacade;
 import org.example.facade.GymFacadeImpl;
 import org.example.model.*;
-import org.example.service.TraineeService;
-import org.example.service.TrainerService;
-import org.example.service.TrainingService;
+import org.example.service.*;
 import org.example.service.serviceImpl.TraineeServiceImpl;
 import org.example.service.serviceImpl.TrainerServiceImpl;
 import org.example.service.serviceImpl.TrainingServiceImpl;
@@ -22,19 +20,21 @@ import org.springframework.context.annotation.*;
 public class BeanConfiguration {
     @Bean
     public Storage storage(@Value("${entities.source}") String filePath) {
-        Storage storage = new GymStorageImpl();
-        storage.setFilePath(filePath);
-
-        return storage;
+        GymStorageImpl gymStorage =  new GymStorageImpl();
+        gymStorage.setFilePath(filePath);
+        return gymStorage;
     }
 
     @Bean
-    public GymFacade gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService, @Autowired TrainingService trainingService) {
+    public GymFacade gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
+                               @Autowired TrainingService trainingService) {
         return new GymFacadeImpl(traineeService, trainerService, trainingService);
     }
 
     @Bean
-    public TrainingService trainingService(@Autowired Dao<User> userDao, @Autowired Dao<Trainee> traineeDao, @Autowired Dao<Trainer> trainerDao, @Autowired Dao<Training> trainingDao, @Autowired Dao<TrainingType> trainingTypeDao) {
+    public TrainingService trainingService(@Autowired Dao<Trainee> traineeDao,
+                                           @Autowired Dao<Trainer> trainerDao, @Autowired Dao<Training> trainingDao,
+                                           @Autowired Dao<TrainingType> trainingTypeDao) {
         TrainingServiceImpl trainingService = new TrainingServiceImpl();
         trainingService.setTraineeDao(traineeDao);
         trainingService.setTrainerDao(trainerDao);
@@ -44,25 +44,25 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public TrainerService trainerService(@Autowired Storage storage, @Autowired Dao<Trainer> trainerDao, @Autowired Dao<User> userDao) {
+    public TrainerService trainerService(@Autowired Dao<Trainer> trainerDao, @Autowired UserUtils userUtils) {
         TrainerServiceImpl trainerService = new TrainerServiceImpl();
         trainerService.setTrainerDao(trainerDao);
-        trainerService.setUserDao(userDao);
+        trainerService.setUserUtils(userUtils);
         return trainerService;
     }
 
     @Bean
-    TraineeService traineeService(@Autowired Storage storage, @Autowired Dao<Trainee> traineeDao, @Autowired Dao<User> userDao) {
+    TraineeService traineeService(@Autowired Dao<Trainee> traineeDao, @Autowired UserUtils userUtils) {
         TraineeServiceImpl traineeService = new TraineeServiceImpl();
         traineeService.setTraineeDao(traineeDao);
-        traineeService.setUserDao(userDao);
+        traineeService.setUserUtils(userUtils);
         return traineeService;
     }
 
     @Bean("users")
     public Dao<User> userDao(@Autowired Storage storage) {
-        Dao<User> userDao = new UserDao();
-        userDao.setStorage(storage);
+        DaoImpl<User> userDao = new DaoImpl<>();
+        userDao.setStorageEntities(storage.getUsers());
         return userDao;
     }
 
@@ -94,5 +94,25 @@ public class BeanConfiguration {
         return traineeDao;
     }
 
+    @Bean
+    public PasswordGenerator passwordGenerator() {
+        return new PasswordGeneratorImpl();
+    }
 
+    @Bean
+    UsernameGenerator usernameGenerator(@Autowired Dao<User> userDao) {
+        UsernameGeneratorImpl usernameGenerator = new UsernameGeneratorImpl();
+        usernameGenerator.setUserDao(userDao);
+        return usernameGenerator;
+    }
+
+    @Bean
+    UserUtils userUtils(@Autowired UsernameGenerator usernameGenerator, @Autowired PasswordGenerator passwordGenerator,
+                        @Autowired Dao<User> userDao) {
+        UserUtilsImpl userUtils = new UserUtilsImpl();
+        userUtils.setUserDao(userDao);
+        userUtils.setUsernameGenerator(usernameGenerator);
+        userUtils.setPasswordGenerator(passwordGenerator);
+        return userUtils;
+    }
 }

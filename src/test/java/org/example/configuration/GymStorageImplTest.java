@@ -35,11 +35,6 @@ class GymStorageImplTest {
     }
 
 
-    @Test
-    void setFilePath() {
-        gymStorage.setFilePath("path");
-        assertNotNull(gymStorage.getFilePath());
-    }
 
     @Test
     void getUsers() {

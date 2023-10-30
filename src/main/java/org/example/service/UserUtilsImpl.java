@@ -3,23 +3,45 @@ package org.example.service;
 import org.example.dao.Dao;
 import org.example.model.User;
 
+import java.util.Optional;
+
 public class UserUtilsImpl implements UserUtils {
-    private final UsernameGenerator usernameGenerator = new UsernameGeneratorImpl();
-    private final PasswordGenerator passwordGenerator = new PasswordGeneratorImpl();
+    private UsernameGenerator usernameGenerator;
+    private PasswordGenerator passwordGenerator;
+    private Dao<User> userDao;
+
 
     @Override
-    public User createUser(String firstName, String lastName, Dao<User> userDao) {
-        String username = usernameGenerator.generateUserName(firstName, lastName, userDao);
+    public User createUser(String firstName, String lastName) {
+        String username = usernameGenerator.generateUserName(firstName, lastName);
         String password = passwordGenerator.generatePassword(10);
-        return new User(firstName, lastName, username, password, true);
+        User newUser = new User(firstName, lastName, username, password, true);
+        userDao.save(newUser);
+        return newUser;
     }
 
     @Override
-    public User updateUser(int userId, String newFirstName, String newLastName, Dao<User> userDao) {
-        User updatedUser = createUser(newFirstName, newLastName, userDao);
+    public User updateUser(int userId, String newFirstName, String newLastName) {
+        User updatedUser = createUser(newFirstName, newLastName);
         updatedUser = updatedUser.setId(userId);
         userDao.update(userId, updatedUser);
         return updatedUser;
     }
 
+    @Override
+    public Optional<User> deleteUser(int userId) {
+        return userDao.delete(userId);
+    }
+
+    public void setUsernameGenerator(UsernameGenerator usernameGenerator) {
+        this.usernameGenerator = usernameGenerator;
+    }
+
+    public void setPasswordGenerator(PasswordGenerator passwordGenerator) {
+        this.passwordGenerator = passwordGenerator;
+    }
+
+    public void setUserDao(Dao<User> userDao) {
+        this.userDao = userDao;
+    }
 }

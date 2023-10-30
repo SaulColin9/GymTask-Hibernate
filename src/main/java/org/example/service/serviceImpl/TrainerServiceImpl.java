@@ -11,10 +11,11 @@ import java.util.Optional;
 
 
 public class TrainerServiceImpl implements TrainerService {
-    private Dao<User> userDao;
     private Dao<Trainer> trainerDao;
-    private final UserUtils createUtils = new UserUtilsImpl();
+    private UserUtils userUtils;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
+    private static final String NO_ID_MSG = "Provided Trainer Id does not exist";
+
 
     @Override
     public int createTrainerProfile(String firstName, String lastName, int specialization) {
@@ -24,13 +25,11 @@ public class TrainerServiceImpl implements TrainerService {
                     (lastName == null ? "lastName, " : "") +
                     (specialization == 0 ? "specialization, " : "")
             );
-            return -1;
+            throw new IllegalArgumentException("firstName, lastName and specialization arguments cant be null");
         }
+        User newUser = userUtils.createUser(firstName, lastName);
 
-        User newUser = userDao
-                .save(createUtils.createUser(firstName, lastName, userDao));
-
-        logger.info("Creating Trainer Profile with id " + newUser.getId());
+        logger.info("Creating Trainer Profile with id {}", newUser.getId());
         Trainer newTrainer = trainerDao.save(new Trainer(specialization, newUser));
         return newTrainer.getId();
     }
@@ -40,17 +39,22 @@ public class TrainerServiceImpl implements TrainerService {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
         if (trainerToUpdate.isEmpty()) {
             logger.error("Provided Trainer Id does not exist");
-            return false;
+            throw new IllegalArgumentException(NO_ID_MSG);
+        }
+        Trainer foundTrainer = trainerToUpdate.get();
+        if (firstName != null || lastName != null) {
+            int userId = foundTrainer.getUser().getId();
+            User updatedUser = userUtils.updateUser(userId,
+                    firstName == null ? foundTrainer.getUser().getFirstName() : firstName,
+                    lastName == null ? foundTrainer.getUser().getLastName() : lastName
+            );
+            foundTrainer.setUser(updatedUser);
         }
 
-        int userId = trainerToUpdate.get().getUser().getId();
-        User updatedUser = createUtils.updateUser(userId, firstName, lastName, userDao);
+        foundTrainer.setSpecialization(specialization);
 
-        trainerToUpdate.get().setSpecialization(specialization);
-        trainerToUpdate.get().setUser(updatedUser);
-
-        logger.info("Updating Trainer Profile with id " + id);
-        return trainerDao.update(id, trainerToUpdate.get()) != null;
+        logger.info("Updating Trainer Profile with id {}", id);
+        return trainerDao.update(id, foundTrainer) != null;
     }
 
     @Override
@@ -58,9 +62,9 @@ public class TrainerServiceImpl implements TrainerService {
         Optional<Trainer> trainer = trainerDao.get(id);
         if (trainer.isEmpty()) {
             logger.info("Provided Trainer Id does not exist" + id);
-            return null;
+            throw new IllegalArgumentException(NO_ID_MSG);
         }
-        logger.info("Selecting Trainer Profile with id " + id);
+        logger.info("Selecting Trainer Profile with id {}", id);
         return trainer.get();
     }
 
@@ -68,7 +72,7 @@ public class TrainerServiceImpl implements TrainerService {
         this.trainerDao = trainerDao;
     }
 
-    public void setUserDao(Dao<User> userDao) {
-        this.userDao = userDao;
+    public void setUserUtils(UserUtils userUtils) {
+        this.userUtils = userUtils;
     }
 }

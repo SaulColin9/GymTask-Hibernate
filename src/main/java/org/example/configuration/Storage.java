@@ -5,9 +5,8 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Map;
 
-public interface Storage extends InitializingBean {
+public interface Storage{
 
-    void setFilePath(String filePath);
 
     Map<Integer, User> getUsers();
 

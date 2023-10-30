@@ -11,8 +11,7 @@ import java.util.Date;
 import java.util.Optional;
 
 public class TraineeServiceImpl implements TraineeService {
-    private Dao<User> userDao;
-    private final UserUtils createUtils = new UserUtilsImpl();
+    private UserUtils userUtils;
     private static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
 
     private static final String NO_ID_MSG = "Provided Trainee Id does not exist";
@@ -21,19 +20,15 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public int createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
-        if (firstName == null || lastName == null || dateOfBirth == null || address == null) {
-            logger.error("The next fields were not provided: " +
-                    (firstName == null ? "firstName, " : "") +
-                    (lastName == null ? "lastName, " : "") +
-                    (dateOfBirth == null ? "dateOfBirth, " : "") +
-                    (address == null ? "address " : "")
-            );
-            return -1;
+        if (firstName == null || lastName == null) {
+            logger.error("The next fields were not provided: {} {}",
+                    (firstName == null ? "firstName, " : ""),
+                    (lastName == null ? "lastName, " : ""));
+            throw new IllegalArgumentException("firstName and lastName arguments cant be null");
         }
-        User newUser = userDao
-                .save(createUtils.createUser(firstName, lastName, userDao));
+        User newUser = userUtils.createUser(firstName, lastName);
 
-        logger.info("Creating Trainee Profile with id " + newUser.getId());
+        logger.info("Creating Trainee Profile with id {}", newUser.getId());
         Trainee newTrainee = traineeDao.save(new Trainee(dateOfBirth, address, newUser));
         return newTrainee.getId();
     }
@@ -43,18 +38,25 @@ public class TraineeServiceImpl implements TraineeService {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
         if (traineeToUpdate.isEmpty()) {
             logger.error(NO_ID_MSG);
-            return false;
+            throw new IllegalArgumentException(NO_ID_MSG);
+        }
+        Trainee foundTrainee = traineeToUpdate.get();
+
+
+        if (firstName != null || lastName != null) {
+            int userId = foundTrainee.getUser().getId();
+            User updatedUser = userUtils.updateUser(userId,
+                    firstName == null ? foundTrainee.getUser().getFirstName() : firstName,
+                    lastName == null ? foundTrainee.getUser().getLastName() : lastName
+            );
+            foundTrainee.setUser(updatedUser);
         }
 
-        int userId = traineeToUpdate.get().getUser().getId();
-        User updatedUser = createUtils.updateUser(userId, firstName, lastName, userDao);
+        foundTrainee.setDateOfBirth(dateOfBirth);
+        foundTrainee.setAddress(address);
 
-        traineeToUpdate.get().setDateOfBirth(dateOfBirth);
-        traineeToUpdate.get().setAddress(address);
-        traineeToUpdate.get().setUser(updatedUser);
-
-        logger.info("Updating Trainee Profile with id " + id);
-        return traineeDao.update(id, traineeToUpdate.get()) != null;
+        logger.info("Updating Trainee Profile with id {}", id);
+        return traineeDao.update(id, foundTrainee) != null;
     }
 
     @Override
@@ -62,10 +64,11 @@ public class TraineeServiceImpl implements TraineeService {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
         if (traineeToDelete.isEmpty()) {
             logger.error(NO_ID_MSG);
-            return false;
+            throw new IllegalArgumentException(NO_ID_MSG);
         }
         logger.info("Deleting Trainee Profile with id " + id);
         Optional<Trainee> deletedTrainee = traineeDao.delete(id);
+        userUtils.deleteUser(traineeToDelete.get().getUser().getId());
         return deletedTrainee.isPresent();
     }
 
@@ -74,18 +77,19 @@ public class TraineeServiceImpl implements TraineeService {
         Optional<Trainee> trainee = traineeDao.get(id);
         if (trainee.isEmpty()) {
             logger.error(NO_ID_MSG);
-            return null;
+            throw new IllegalArgumentException(NO_ID_MSG);
         }
         logger.info("Selecting Trainee Profile with id " + id);
         return trainee.get();
     }
 
-    public void setUserDao(Dao<User> userDao) {
-        this.userDao = userDao;
-    }
 
     public void setTraineeDao(Dao<Trainee> traineeDao) {
         this.traineeDao = traineeDao;
+    }
+
+    public void setUserUtils(UserUtils userUtils) {
+        this.userUtils = userUtils;
     }
 
 }

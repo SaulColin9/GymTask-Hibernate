@@ -3,9 +3,12 @@ package org.example.service;
 import org.example.dao.Dao;
 import org.example.model.User;
 
-public interface UserUtils {
-    User createUser(String firstName, String lastName, Dao<User> userDao);
+import java.util.Optional;
 
-    User updateUser(int userId, String newFirstName, String newLastName, Dao<User> userDao);
+public interface UserUtils {
+    User createUser(String firstName, String lastName);
+
+    User updateUser(int userId, String newFirstName, String newLastName);
+    Optional<User> deleteUser(int userId);
 
 }

@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.configuration.Storage;
 import org.example.model.*;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class DaoImpl<T extends Entity> implements Dao<T> {
+public class DaoImpl<T extends Entity> implements Dao<T> {
     private Map<Integer, T> storageEntities;
 
     @Override
@@ -31,6 +32,11 @@ public abstract class DaoImpl<T extends Entity> implements Dao<T> {
             }
         }
         return Optional.ofNullable(foundT);
+    }
+
+    @Override
+    public void setStorage(Storage storage) {
+
     }
 
     @Override

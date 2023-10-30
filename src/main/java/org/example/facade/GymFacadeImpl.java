@@ -10,11 +10,13 @@ import org.example.service.TrainingService;
 import java.util.Date;
 
 public class GymFacadeImpl implements GymFacade {
-    TraineeService traineeService;
-    TrainerService trainerService;
-    TrainingService trainingService;
+    private final TraineeService traineeService;
+    private final TrainerService trainerService;
+    private final TrainingService trainingService;
 
-    public GymFacadeImpl(TraineeService traineeService, TrainerService trainerService, TrainingService trainingService) {
+    public GymFacadeImpl(TraineeService traineeService,
+                         TrainerService trainerService,
+                         TrainingService trainingService) {
         this.traineeService = traineeService;
         this.trainerService = trainerService;
         this.trainingService = trainingService;
@@ -26,7 +28,8 @@ public class GymFacadeImpl implements GymFacade {
     }
 
     @Override
-    public boolean updateTrainee(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+    public boolean updateTrainee(int id, String firstName, String lastName,
+                                 boolean isActive, Date dateOfBirth, String address) {
         return traineeService.updateTraineeProfile(id, firstName, lastName, isActive, dateOfBirth, address);
     }
 
