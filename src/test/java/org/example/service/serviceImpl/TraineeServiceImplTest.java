@@ -1,19 +1,23 @@
 package org.example.service.serviceImpl;
 
+import org.example.matchers.TraineeMatcher;
 import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
+import org.example.service.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.assertj.core.api.Assertions.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
@@ -22,99 +26,176 @@ class TraineeServiceImplTest {
     @Mock
     private Dao<Trainee> traineeDao;
     @Mock
-    private Dao<User> userDao;
+    private UserUtils userUtils;
     @InjectMocks
     private TraineeServiceImpl traineeService;
-    private User user;
-    private Trainee traineeTest;
-    private static final String UPDATED_NAME = "Updated Name";
-    private static final String UPDATED_LAST = "Updated Last Name";
-    private static final String UPDATED_ADDRESS = "Updated Address";
-
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        user = new User("first", "last");
-        user.setId(1);
-        traineeTest = new Trainee(new Date(), "Test Address", user);
-        traineeTest.setUser(user);
-        traineeTest.setId(1);
-        when(userDao.get(anyInt())).thenReturn(Optional.ofNullable(user));
-        when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
     }
 
     @Test
-    void createTraineeProfile() {
-        when(userDao.save(any(User.class))).thenReturn(user);
-        when(traineeDao.save(any(Trainee.class))).thenReturn(traineeTest);
-        int createdTrainee = traineeService.createTraineeProfile("Test", "Test", new Date(), "Test");
-        assertTrue(createdTrainee > 0);
+    void givenValidRequest_TraineeShouldBeCreated() {
+        // arrange
+        Trainee testTrainee = createNewTrainee();
+
+        when(traineeDao.save(argThat(new TraineeMatcher(testTrainee)))).thenReturn(testTrainee);
+        when(userUtils.createUser("John", "Doe")).thenReturn(testTrainee.getUser());
+
+        // act
+        int createdTraineeId = traineeService.createTraineeProfile("John", "Doe", new Date(1054789200000L), "Test Address");
+
+        // assert
+        assertThat(createdTraineeId)
+                .isEqualTo(1);
+        verify(traineeDao, times(1)).save(argThat(new TraineeMatcher(testTrainee)));
+        verify(userUtils, times(1)).createUser("John", "Doe");
+    }
+
+
+    @Test
+    void givenValidRequest_TraineeShouldBeUpdated() {
+        // arrange
+        Date newDate = new Date();
+        Trainee testTrainee = createNewTrainee();
+
+        User updatedUser = new User();
+        updatedUser.setId(1);
+        updatedUser.setFirstName("Jean");
+        updatedUser.setLastName("Doe");
+        updatedUser.setIsActive(false);
+        updatedUser.setUsername("Jean.Doe");
+
+        Trainee updatedTrainee = new Trainee();
+        updatedTrainee.setId(1);
+        updatedTrainee.setUser(updatedUser);
+        updatedTrainee.setDateOfBirth(newDate);
+        updatedTrainee.setAddress("New Address");
+
+
+        when(traineeDao.get(1)).thenReturn(Optional.of(testTrainee));
+        when(userUtils.updateUser(1, "Jean", "Doe", false)).thenReturn(updatedUser);
+        when(traineeDao.update(eq(1), argThat(new TraineeMatcher(updatedTrainee)))).thenReturn(updatedTrainee);
+
+        // act
+        boolean actualResponse = traineeService.updateTraineeProfile(1, "Jean", "Doe", false, newDate, "New Address");
+
+
+        // assert
+        assertThat(actualResponse).isTrue();
+        verify(traineeDao, times(1)).get(1);
+        verify(userUtils, times(1)).updateUser(1, "Jean", "Doe", false);
+        verify(traineeDao, times(1)).update(eq(1), argThat(new TraineeMatcher(testTrainee)));
     }
 
     @Test
-    void updateTraineeProfile() {
-        when(userDao.update(anyInt(), any(User.class))).thenReturn(user);
-        when(traineeDao.update(anyInt(), any(Trainee.class))).thenReturn(traineeTest);
-        boolean updatedTrainee = traineeService
-                .updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS);
+    void givenValidId_TraineeShouldBeDeleted() {
+        // arrange
+        Trainee testTrainee = createNewTrainee();
 
-        assertTrue(updatedTrainee);
-    }
+        when(traineeDao.get(1)).thenReturn(Optional.of(testTrainee));
+        when(traineeDao.delete(1)).thenReturn(Optional.of(testTrainee));
 
-    @Test
-    void deleteTraineeProfile() {
-        when(traineeDao.delete(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
+        // act
+        boolean actualResponse = traineeService.deleteTraineeProfile(1);
 
-        Trainee trainee = traineeService.selectTraineeProfile(1);
-        assertNotNull(trainee);
-
-        traineeService.deleteTraineeProfile(1);
+        //assert
+        assertThat(actualResponse).isTrue();
+        verify(traineeDao, times(1)).get(1);
         verify(traineeDao, times(1)).delete(1);
     }
 
     @Test
-    void selectTraineeProfile() {
-        Trainee trainee = new Trainee(new Date(), "Test Address", new User());
-        trainee = trainee.setId(1);
-        when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(trainee));
-        Trainee traineeSelected = traineeService.selectTraineeProfile(1);
+    void givenExistingTraineeId_TraineeShouldBeReturned() {
+        // arrange
+        Trainee testTrainee = createNewTrainee();
 
-        assertNotNull(traineeSelected);
-        assertEquals(trainee.getId(), traineeSelected.getId());
-        assertEquals(trainee.getUser().getId(), traineeSelected.getUser().getId());
+        when(traineeDao.get(1)).thenReturn(Optional.of(testTrainee));
+        // act
+        Trainee actualResponse = traineeService.selectTraineeProfile(1);
+
+        // assert
+        assertThat(actualResponse).isNotNull();
+        verify(traineeDao, times(1)).get(1);
     }
 
     @Test
-    void update_noTraineeFound_Should_Return_Null() {
-        when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
-        assertFalse(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
+    void givenNonExistingTraineeIdSelect_ThrowsException() {
+        // arrange
+
+        when(traineeDao.get(77)).thenReturn(Optional.empty());
+        // act
+
+        // assert
+        assertThatThrownBy(() -> traineeService.selectTraineeProfile(77)).
+                isInstanceOf(IllegalArgumentException.class).
+                hasMessage("Provided Trainee Id does not exist");
+        verify(traineeDao, times(1)).get(77);
     }
 
     @Test
-    void update_noUserToUpdateFound_Should_Return_Null() {
-        when(userDao.get(anyInt())).thenReturn(Optional.empty());
-        when(traineeDao.get(anyInt())).thenReturn(Optional.ofNullable(traineeTest));
-        assertFalse(traineeService.updateTraineeProfile(1, UPDATED_NAME, UPDATED_LAST, false, new Date(), UPDATED_ADDRESS));
+    void givenNonExistingTraineeIdDelete_ThrowsException() {
+        // arrange
+
+        when(traineeDao.get(77)).thenReturn(Optional.empty());
+        // act
+
+        // assert
+        assertThatThrownBy(() -> traineeService.deleteTraineeProfile(1)).
+                isInstanceOf(IllegalArgumentException.class).
+                hasMessage("Provided Trainee Id does not exist");
+        verify(traineeDao, times(1)).get(1);
     }
 
     @Test
-    void nullParameter_ShouldReturn_Invalid_Id() {
-        int createdTrainee = traineeService.createTraineeProfile(null, "", new Date(), "Address");
-        assertTrue(createdTrainee < 0);
+    void givenNonExistingTraineeIdUpdate_ThrowsException() {
+        // arrange
+
+        when(traineeDao.get(77)).thenReturn(Optional.empty());
+        // act
+
+        // assert
+        assertThatThrownBy(
+                () -> traineeService.updateTraineeProfile(1, "Jean", "Doe", false, new Date(), "New Address")).
+                isInstanceOf(IllegalArgumentException.class).
+                hasMessage("Provided Trainee Id does not exist");
+        verify(traineeDao, times(1)).get(1);
     }
 
     @Test
-    void provided_Select_Id_Not_Found() {
-        when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
-        assertNull(traineeService.selectTraineeProfile(100));
+    void givenInvalidRequestCreate_ThrowsException() {
+        assertThatThrownBy(
+                () -> traineeService.createTraineeProfile(null, null, new Date(), "Address")).
+                isInstanceOf(IllegalArgumentException.class).
+                hasMessage("firstName and lastName arguments cant be null");
     }
 
 
-    @Test
-    void user_To_Delete_Not_Found() {
-        when(traineeDao.get(anyInt())).thenReturn(Optional.empty());
-        assertFalse(traineeService.deleteTraineeProfile(1));
+    Trainee createNewTrainee() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        User newUser = new User();
+
+        newUser.setIsActive(true);
+        newUser.setFirstName("John");
+        newUser.setLastName("Doe");
+        newUser.setPassword("password");
+        newUser.setUsername("John.Doe");
+        newUser.setId(1);
+
+        Trainee newTrainee = new Trainee();
+        newTrainee.setAddress("Test Address");
+        try {
+            newTrainee.setDateOfBirth(sdf.parse("2003-06-05"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        newTrainee.setUser(newUser);
+        newTrainee.setId(1);
+
+        return newTrainee;
     }
+
 
 }

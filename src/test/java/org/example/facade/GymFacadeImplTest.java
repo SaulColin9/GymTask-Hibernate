@@ -1,9 +1,6 @@
 package org.example.facade;
 
-import org.example.model.Trainee;
-import org.example.model.Trainer;
-import org.example.model.Training;
-import org.example.model.User;
+import org.example.model.*;
 import org.example.service.serviceImpl.TraineeServiceImpl;
 import org.example.service.serviceImpl.TrainerServiceImpl;
 import org.example.service.serviceImpl.TrainingServiceImpl;
@@ -13,11 +10,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 
 class GymFacadeImplTest {
 
@@ -29,125 +28,220 @@ class GymFacadeImplTest {
     private TraineeServiceImpl traineeService;
     @Mock
     private TrainerServiceImpl trainerService;
-    private Trainee traineeTest;
-    private Date date;
-    private Training trainingTest;
-    private Trainer trainerTest;
-    private static final String TEST_ADDRESS = "Test Address";
-    private static final String TEST_UPDATED_NAME = "Updated Name";
-    private static final String TEST_UPDATED_LAST = "Updated Last";
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        gymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
-
-
-        date = new Date();
-
-        User userTest = new User("User Test", "User Test");
-        userTest.setId(1);
-
-        User userTest2 = new User("User Test 2", "User Test 2");
-        userTest2.setId(2);
-
-
-        traineeTest = new Trainee(new Date(), TEST_ADDRESS, userTest);
-        traineeTest = traineeTest.setId(1);
-        traineeTest.setUser(userTest);
-
-
-        trainerTest = new Trainer(2, userTest2);
-        trainerTest = trainerTest.setId(1);
-        trainerTest.setUser(userTest2);
-
-        trainingTest = new Training();
-        trainingTest.setTrainingName("Test Training");
-        trainingTest.setId(1);
-        trainingTest.setTrainingDate(new Date());
-        trainingTest.setTrainingDuration(1);
-        trainingTest.setTrainee(traineeTest);
-        trainingTest.setTrainer(trainerTest);
-
-        when(traineeService.selectTraineeProfile(anyInt())).thenReturn(traineeTest);
     }
 
     @Test
-    void addTrainee() {
-        when(traineeService.createTraineeProfile("New Test Trainee", "Test Last", date, TEST_ADDRESS))
-                .thenReturn(1);
-        int newTraineeId = gymFacade.addTrainee("New Test Trainee", "Test Last", date, TEST_ADDRESS);
-        assertTrue(newTraineeId > 0);
+    void givenValidRequest_TraineeShouldBeCreated() {
+        // arrange
+        String firstName = "John";
+        String lastName = "Doe";
+        Date dateOfBirth = new Date();
+        String address = "Address";
+        when(traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address)).thenReturn(1);
+
+        // act
+        int actualResponse = gymFacade.addTrainee(firstName, lastName, dateOfBirth, address);
+
+        // assert
+        assertThat(actualResponse).isEqualTo(1);
+        verify(traineeService, times(1)).createTraineeProfile(firstName, lastName, dateOfBirth, address);
     }
 
     @Test
-    void updateTrainee() {
-        traineeTest.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST));
-        when(traineeService.updateTraineeProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, date, TEST_ADDRESS))
-                .thenReturn(true);
-        boolean updatedTrainee = gymFacade.updateTrainee(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST,
-                false, date, TEST_ADDRESS);
+    void givenValidRequest_TraineeShouldBeUpdated() {
+        // arrange
+        int id = 1;
+        String firstName = "John";
+        String lastName = "Doe";
+        Date dateOfBirth = new Date();
+        String address = "Address";
+        boolean isActive = false;
 
-        assertTrue(updatedTrainee);
+        when(traineeService.updateTraineeProfile(id, firstName, lastName, isActive, dateOfBirth, address)).thenReturn(true);
+        // act
+        boolean actualResponse = gymFacade.updateTrainee(id, firstName, lastName, isActive, dateOfBirth, address);
+
+        // assert
+        assertThat(actualResponse).isTrue();
+        verify(traineeService, times(1)).updateTraineeProfile(id, firstName, lastName, isActive, dateOfBirth, address);
     }
 
     @Test
-    void deleteTrainee() {
-        when(traineeService.deleteTraineeProfile(anyInt())).thenReturn(true);
-        assertNotNull(gymFacade.getTrainee(1));
-        assertTrue(gymFacade.deleteTrainee(1));
+    void givenTraineeId_TraineeShouldBeDeleted() {
+        // arrange
+        int id = 1;
+        when(traineeService.deleteTraineeProfile(1)).thenReturn(true);
+        // act
+        boolean actualResponse = gymFacade.deleteTrainee(id);
+
+        // assert
+        assertThat(actualResponse).isTrue();
+        verify(traineeService, times(1)).deleteTraineeProfile(1);
     }
 
     @Test
-    void getTrainee() {
-        Trainee trainee = gymFacade.getTrainee(1);
-        assertNotNull(trainee);
+    void givenId_TraineeShouldBeReturned() {
+        // arrange
+        Trainee testTrainee = createNewTrainee();
+        int id = 1;
+        when(traineeService.selectTraineeProfile(1)).thenReturn(testTrainee);
+        // act
+        Trainee actualResponse = gymFacade.getTrainee(id);
+        // assert
+        assertThat(actualResponse).isEqualTo(testTrainee);
+        verify(traineeService, times(1)).selectTraineeProfile(1);
+    }
+
+    @Test
+    void givenValidRequest_TrainerShouldBeCreated() {
+        // arrange
+        String firstName = "John";
+        String lastName = "Doe";
+        int specialization = 1;
+
+        when(trainerService.createTrainerProfile(firstName, lastName, specialization)).thenReturn(1);
+        // act
+        int actualResponse = gymFacade.addTrainer(firstName, lastName, specialization);
+        // assert
+        assertThat(actualResponse).isEqualTo(1);
+        verify(trainerService, times(1)).createTrainerProfile(firstName, lastName, specialization);
+    }
+
+    @Test
+    void givenValidRequest_TrainerShouldBeUpdated() {
+        // arrange
+        int id = 1;
+        String firstName = "John";
+        String lastName = "Doe";
+        boolean isActive = false;
+        int specialization = 2;
+
+        when(trainerService.updateTrainerProfile(id, firstName, lastName, isActive, specialization)).thenReturn(true);
+        // act
+        boolean actualResponse = gymFacade.updateTrainer(id, firstName, lastName, isActive, specialization);
+
+        // assert
+        assertThat(actualResponse).isTrue();
+        verify(trainerService, times(1)).updateTrainerProfile(id, firstName, lastName, isActive, specialization);
+    }
+
+    @Test
+    void givenTrainerId_TrainerShouldBeReturned() {
+        // arrange
+        Trainer testTrainer = createNewTrainer();
+        int id = 1;
+
+        when(trainerService.selectTrainerProfile(1)).thenReturn(testTrainer);
+        // act
+        Trainer actualResponse = gymFacade.getTrainer(id);
+        // assert
+        assertThat(actualResponse).isEqualTo(testTrainer);
+        verify(trainerService, times(1)).selectTrainerProfile(1);
     }
 
 
     @Test
-    void addTrainer() {
-        when(trainerService.createTrainerProfile(anyString(), anyString(), anyInt())).thenReturn(1);
-        int newTrainer = gymFacade.addTrainer("New Trainer", "New Trainer Last", 1);
-        assertTrue(newTrainer > 0);
-    }
+    void givenValidRequest_TrainingShouldBeCreated() {
+        // arrange
+        int traineeId = 1;
+        int trainerId = 1;
+        String trainingName = "Elite";
+        int trainingTypeId = 1;
+        Date trainingDate = new Date();
+        double trainingDuration = 1.0;
 
-    @Test
-    void updateTrainer() {
-        Trainer oldTrainer = trainerTest;
-        oldTrainer.setUser(new User(TEST_UPDATED_NAME, TEST_UPDATED_LAST));
-        when(trainerService.updateTrainerProfile(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, 2))
-                .thenReturn(true);
-        boolean updatedTrainer = gymFacade
-                .updateTrainer(1, TEST_UPDATED_NAME, TEST_UPDATED_LAST, false, 2);
-
-        assertTrue(updatedTrainer);
-    }
-
-    @Test
-    void getTrainer() {
-        when(trainerService.selectTrainerProfile(anyInt())).thenReturn(trainerTest);
-        Trainer trainer = gymFacade.getTrainer(1);
-        assertNotNull(trainer);
+        when(trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration)).thenReturn(1);
+        // act
+        int actualResponse = gymFacade.addTraining(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
+        // assert
+        assertThat(actualResponse).isEqualTo(1);
+        verify(trainingService, times(1)).createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
     }
 
 
     @Test
-    void addTraining() {
-        when(trainingService
-                .createTrainingProfile(1, 1, "New Training", 1, date, 1))
-                .thenReturn(1);
-        int newTraining = gymFacade
-                .addTraining(1, 1, "New Training", 1, date, 1);
-        assertTrue(newTraining > 0);
+    void givenTrainingId_TrainingShouldBeReturned() {
+        // arrange
+        Training testTraining = createNewTraining();
+        int id = 1;
+
+        when(trainingService.selectTrainingProfile(1)).thenReturn(testTraining);
+        // act
+        Training actualResponse = gymFacade.getTraining(1);
+        // assert
+        assertThat(actualResponse).isEqualTo(testTraining);
+        verify(trainingService, times(1)).selectTrainingProfile(1);
     }
 
-    @Test
-    void getTraining() {
-        when(trainingService.selectTrainingProfile(anyInt())).thenReturn(trainingTest);
-        Training training = gymFacade.getTraining(1);
-        assertNotNull(training);
+    Training createNewTraining() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        TrainingType newTrainingType = new TrainingType();
+        newTrainingType.setTrainingTypeName("Cardio");
+        newTrainingType.setId(1);
+
+
+        Training newTraining = new Training();
+        newTraining.setTrainingType(newTrainingType);
+        newTraining.setTrainingName("Elite");
+        try {
+            newTraining.setTrainingDate(sdf.parse("2003-06-05"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        newTraining.setTrainingDuration(1.0);
+        newTraining.setTrainee(createNewTrainee());
+        newTraining.setTrainer(createNewTrainer());
+        newTraining.setId(1);
+
+        return newTraining;
     }
 
+    Trainee createNewTrainee() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        User newUser = new User();
+
+        newUser.setIsActive(true);
+        newUser.setFirstName("John");
+        newUser.setLastName("Doe");
+        newUser.setPassword("password");
+        newUser.setUsername("John.Doe");
+        newUser.setId(1);
+
+        Trainee newTrainee = new Trainee();
+        newTrainee.setAddress("Test Address");
+        try {
+            newTrainee.setDateOfBirth(sdf.parse("2003-06-05"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        newTrainee.setUser(newUser);
+        newTrainee.setId(1);
+
+        return newTrainee;
+    }
+
+    Trainer createNewTrainer() {
+        User newUser = new User();
+
+        newUser.setIsActive(true);
+        newUser.setFirstName("Jane");
+        newUser.setLastName("Doe");
+        newUser.setPassword("password");
+        newUser.setUsername("Jane.Doe");
+        newUser.setId(2);
+
+        Trainer newTrainer = new Trainer();
+        newTrainer.setSpecialization(1);
+        newTrainer.setId(1);
+        newTrainer.setUser(newUser);
+
+        return newTrainer;
+    }
 
 }

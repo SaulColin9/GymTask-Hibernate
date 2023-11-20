@@ -7,73 +7,161 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+
 
 class DaoImplUserTest {
     @InjectMocks
-    DaoImpl<User> daoUser;
+    UserDao daoUser;
     @Mock
     Map<Integer, User> storageEntities;
-    GymStorageImpl storage;
-    User user;
-    User user2;
+    Map<Integer, User> users;
 
     @BeforeEach
     void setUp() {
-        user = new User("User Test", "User Test");
-        user.setId(1);
-        user2 = new User("User Test2", "User Test2");
-        user2.setId(2);
-        Map<Integer, User> users = new HashMap<>();
-        users.put(1, user);
-        users.put(2, user2);
+        MockitoAnnotations.openMocks(this);
+    }
 
-        storage = new GymStorageImpl();
+    @Test
+    void givenEmptyStorageEntities_NextIdShouldBeOne() {
+        // arrange
+        storageEntities = new HashMap<>();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setUsers(storageEntities);
+        daoUser.setStorage(storage);
+        // act
+        int actualResponse = daoUser.getNextId();
+        // assert
+        assertThat(actualResponse).isEqualTo(1);
+    }
+
+    @Test
+    void givenNonEmptyStorageEntities_NextIdShouldBeReturned() {
+        // arrange
+        users = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
         storage.setUsers(users);
-        daoUser = new UserDao();
+        daoUser.setStorage(storage);
+        // act
+        int actualResponse = daoUser.getNextId();
+
+        // assert
+        assertThat(actualResponse).isEqualTo(3);
+    }
+
+
+    @Test
+    void givenUserId_UserShouldBeReturned() {
+        // arrange
+        users = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setUsers(users);
+        daoUser.setStorage(storage);
+        // act
+        Optional<User> actualResponse = daoUser.get(1);
+
+        // assert
+        assertThat(actualResponse.get()).isEqualTo(users.get(1));
+
+    }
+
+    @Test
+    void givenStorageEntitiesIsNotEmpty_ListOfUsersShouldBeReturned() {
+        // arrange
+        users = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setUsers(users);
+        daoUser.setStorage(storage);
+        daoUser.setStorage(storage);
+        // act
+        List<User> actualResponse = daoUser.getAll();
+        // assert
+        assertThat(actualResponse).isEqualTo(new ArrayList<>(users.values()));
+    }
+
+    @Test
+    void givenAUser_UserShouldBeSaved() {
+        // arrange
+        User newUser = new User();
+
+        newUser.setIsActive(true);
+        newUser.setFirstName("John");
+        newUser.setLastName("Doe");
+        newUser.setPassword("password");
+        newUser.setUsername("John.Doe");
+
+        users = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setUsers(users);
+        daoUser.setStorage(storage);
+        // act
+        User actualResponse = daoUser.save(newUser);
+
+        // assert
+        assertThat(actualResponse).isEqualTo(newUser);
+        assertThat(actualResponse.getId()).isEqualTo(3);
+    }
+
+    @Test
+    void givenNonExistingId_UserShouldBeUpdated() {
+        // arrange
+        User newUser = new User();
+
+        newUser.setIsActive(false);
+        newUser.setFirstName("John");
+        newUser.setLastName("Doe");
+        newUser.setPassword("password");
+        newUser.setUsername("John.Doe");
+
+        users = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setUsers(users);
+        daoUser.setStorage(storage);
+        // act
+        User actualResponse = daoUser.update(1, newUser);
+        // assert
+        assertThat(actualResponse).isNotNull();
+        assertThat(actualResponse.getUsername()).isEqualTo("John.Doe");
+        assertThat(actualResponse.getId()).isEqualTo(1);
+        assertThat(actualResponse.getIsActive()).isFalse();
+    }
+
+    @Test
+    void givenExistingUserId_UserShouldBeDeleted() {
+        // arrange
+        users = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setUsers(users);
         daoUser.setStorage(storage);
 
+        // act
+        Optional<User> actualResponse = daoUser.delete(1);
+        // assert
+        assertThat(actualResponse.get()).isNotNull();
+        assertThat(users.get(1)).isNull();
     }
 
+    Map<Integer, User> createNewStorageEntities() {
+        Map<Integer, User> users = new HashMap<>();
+        User user = new User("User Test", "User Test");
+        user.setId(1);
+        User user2 = new User("User Test2", "User Test2");
+        user2.setId(2);
 
-    @Test
-    void getNextId() {
-        assertEquals(storage.getUsers().values().size() + 1, daoUser.getNextId());
-    }
-
-    @Test
-    void get() {
-        assertEquals(daoUser.get(1).orElse(null), user);
-    }
-
-    @Test
-    void getAll() {
-        assertEquals(daoUser.getAll().size(), storage.getUsers().values().size());
-    }
-
-    @Test
-    void save() {
-        User newUser = new User();
-        newUser.setId(daoUser.getNextId());
-        assertEquals(newUser.getId(), daoUser.save(new User()).getId());
-    }
-
-    @Test
-    void update() {
-        User oldUser = user;
-        User updatedUser = daoUser.update(1, user2);
-        assertNotEquals(oldUser.getFirstName(), updatedUser.getFirstName());
-        assertEquals(oldUser.getId(), updatedUser.getId());
-
-    }
-
-    @Test
-    void delete() {
-        Optional<User> deletedUser = daoUser.delete(1);
-        assertNotNull(deletedUser);
+        users.put(1, user);
+        users.put(2, user2);
+        return users;
     }
 
 }

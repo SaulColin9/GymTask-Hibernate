@@ -3,79 +3,147 @@ package org.example.dao;
 import org.example.configuration.GymStorageImpl;
 import org.example.dao.entities.TrainingTypeDao;
 import org.example.model.TrainingType;
-import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DaoImplTrainingTypeTest {
     @InjectMocks
-    DaoImpl<TrainingType> daoTrainingType;
+    TrainingTypeDao daoTrainingType;
     @Mock
     Map<Integer, TrainingType> storageEntities;
-    GymStorageImpl storage;
-    TrainingType trainingType;
-    TrainingType trainingType2;
 
     @BeforeEach
     void setUp() {
-        trainingType = new TrainingType("TestTrainingType");
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void givenEmptyStorageEntities_NextIdShouldBeOne() {
+        // arrange
+        storageEntities = new HashMap<>();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainingTypes(storageEntities);
+        daoTrainingType.setStorage(storage);
+        // act
+        int actualResponse = daoTrainingType.getNextId();
+        // assert
+        assertThat(actualResponse).isEqualTo(1);
+    }
+
+    @Test
+    void givenNonEmptyStorageEntities_NextIdShouldBeReturned() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainingTypes(storageEntities);
+        daoTrainingType.setStorage(storage);
+        // act
+        int actualResponse = daoTrainingType.getNextId();
+
+        // assert
+        assertThat(actualResponse).isEqualTo(3);
+    }
+
+    @Test
+    void givenTrainingTypeId_TrainingTypeShouldBeReturned() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainingTypes(storageEntities);
+        daoTrainingType.setStorage(storage);
+        // act
+        Optional<TrainingType> actualResponse = daoTrainingType.get(1);
+
+        // assert
+        assertThat(actualResponse.get()).isEqualTo(storageEntities.get(1));
+    }
+
+    @Test
+    void givenStorageEntitiesIsNotEmpty_ListOfTrainingTypesShouldBeReturned() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainingTypes(storageEntities);
+        daoTrainingType.setStorage(storage);        // act
+        List<TrainingType> actualResponse = daoTrainingType.getAll();
+        // assert
+        assertThat(actualResponse).isEqualTo(new ArrayList<>(storageEntities.values()));
+    }
+
+    @Test
+    void givenATrainingType_TrainingTypeShouldBeSaved() {
+        // arrange
+        TrainingType newTrainingType = new TrainingType();
+
+        newTrainingType.setTrainingTypeName("Elite");
+
+        storageEntities = createNewStorageEntities();
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainingTypes(storageEntities);
+        daoTrainingType.setStorage(storage);        // act
+        TrainingType actualResponse = daoTrainingType.save(newTrainingType);
+
+        // assert
+        assertThat(actualResponse).isEqualTo(newTrainingType);
+        assertThat(actualResponse.getId()).isEqualTo(3);
+    }
+
+    @Test
+    void givenNonExistingId_TrainingTypeShouldBeUpdated() {
+        // arrange
+        TrainingType newTrainingType = new TrainingType();
+        newTrainingType.setTrainingTypeName("Elite");
+        newTrainingType.setId(1);
+
+        storageEntities = createNewStorageEntities();
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainingTypes(storageEntities);
+        daoTrainingType.setStorage(storage);
+        // act
+        TrainingType actualResponse = daoTrainingType.update(1, newTrainingType);
+        // assert
+        assertThat(actualResponse).isNotNull();
+        assertThat(actualResponse.getTrainingTypeName()).isEqualTo("Elite");
+        assertThat(actualResponse.getId()).isEqualTo(1);
+    }
+
+
+    @Test
+    void givenExistingTrainingTypeId_TrainingTypeShouldBeDeleted() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainingTypes(storageEntities);
+        daoTrainingType.setStorage(storage);
+        // act
+        Optional<TrainingType> actualResponse = daoTrainingType.delete(1);
+        // assert
+        assertThat(actualResponse.get()).isNotNull();
+        assertThat(storageEntities.get(1)).isNull();
+    }
+
+    Map<Integer, TrainingType> createNewStorageEntities() {
+        TrainingType trainingType = new TrainingType("TestTrainingType");
         trainingType.setId(1);
-        trainingType2 = new TrainingType("TestTraininigType2");
+        TrainingType trainingType2 = new TrainingType("TestTrainingType2");
         trainingType2.setId(2);
 
         Map<Integer, TrainingType> trainingTypes = new HashMap<>();
         trainingTypes.put(1, trainingType);
         trainingTypes.put(2, trainingType2);
-        storage = new GymStorageImpl();
-        storage.setTrainingTypes(trainingTypes);
-        daoTrainingType = new TrainingTypeDao();
-        daoTrainingType.setStorage(storage);
 
+        return trainingTypes;
     }
 
 
-    @Test
-    void getNextId() {
-        assertEquals(storage.getTrainingTypes().values().size() + 1, daoTrainingType.getNextId());
-    }
-
-    @Test
-    void get() {
-        assertEquals(daoTrainingType.get(1).orElse(null), trainingType);
-    }
-
-    @Test
-    void getAll() {
-        assertEquals(daoTrainingType.getAll().size(), storage.getTrainingTypes().values().size());
-    }
-
-    @Test
-    void save() {
-        TrainingType newTrainigType = new TrainingType();
-        newTrainigType.setId(daoTrainingType.getNextId());
-        assertEquals(newTrainigType.getId(), daoTrainingType.save(new TrainingType()).getId());
-    }
-
-    @Test
-    void update() {
-        TrainingType oldTrainingType = trainingType;
-        TrainingType updatedTraningType = daoTrainingType.update(1, trainingType2);
-        assertNotEquals(oldTrainingType.getTrainingTypeName(), updatedTraningType.getTrainingTypeName());
-        assertEquals(oldTrainingType.getId(), updatedTraningType.getId());
-
-    }
-
-    @Test
-    void delete() {
-        Optional<TrainingType> deletedTrainingType = daoTrainingType.delete(1);
-        assertNotNull(deletedTrainingType);
-    }
 }

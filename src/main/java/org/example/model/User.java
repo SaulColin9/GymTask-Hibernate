@@ -1,6 +1,8 @@
 package org.example.model;
 
 
+import java.util.Objects;
+
 public class User implements Entity {
     private int id;
     private String firstName;
@@ -88,5 +90,18 @@ public class User implements Entity {
                 ", password='" + password + '\'' +
                 ", isActive=" + isActive +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getId() == user.getId() && isActive == user.isActive && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getFirstName(), getLastName(), getUsername(), getPassword(), isActive);
     }
 }

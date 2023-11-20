@@ -1,6 +1,7 @@
 package org.example.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Trainee implements Entity {
     private int id;
@@ -67,5 +68,19 @@ public class Trainee implements Entity {
                 ", address='" + address + '\'' +
                 ", user=" + user +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trainee trainee = (Trainee) o;
+        System.out.println(Objects.equals(getUser(), trainee.getUser()));
+        return getId() == trainee.getId() && Objects.equals(getDateOfBirth(), trainee.getDateOfBirth()) && Objects.equals(getAddress(), trainee.getAddress()) && Objects.equals(getUser(), trainee.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDateOfBirth(), getAddress(), getUser());
     }
 }

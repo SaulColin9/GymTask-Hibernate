@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.util.Objects;
+
 public class Trainer implements Entity {
     int id;
     int specialization;
@@ -53,5 +55,18 @@ public class Trainer implements Entity {
                 ", specialization=" + specialization +
                 ", user=" + user +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trainer trainer = (Trainer) o;
+        return getId() == trainer.getId() && getSpecialization() == trainer.getSpecialization() && Objects.equals(getUser(), trainer.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getSpecialization(), getUser());
     }
 }

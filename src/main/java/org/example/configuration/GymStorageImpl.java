@@ -24,11 +24,11 @@ public class GymStorageImpl implements Storage, InitializingBean {
 
         StorageConnection<EntitiesReader> storageConnection = new StorageConnectionImpl<>(EntitiesReader.class);
         EntitiesReader entitiesReader = storageConnection.getEntities(filePath);
-        entitiesReader.getUsers().forEach(user -> users.put(user.getId(), user));
-        entitiesReader.getTrainees().forEach(trainee -> trainees.put(trainee.getId(), trainee));
-        entitiesReader.getTrainers().forEach(trainer -> trainers.put(trainer.getId(), trainer));
-        entitiesReader.getTrainings().forEach(training -> trainings.put(training.getId(), training));
-        entitiesReader.getTrainingTypes().forEach(trainingType -> trainingTypes.put(trainingType.getId(), trainingType));
+        entitiesReader.getUsers().forEach(user -> getUsers().put(user.getId(), user));
+        entitiesReader.getTrainees().forEach(trainee -> getTrainees().put(trainee.getId(), trainee));
+        entitiesReader.getTrainers().forEach(trainer -> getTrainers().put(trainer.getId(), trainer));
+        entitiesReader.getTrainings().forEach(training -> getTrainings().put(training.getId(), training));
+        entitiesReader.getTrainingTypes().forEach(trainingType -> getTrainingTypes().put(trainingType.getId(), trainingType));
 
     }
 

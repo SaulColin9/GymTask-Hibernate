@@ -1,0 +1,169 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Annadiane",
+      "lastName": "UpdatedLast",
+      "username": "Updated.UpdatedLast",
+      "password": "uP8>Ly1UA%M/",
+      "isActive": false
+    },
+    {
+      "id": 2,
+      "firstName": "Ethelred",
+      "lastName": "Jardine",
+      "username": "ejardine1",
+      "password": "wR5%P{CNOm9.t",
+      "isActive": false
+    },
+    {
+      "id": 3,
+      "firstName": "Albrecht",
+      "lastName": "Brownsworth",
+      "username": "abrownsworth2",
+      "password": "nS1}6m?RdjKL",
+      "isActive": false
+    },
+    {
+      "id": 4,
+      "firstName": "Amity",
+      "lastName": "Somes",
+      "username": "asomes3",
+      "password": "fY6<H.NGgTz",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "firstName": "Shelia",
+      "lastName": "Downage",
+      "username": "sdownage4",
+      "password": "wR6{1ItzII",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "firstName": "UpdatedTrainerName",
+      "lastName": "UpdatedTrainerLastname",
+      "username": "UpdatedTrainerName.UpdatedTrainerLastname",
+      "password": "lP8,X+ibe_WXe|<3",
+      "isActive": false
+    },
+    {
+      "id": 7,
+      "firstName": "Davis",
+      "lastName": "Jakoubek",
+      "username": "djakoubek6",
+      "password": "oL7$Q0D@=}SM",
+      "isActive": false
+    },
+    {
+      "id": 8,
+      "firstName": "Sharla",
+      "lastName": "Enrich",
+      "username": "senrich7",
+      "password": "yQ4%l<yB",
+      "isActive": true
+    },
+    {
+      "id": 9,
+      "firstName": "Latia",
+      "lastName": "Aymes",
+      "username": "laymes8",
+      "password": "sC6?f!5M&)/",
+      "isActive": false
+    },
+    {
+      "id": 10,
+      "firstName": "Aymer",
+      "lastName": "Gunner",
+      "username": "agunner9",
+      "password": "hA2$N`lq`(4d'",
+      "isActive": true
+    }
+  ],
+  "trainers": [
+    {
+      "id": 1,
+      "specialization": 1,
+      "user": {
+        "id": 6,
+        "firstName": "UpdatedTrainerName",
+        "lastName": "UpdatedTrainerLastname",
+        "username": "UpdatedTrainerName.UpdatedTrainerLastname",
+        "password": "lP8,X+ibe_WXe|<3",
+        "isActive": false
+      }
+    }
+  ],
+  "trainees": [
+    {
+      "id": 1,
+      "dateOfBirth": 1698096231546,
+      "address": "Address",
+      "user": {
+        "id": 1,
+        "firstName": "Annadiane",
+        "lastName": "UpdatedLast",
+        "username": "Updated.UpdatedLast",
+        "password": "uP8>Ly1UA%M/",
+        "isActive": false
+      }
+    }
+  ],
+  "trainings": [
+    {
+      "id": 1,
+      "trainee": {
+        "id": 1,
+        "dateOfBirth": 1698096231546,
+        "address": "Address",
+        "user": {
+          "id": 1,
+          "firstName": "Annadiane",
+          "lastName": "UpdatedLast",
+          "username": "Updated.UpdatedLast",
+          "password": "uP8>Ly1UA%M/",
+          "isActive": false
+        }
+      },
+      "trainer": {
+        "id": 1,
+        "specialization": 1,
+        "user": {
+          "id": 6,
+          "firstName": "UpdatedTrainerName",
+          "lastName": "UpdatedTrainerLastname",
+          "username": "UpdatedTrainerName.UpdatedTrainerLastname",
+          "password": "lP8,X+ibe_WXe|<3",
+          "isActive": false
+        }
+      },
+      "trainingName": "The Elite Program",
+      "trainingTypeId": 1,
+      "trainingType": {
+        "id": 1,
+        "trainingTypeName": "Weightlifting"
+      },
+      "trainingDate": 1697846400000,
+      "trainingDuration": 1.0
+    }
+  ],
+  "trainingTypes": [
+    {
+      "id": 1,
+      "trainingTypeName": "Weightlifting"
+    },
+    {
+      "id": 2,
+      "trainingTypeName": "Cardio"
+    },
+    {
+      "id": 3,
+      "trainingTypeName": "Pilates"
+    },
+    {
+      "id": 4,
+      "trainingTypeName": "Fitness Dancing"
+    }
+  ]
+}

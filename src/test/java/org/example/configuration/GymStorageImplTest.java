@@ -4,29 +4,15 @@ import org.example.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 
 class GymStorageImplTest {
 
     @InjectMocks
     GymStorageImpl gymStorage;
-    @Mock
-    private Map<Integer, User> users;
-    @Mock
-    private Map<Integer, Trainee> trainees;
-    @Mock
-    private Map<Integer, Trainer> trainers;
-    @Mock
-    private Map<Integer, Training> trainings;
-    @Mock
-    private Map<Integer, TrainingType> trainingTypes;
 
 
     @BeforeEach
@@ -35,45 +21,34 @@ class GymStorageImplTest {
     }
 
 
-
     @Test
-    void getUsers() {
-        gymStorage.setUsers(new HashMap<>());
-        assertNotNull(gymStorage.getUsers());
+    void givenInvalidFilePath_ShouldThrowException() {
+        // arrange
+        String filePath = null;
+        gymStorage.setFilePath(filePath);
+        assertThatThrownBy(() -> gymStorage.afterPropertiesSet()).isInstanceOf(Exception.class);
     }
 
     @Test
-    void getTrainees() {
-        assertNotNull(gymStorage.getTrainees());
-    }
-
-    @Test
-    void getTrainers() {
-        assertNotNull(gymStorage.getTrainers());
-    }
-
-    @Test
-    void getTrainings() {
-        assertNotNull(gymStorage.getTrainings());
-    }
-
-    @Test
-    void getTrainingTypes() {
-        assertNotNull(gymStorage.getTrainingTypes());
-    }
-
-    @Test
-    void afterPropertiesSet_ShouldThrowException() {
-        gymStorage.setFilePath(null);
-        assertThrows(NullPointerException.class, () -> gymStorage.afterPropertiesSet());
-    }
-
-    @Test
-    void afterPropertiesSet() {
+    void givenValidFilePath_MapEntitiesAreFilled() {
         try {
-            gymStorage.setFilePath("data\\entities.json");
+            // arrange
+            User firstUser = new User();
+            firstUser.setId(1);
+            firstUser.setFirstName("Annadiane");
+            firstUser.setLastName("UpdatedLast");
+            firstUser.setUsername("Updated.UpdatedLast");
+            firstUser.setPassword("uP8>Ly1UA%M/");
+            firstUser.setIsActive(false);
+
+
+            String filePath = "src\\test\\resources\\data\\entities.json";
+            gymStorage.setFilePath(filePath);
+            // act
             gymStorage.afterPropertiesSet();
-            assertNotNull(gymStorage.getUsers());
+
+            // assert
+            assertThat(gymStorage.getUsers().get(1)).isEqualTo(firstUser);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }

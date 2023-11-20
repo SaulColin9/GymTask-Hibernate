@@ -1,89 +1,138 @@
 package org.example.dao;
 
-import org.example.configuration.GymStorageImpl;
-import org.example.dao.entities.TraineeDao;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DaoImplTraineeTest {
     @InjectMocks
     DaoImpl<Trainee> traineeDao;
     @Mock
     Map<Integer, Trainee> storageEntities;
-    GymStorageImpl storage;
-    Trainee trainee;
-    Trainee trainee2;
 
     @BeforeEach
     void setUp() {
-        User user = new User("User Test", "User Test");
-        user.setId(1);
-        User user2 = new User("User Test2", "User Test2");
-        user2.setId(2);
-        Map<Integer, User> users = new HashMap<>();
-        users.put(1, user);
-        users.put(2, user2);
+        MockitoAnnotations.openMocks(this);
+    }
+    @Test
+    void givenEmptyStorageEntities_NextIdShouldBeOne() {
+        // arrange
+        storageEntities = new HashMap<>();
 
-        trainee = new Trainee(new Date(), "Test Address", user);
+        traineeDao.setStorageEntities(storageEntities);
+        // act
+        int actualResponse = traineeDao.getNextId();
+        // assert
+        assertThat(actualResponse).isEqualTo(1);
+    }
+
+    @Test
+    void givenNonEmptyStorageEntities_NextIdShouldBeReturned() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+
+        traineeDao.setStorageEntities(storageEntities);
+        // act
+        int actualResponse = traineeDao.getNextId();
+
+        // assert
+        assertThat(actualResponse).isEqualTo(3);
+    }
+
+    @Test
+    void givenTraineeId_TraineeShouldBeReturned() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+
+        traineeDao.setStorageEntities(storageEntities);
+        // act
+        Optional<Trainee> actualResponse = traineeDao.get(1);
+
+        // assert
+        assertThat(actualResponse.get()).isEqualTo(storageEntities.get(1));
+    }
+
+    @Test
+    void givenStorageEntitiesIsNotEmpty_ListOfTraineesShouldBeReturned() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+        traineeDao.setStorageEntities(storageEntities);
+        // act
+        List<Trainee> actualResponse = traineeDao.getAll();
+        // assert
+        assertThat(actualResponse).isEqualTo(new ArrayList<>(storageEntities.values()));
+    }
+    @Test
+    void givenATrainee_TraineeShouldBeSaved() {
+        // arrange
+        Trainee newTrainee = new Trainee();
+
+        newTrainee.setAddress("Test Address");
+        newTrainee.setDateOfBirth(new Date());
+        newTrainee.setUser(new User());
+
+        storageEntities = createNewStorageEntities();
+        traineeDao.setStorageEntities(storageEntities);
+        // act
+        Trainee actualResponse = traineeDao.save(newTrainee);
+
+        // assert
+        assertThat(actualResponse).isEqualTo(newTrainee);
+        assertThat(actualResponse.getId()).isEqualTo(3);
+    }
+
+
+    @Test
+    void givenNonExistingId_TraineeBeUpdated() {
+        // arrange
+        Trainee newTrainee = new Trainee();
+        newTrainee.setAddress("Test Address");
+        newTrainee.setDateOfBirth(new Date());
+        newTrainee.setUser(new User());
+        newTrainee.setId(1);
+
+        storageEntities = createNewStorageEntities();
+        traineeDao.setStorageEntities(storageEntities);
+        // act
+        Trainee actualResponse = traineeDao.update(1, newTrainee);
+        // assert
+        assertThat(actualResponse).isNotNull();
+        assertThat(actualResponse.getAddress()).isEqualTo("Test Address");
+        assertThat(actualResponse.getId()).isEqualTo(1);
+    }
+
+    @Test
+    void givenExistingTraineeId_TraineeShouldBeDeleted() {
+        // arrange
+        storageEntities = createNewStorageEntities();
+        traineeDao.setStorageEntities(storageEntities);
+
+        // act
+        Optional<Trainee> actualResponse = traineeDao.delete(1);
+        // assert
+        assertThat(actualResponse.get()).isNotNull();
+        assertThat(storageEntities.get(1)).isNull();
+    }
+
+
+    Map<Integer, Trainee> createNewStorageEntities() {
+        Trainee trainee = new Trainee();
         trainee.setId(1);
-        trainee2 = new Trainee(new Date(), "Test Address 2", user2);
+        Trainee trainee2 = new Trainee();
         trainee2.setId(2);
+
         Map<Integer, Trainee> trainees = new HashMap<>();
         trainees.put(1, trainee);
         trainees.put(2, trainee2);
-        storage = new GymStorageImpl();
-        storage.setTrainees(trainees);
-        storage.setUsers(users);
-        traineeDao = new TraineeDao();
-        traineeDao.setStorage(storage);
 
-    }
-
-    @Test
-    void getNextId() {
-        assertEquals(storage.getTrainees().values().size() + 1, traineeDao.getNextId());
-    }
-
-    @Test
-    void get() {
-        assertEquals(trainee, traineeDao.get(1).orElse(null));
-    }
-
-    @Test
-    void getAll() {
-        assertEquals(traineeDao.getAll().size(), storage.getTrainees().values().size());
-    }
-
-    @Test
-    void save() {
-        Trainee newTrainee = new Trainee();
-        newTrainee.setId(traineeDao.getNextId());
-        assertEquals(newTrainee.getId(), traineeDao.save(new Trainee()).getId());
-    }
-
-    @Test
-    void update() {
-        Trainee oldTrainee = trainee;
-        Trainee updatedTrainee = traineeDao.update(1, trainee2);
-        assertNotEquals(oldTrainee.getAddress(), updatedTrainee.getAddress());
-        assertEquals(oldTrainee.getId(), updatedTrainee.getId());
-
-    }
-
-    @Test
-    void delete() {
-        Optional<Trainee> deletedTrainee = traineeDao.delete(1);
-        assertNotNull(deletedTrainee);
+        return trainees;
     }
 }
