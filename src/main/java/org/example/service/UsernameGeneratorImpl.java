@@ -4,7 +4,7 @@ import org.example.dao.Dao;
 import org.example.model.User;
 
 public class UsernameGeneratorImpl implements UsernameGenerator {
-    private final String separator = ".";
+    private static final String separator = ".";
     private Dao<User> userDao;
 
 

@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.dao.Dao;
 import org.example.model.User;
 
 import java.util.Optional;

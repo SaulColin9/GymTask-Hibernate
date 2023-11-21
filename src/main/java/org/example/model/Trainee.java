@@ -75,7 +75,6 @@ public class Trainee implements Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Trainee trainee = (Trainee) o;
-        System.out.println(Objects.equals(getUser(), trainee.getUser()));
         return getId() == trainee.getId() && Objects.equals(getDateOfBirth(), trainee.getDateOfBirth()) && Objects.equals(getAddress(), trainee.getAddress()) && Objects.equals(getUser(), trainee.getUser());
     }
 
