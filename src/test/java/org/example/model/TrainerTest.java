@@ -4,7 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+
 
 class TrainerTest {
 
@@ -18,11 +19,11 @@ class TrainerTest {
 
     @Test
     void getSpecialization() {
-        assertEquals(1, trainer.getSpecialization());
+        assertThat(trainer.getSpecialization()).isEqualTo(1);
     }
 
     @Test
     void testToString() {
-        assertTrue(trainer.toString().contains("Trainer"));
+        assertThat(trainer.toString().contains("Trainer")).isTrue();
     }
 }

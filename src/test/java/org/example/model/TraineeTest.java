@@ -6,7 +6,8 @@ import org.mockito.Mock;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+
 
 class TraineeTest {
     @Mock
@@ -21,61 +22,68 @@ class TraineeTest {
 
     @Test
     void getId() {
-        assertEquals(trainee.getId(), 1);
+        assertThat(trainee.getId()).isEqualTo(1);
     }
 
     @Test
     void setId() {
         int newId = 2;
         trainee.setId(newId);
-        assertEquals(newId, trainee.getId());
+        assertThat(newId).isEqualTo(trainee.getId());
     }
 
     @Test
     void getUser() {
-        assertInstanceOf(User.class, trainee.getUser());
+        assertThat(trainee.getUser()).
+                isNotNull().
+                isInstanceOf(User.class);
     }
 
     @Test
     void getDateOfBirth() {
-        assertInstanceOf(Date.class, trainee.getDateOfBirth());
+        assertThat(trainee.getDateOfBirth()).
+                isNotNull().
+                isInstanceOf(Date.class);
     }
 
     @Test
     void setDateOfBirth() {
         Date newDate = new Date();
         trainee.setDateOfBirth(newDate);
-        assertEquals(newDate, trainee.getDateOfBirth());
+        assertThat(trainee.getDateOfBirth()).isEqualTo(newDate);
     }
 
     @Test
     void getAddress() {
-        assertInstanceOf(String.class, trainee.getAddress());
+        assertThat(trainee.getAddress()).
+                isEqualTo("Test Address").
+                isInstanceOf(String.class);
     }
 
     @Test
     void setAddress() {
         String newAddress = "New Address";
         trainee.setAddress(newAddress);
-        assertEquals(newAddress, trainee.getAddress());
+        assertThat(trainee.getAddress()).
+                isEqualTo(newAddress);
     }
 
     @Test
     void getUserId() {
         int userId = 1;
-        trainee.getUser().setId(1);
-        assertEquals(userId, trainee.getUser().getId());
+        trainee.getUser().setId(userId);
+        assertThat(trainee.getUser().getId()).isEqualTo(1);
     }
 
     @Test
     void setUser() {
         User newUser = new User("TestName", "TestLast");
         trainee.setUser(newUser);
-        assertEquals(newUser, trainee.getUser());
+        assertThat(trainee.getUser()).isEqualTo(newUser);
     }
 
     @Test
     void testToString() {
-        assertTrue(trainee.toString().contains("Trainee"));
+        assertThat(trainee.toString().contains("Trainee")).isTrue();
     }
 }

@@ -6,7 +6,7 @@ import org.mockito.Mock;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 class TrainingTest {
 
@@ -30,37 +30,37 @@ class TrainingTest {
     void getTrainingDate() {
         Date date = new Date();
         training.setTrainingDate(date);
-        assertEquals(date, training.getTrainingDate());
+        assertThat(training.getTrainingDate()).isEqualTo(date);
     }
 
     @Test
     void getTrainingDuration() {
         int trainingDuration = 1;
-        assertEquals(training.getTrainingDuration(), trainingDuration);
+        assertThat(training.getTrainingDuration()).isEqualTo(trainingDuration);
     }
 
     @Test
     void getTrainingTypeId() {
-        assertEquals(training.getTrainingTypeId(), 1);
+        assertThat(training.getTrainingTypeId()).isEqualTo(1);
     }
 
     @Test
     void getTrainee() {
-        assertNotNull(training.getTrainee());
+        assertThat(training.getTrainee()).isNotNull();
     }
 
     @Test
     void getTrainer() {
-        assertNotNull(training.getTrainer());
+        assertThat(training.getTrainer()).isNotNull();
     }
 
     @Test
     void getTrainingType() {
-        assertNotNull(training.getTrainingType());
+        assertThat(training.getTrainingType()).isNotNull();
     }
 
     @Test
     void testToString() {
-        assertTrue(training.toString().contains("Training"));
+        assertThat(training.toString().contains("Training")).isTrue();
     }
 }

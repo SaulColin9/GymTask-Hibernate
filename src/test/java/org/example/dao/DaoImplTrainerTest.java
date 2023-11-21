@@ -1,5 +1,7 @@
 package org.example.dao;
 
+import org.example.configuration.GymStorageImpl;
+import org.example.dao.entities.TrainerDao;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DaoImplTrainerTest {
     @InjectMocks
-    DaoImpl<Trainer> trainerDao;
+    TrainerDao trainerDao;
     @Mock
     Map<Integer, Trainer> storageEntities;
 
@@ -29,7 +31,9 @@ public class DaoImplTrainerTest {
         // arrange
         storageEntities = new HashMap<>();
 
-        trainerDao.setStorageEntities(storageEntities);
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainers(storageEntities);
+        trainerDao.setStorage(storage);
         // act
         int actualResponse = trainerDao.getNextId();
         // assert
@@ -41,7 +45,9 @@ public class DaoImplTrainerTest {
         // arrange
         storageEntities = createNewStorageEntities();
 
-        trainerDao.setStorageEntities(storageEntities);
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainers(storageEntities);
+        trainerDao.setStorage(storage);
         // act
         int actualResponse = trainerDao.getNextId();
 
@@ -54,7 +60,9 @@ public class DaoImplTrainerTest {
         // arrange
         storageEntities = createNewStorageEntities();
 
-        trainerDao.setStorageEntities(storageEntities);
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainers(storageEntities);
+        trainerDao.setStorage(storage);
         // act
         Optional<Trainer> actualResponse = trainerDao.get(1);
 
@@ -66,7 +74,10 @@ public class DaoImplTrainerTest {
     void givenStorageEntitiesIsNotEmpty_ListOfTrainersShouldBeReturned() {
         // arrange
         storageEntities = createNewStorageEntities();
-        trainerDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainers(storageEntities);
+        trainerDao.setStorage(storage);
         // act
         List<Trainer> actualResponse = trainerDao.getAll();
         // assert
@@ -82,7 +93,10 @@ public class DaoImplTrainerTest {
         newTrainer.setUser(new User());
 
         storageEntities = createNewStorageEntities();
-        trainerDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainers(storageEntities);
+        trainerDao.setStorage(storage);
         // act
         Trainer actualResponse = trainerDao.save(newTrainer);
 
@@ -101,7 +115,10 @@ public class DaoImplTrainerTest {
         newTrainer.setId(1);
 
         storageEntities = createNewStorageEntities();
-        trainerDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainers(storageEntities);
+        trainerDao.setStorage(storage);
         // act
         Trainer actualResponse = trainerDao.update(1, newTrainer);
         // assert
@@ -115,7 +132,10 @@ public class DaoImplTrainerTest {
     void givenExistingTrainerId_TrainerShouldBeDeleted() {
         // arrange
         storageEntities = createNewStorageEntities();
-        trainerDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainers(storageEntities);
+        trainerDao.setStorage(storage);
 
         // act
         Optional<Trainer> actualResponse = trainerDao.delete(1);

@@ -1,5 +1,7 @@
 package org.example.dao;
 
+import org.example.configuration.GymStorageImpl;
+import org.example.dao.entities.TraineeDao;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DaoImplTraineeTest {
     @InjectMocks
-    DaoImpl<Trainee> traineeDao;
+    TraineeDao traineeDao;
     @Mock
     Map<Integer, Trainee> storageEntities;
 
@@ -27,7 +29,9 @@ public class DaoImplTraineeTest {
         // arrange
         storageEntities = new HashMap<>();
 
-        traineeDao.setStorageEntities(storageEntities);
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainees(storageEntities);
+        traineeDao.setStorage(storage);
         // act
         int actualResponse = traineeDao.getNextId();
         // assert
@@ -39,7 +43,9 @@ public class DaoImplTraineeTest {
         // arrange
         storageEntities = createNewStorageEntities();
 
-        traineeDao.setStorageEntities(storageEntities);
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainees(storageEntities);
+        traineeDao.setStorage(storage);
         // act
         int actualResponse = traineeDao.getNextId();
 
@@ -52,7 +58,9 @@ public class DaoImplTraineeTest {
         // arrange
         storageEntities = createNewStorageEntities();
 
-        traineeDao.setStorageEntities(storageEntities);
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainees(storageEntities);
+        traineeDao.setStorage(storage);
         // act
         Optional<Trainee> actualResponse = traineeDao.get(1);
 
@@ -64,7 +72,10 @@ public class DaoImplTraineeTest {
     void givenStorageEntitiesIsNotEmpty_ListOfTraineesShouldBeReturned() {
         // arrange
         storageEntities = createNewStorageEntities();
-        traineeDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainees(storageEntities);
+        traineeDao.setStorage(storage);
         // act
         List<Trainee> actualResponse = traineeDao.getAll();
         // assert
@@ -80,7 +91,10 @@ public class DaoImplTraineeTest {
         newTrainee.setUser(new User());
 
         storageEntities = createNewStorageEntities();
-        traineeDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainees(storageEntities);
+        traineeDao.setStorage(storage);
         // act
         Trainee actualResponse = traineeDao.save(newTrainee);
 
@@ -100,7 +114,10 @@ public class DaoImplTraineeTest {
         newTrainee.setId(1);
 
         storageEntities = createNewStorageEntities();
-        traineeDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainees(storageEntities);
+        traineeDao.setStorage(storage);
         // act
         Trainee actualResponse = traineeDao.update(1, newTrainee);
         // assert
@@ -113,7 +130,10 @@ public class DaoImplTraineeTest {
     void givenExistingTraineeId_TraineeShouldBeDeleted() {
         // arrange
         storageEntities = createNewStorageEntities();
-        traineeDao.setStorageEntities(storageEntities);
+
+        GymStorageImpl storage = new GymStorageImpl();
+        storage.setTrainees(storageEntities);
+        traineeDao.setStorage(storage);
 
         // act
         Optional<Trainee> actualResponse = traineeDao.delete(1);

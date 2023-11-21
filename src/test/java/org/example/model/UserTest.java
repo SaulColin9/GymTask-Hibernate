@@ -4,7 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 class UserTest {
 
@@ -20,16 +21,16 @@ class UserTest {
 
     @Test
     void getLastName() {
-        assertEquals(user.getLastName(), "LastName");
+        assertThat(user.getLastName()).isEqualTo("LastName");
     }
 
     @Test
     void getPassword() {
-        assertEquals(user.getPassword(), "Pswd");
+        assertThat(user.getPassword()).isEqualTo("Pswd");
     }
 
     @Test
     void getIsActive() {
-        assertTrue(user.getIsActive());
+        assertThat(user.getIsActive()).isTrue();
     }
 }

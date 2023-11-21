@@ -4,9 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import java.util.Date;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class TrainingTypeTest {
     @Mock
@@ -20,12 +19,12 @@ class TrainingTypeTest {
 
     @Test
     void getTrainingTypeName() {
-        assertEquals(trainingType.getTrainingTypeName(), "Test Training Type");
+        assertThat(trainingType.getTrainingTypeName()).isEqualTo("Test Training Type");
     }
 
 
     @Test
     void testToString() {
-        assertTrue(trainingType.toString().contains("TrainingType"));
+        assertThat(trainingType.toString().contains("TrainingType")).isTrue();
     }
 }
