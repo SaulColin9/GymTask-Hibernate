@@ -1,12 +1,12 @@
 package org.example.dao;
 
 import org.example.configuration.Storage;
-import org.example.model.Entity;
+import org.example.model.EntityModel;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface Dao<T extends Entity> {
+public interface Dao<T extends EntityModel> {
     Optional<T> get(int id);
 
     void setStorage(Storage storage);

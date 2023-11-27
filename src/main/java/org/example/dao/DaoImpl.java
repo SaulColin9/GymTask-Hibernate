@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class DaoImpl<T extends Entity> implements Dao<T> {
+public class DaoImpl<T extends EntityModel> implements Dao<T> {
     private Map<Integer, T> storageEntities;
 
     @Override

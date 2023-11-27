@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
@@ -16,7 +17,6 @@ public class TrainingServiceImpl implements TrainingService {
     private Dao<Training> trainingDao;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
     private static final String NO_ID_MSG = "Provided Training Id does not exist";
-
 
 
     @Override
@@ -54,6 +54,10 @@ public class TrainingServiceImpl implements TrainingService {
         }
         logger.info("Selecting Training Profile with id " + id);
         return training.get();
+    }
+
+    public List<Training> selectTrainingsByTraineeUsername(String username) {
+        return null;
     }
 
     private boolean validateFields(String trainingName, Date trainingDate) {

@@ -1,12 +1,19 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.Objects;
 
-public class Trainee implements Entity {
+@Entity
+public class Trainee implements EntityModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Date dateOfBirth;
     private String address;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public Trainee() {

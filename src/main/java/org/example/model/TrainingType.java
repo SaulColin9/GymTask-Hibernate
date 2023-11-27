@@ -1,8 +1,16 @@
 package org.example.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
-public class TrainingType implements Entity {
+@Entity
+public class TrainingType implements EntityModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String trainingTypeName;
 

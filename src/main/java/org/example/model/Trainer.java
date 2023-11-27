@@ -1,11 +1,19 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
-public class Trainer implements Entity {
+@Entity
+public class Trainer implements EntityModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     int specialization;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
 
 
     public Trainer() {

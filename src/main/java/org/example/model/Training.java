@@ -1,15 +1,23 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 
-public class Training implements Entity {
+@Entity
+public class Training implements EntityModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String trainingName;
-    int trainingTypeId;
     Date trainingDate;
     double trainingDuration;
+    @ManyToOne
     Trainee trainee;
+    @ManyToOne
     Trainer trainer;
+    @OneToOne
+    @JoinColumn(name = "trainingType_id", referencedColumnName = "id")
     TrainingType trainingType;
 
     public Training() {
@@ -19,7 +27,6 @@ public class Training implements Entity {
         this.trainee = trainee;
         this.trainer = trainer;
         this.trainingName = trainingName;
-        this.trainingTypeId = trainingType.getId();
         this.trainingType = trainingType;
         this.trainingDate = trainingDate;
         this.trainingDuration = trainingDuration;
@@ -43,13 +50,9 @@ public class Training implements Entity {
         this.trainingName = trainingName;
     }
 
-    public int getTrainingTypeId() {
-        return trainingTypeId;
-    }
 
-    public void setTrainingTypeId(int trainingTypeId) {
-        this.trainingTypeId = trainingTypeId;
-    }
+
+
 
     public Date getTrainingDate() {
         return trainingDate;
@@ -96,7 +99,6 @@ public class Training implements Entity {
         return "Training{" +
                 "id=" + id +
                 ", trainingName='" + trainingName + '\'' +
-                ", trainingTypeId=" + trainingTypeId +
                 ", trainingDate=" + trainingDate +
                 ", trainingDuration=" + trainingDuration +
                 ", trainee=" + trainee +

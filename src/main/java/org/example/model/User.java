@@ -1,15 +1,31 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+import org.hibernate.annotations.Type;
 
 import java.util.Objects;
 
-public class User implements Entity {
+@Entity
+public class User implements EntityModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private boolean isActive;
+
+//    @OneToOne(mappedBy = "user")
+//    private Trainer trainer;
+//    @OneToOne(mappedBy = "user")
+//    private Trainee trainee;
 
     public User() {
 
