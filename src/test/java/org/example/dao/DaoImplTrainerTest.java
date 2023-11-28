@@ -1,7 +1,7 @@
 package org.example.dao;
 
-import org.example.configuration.GymStorageImpl;
-import org.example.dao.entities.TrainerDao;
+import org.example.configuration.inMemory.storage.GymStorageImpl;
+import org.example.dao.inMemory.TrainerDao;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;

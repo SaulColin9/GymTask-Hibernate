@@ -1,4 +1,4 @@
-package org.example.configuration;
+package org.example.configuration.inMemory.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

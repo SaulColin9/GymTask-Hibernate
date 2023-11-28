@@ -1,7 +1,6 @@
-package org.example.dao.entities;
+package org.example.dao.inMemory;
 
-import org.example.configuration.Storage;
-import org.example.dao.DaoImpl;
+import org.example.configuration.inMemory.storage.Storage;
 import org.example.model.Trainer;
 
 public class TrainerDao extends DaoImpl<Trainer> {

@@ -1,28 +1,30 @@
 package org.example;
 
 import jakarta.persistence.EntityManager;
-import org.example.configuration.BeanConfiguration;
+import org.example.configuration.jpa.JpaBeanConfiguration;
 import org.example.dao.jpa.*;
+import org.example.facade.inMemory.GymFacade;
 import org.example.model.Trainee;
 import org.example.model.Training;
 import org.example.model.TrainingType;
 import org.example.model.Trainer;
 import org.example.model.User;
-import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.authentication.CredentialsAuthenticatorImpl;
-import org.example.service.serviceImpl.TrainerServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Date;
-import java.util.Optional;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(JpaBeanConfiguration.class);
+
+//        GymFacade gymFacade = context.getBean(GymFacade.class);
+
         EntityManager em = context.getBean(EntityManager.class);
+        GymFacade gymFacade = context.getBean(GymFacade.class);
         JpaDaoTrainerImpl daoTrainer = context.getBean(JpaDaoTrainerImpl.class);
         JpaDaoTrainingImpl daoTraining = context.getBean(JpaDaoTrainingImpl.class);
         JpaDaoTraineeImpl daoTrainee = context.getBean(JpaDaoTraineeImpl.class);
@@ -79,6 +81,9 @@ public class Main {
         daoTraining.getTrainingsByTrainerUsername("Saul.Colin", null, 5.0).forEach(System.out::println);
         System.out.println(credentialsAuthenticator.authenticate("Saul.Colin", "password"));
 
+        System.out.println(gymFacade.getTrainer(1));
+        int newTrainerId = gymFacade.addTrainer("Patricio", "Alvarez", 1);
+        System.out.println(gymFacade.getTrainer(newTrainerId));
 
 //        daoTrainee.delete(1);
 //        daoTrainee.delete(3);

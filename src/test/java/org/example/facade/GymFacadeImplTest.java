@@ -1,5 +1,6 @@
 package org.example.facade;
 
+import org.example.facade.inMemory.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.serviceImpl.TraineeServiceImpl;
 import org.example.service.serviceImpl.TrainerServiceImpl;

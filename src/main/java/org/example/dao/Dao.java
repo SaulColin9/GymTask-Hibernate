@@ -1,6 +1,5 @@
 package org.example.dao;
 
-import org.example.configuration.Storage;
 import org.example.model.EntityModel;
 
 import java.util.List;

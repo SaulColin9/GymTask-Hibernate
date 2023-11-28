@@ -2,10 +2,8 @@ package org.example.dao.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import org.example.configuration.Storage;
 import org.example.dao.Dao;
 import org.example.model.EntityModel;
-import org.example.model.User;
 
 import java.util.List;
 import java.util.Optional;

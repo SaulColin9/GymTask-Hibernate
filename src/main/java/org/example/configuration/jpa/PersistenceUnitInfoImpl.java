@@ -1,4 +1,4 @@
-package org.example.configuration;
+package org.example.configuration.jpa;
 
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.SharedCacheMode;
@@ -14,14 +14,10 @@ import java.util.List;
 import java.util.Properties;
 
 public class PersistenceUnitInfoImpl implements PersistenceUnitInfo {
-    private String username;
-    private String password;
-    private String url;
     private String persistenceUnitName;
     private String persistenceProviderClassName;
     private PersistenceUnitTransactionType persistenceUnitTransactionType;
     private DataSource dataSource;
-
     private List<String> managedClassNames;
 
 
@@ -42,7 +38,6 @@ public class PersistenceUnitInfoImpl implements PersistenceUnitInfo {
 
     @Override
     public DataSource getJtaDataSource() {
-
         return dataSource;
     }
 
@@ -125,19 +120,6 @@ public class PersistenceUnitInfoImpl implements PersistenceUnitInfo {
 
     public void setPersistenceUnitTransactionType(PersistenceUnitTransactionType persistenceUnitTransactionType) {
         this.persistenceUnitTransactionType = persistenceUnitTransactionType;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public void setManagedClassNames(List<String> managedClassNames) {

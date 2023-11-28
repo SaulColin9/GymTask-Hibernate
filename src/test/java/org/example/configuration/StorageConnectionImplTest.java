@@ -1,5 +1,7 @@
 package org.example.configuration;
 
+import org.example.configuration.inMemory.storage.EntitiesReader;
+import org.example.configuration.inMemory.storage.StorageConnectionImpl;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.junit.jupiter.api.Test;

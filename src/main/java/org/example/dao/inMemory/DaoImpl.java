@@ -1,6 +1,7 @@
-package org.example.dao;
+package org.example.dao.inMemory;
 
-import org.example.configuration.Storage;
+import org.example.configuration.inMemory.storage.Storage;
+import org.example.dao.Dao;
 import org.example.model.*;
 
 import java.util.ArrayList;

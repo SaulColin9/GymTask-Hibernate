@@ -1,4 +1,4 @@
-package org.example.configuration;
+package org.example.configuration.inMemory.storage;
 
 import org.example.model.*;
 

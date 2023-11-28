@@ -1,40 +1,47 @@
-package org.example.configuration;
+package org.example.configuration.jpa;
 
-import com.zaxxer.hikari.HikariDataSource;
-import jakarta.persistence.spi.PersistenceUnitInfo;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
-import org.example.dao.jpa.*;
-import org.example.service.authentication.CredentialsAuthenticator;
-import org.example.service.authentication.CredentialsAuthenticatorImpl;
-import org.example.service.utils.*;
-import org.hibernate.jpa.HibernatePersistenceProvider;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import org.example.dao.Dao;
-import org.example.model.*;
-import org.example.service.*;
-import org.example.service.serviceImpl.TrainerServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.example.facade.inMemory.GymFacade;
+import org.example.facade.inMemory.GymFacadeImpl;
+import org.example.model.*;
+import org.example.service.*;
+import org.example.service.serviceImpl.*;
+import org.example.service.utils.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.hibernate.jpa.HibernatePersistenceProvider;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import com.zaxxer.hikari.HikariDataSource;
+import jakarta.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
+import org.example.service.authentication.*;
+import org.example.dao.jpa.*;
 
 @Configuration
 @PropertySource(value = "storage.properties")
-public class BeanConfiguration {
-    @Value("${entities.source}")
+public class JpaBeanConfiguration {
+    @Value("${entities.jpa.source}")
     String url;
-    @Value("${entities.username}")
+    @Value("${entities.jpa.username}")
     String username;
-    @Value("${entities.password}")
+    @Value("${entities.jpa.password}")
     String password;
-    @Value("${entities.driver}")
+    @Value("${entities.jpa.driver}")
     String driver;
+    @Value("${entities.jpa.persistenceProvider}")
+    String persistenceProvider;
+    @Value("${entities.jpa.persistenceUnit}")
+    String persistenceUnit;
 
     @Bean
     DataSource dataSource() {
@@ -57,11 +64,8 @@ public class BeanConfiguration {
     @Bean
     PersistenceUnitInfo persistenceUnitInfo(@Autowired DataSource dataSource) {
         PersistenceUnitInfoImpl persistenceUnitInfo = new PersistenceUnitInfoImpl();
-        persistenceUnitInfo.setUrl(url);
-        persistenceUnitInfo.setPassword(password);
-        persistenceUnitInfo.setUsername(username);
-        persistenceUnitInfo.setPersistenceUnitName("gym-persistence-unit");
-        persistenceUnitInfo.setPersistenceProviderClassName("org.hibernate.jpa.HibernatePersistenceProvider");
+        persistenceUnitInfo.setPersistenceUnitName(persistenceUnit);
+        persistenceUnitInfo.setPersistenceProviderClassName(persistenceProvider);
         persistenceUnitInfo.setPersistenceUnitTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
         persistenceUnitInfo.setManagedClassNames(List.of(User.class.getName(), Trainer.class.getName(),
                 Trainee.class.getName(), Training.class.getName(), TrainingType.class.getName()));
@@ -125,33 +129,26 @@ public class BeanConfiguration {
         return jpaDaoTrainingType;
     }
 
-    //    @Bean
-//    public Storage storage(@Value("${entities.source}") String filePath) {
-//        GymStorageImpl gymStorage = new GymStorageImpl();
-//        gymStorage.setFilePath(filePath);
-//        return gymStorage;
-//    }
-//
-//    @Bean
-//    public GymFacade gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
-//                               @Autowired TrainingService trainingService) {
-//        return new GymFacadeImpl(traineeService, trainerService, trainingService);
-//    }
-//
-//    @Bean
-//    public TrainingService trainingService(@Autowired Dao<Trainee> traineeDao,
-//                                           @Autowired Dao<Trainer> trainerDao,
-//                                           @Autowired Dao<Training> trainingDao,
-//                                           @Autowired Dao<TrainingType> trainingTypeDao
-//    ) {
-//        TrainingServiceImpl trainingService = new TrainingServiceImpl();
-//        trainingService.setTraineeDao(traineeDao);
-//        trainingService.setTrainerDao(trainerDao);
-//        trainingService.setTrainingDao(trainingDao);
-//        trainingService.setTrainingTypeDao(trainingTypeDao);
-//        return trainingService;
-//    }
-//
+    @Bean
+    public GymFacade gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
+                               @Autowired TrainingService trainingService) {
+        return new GymFacadeImpl(traineeService, trainerService, trainingService);
+    }
+
+    @Bean
+    public TrainingService trainingService(@Autowired Dao<Trainee> traineeDao,
+                                           @Autowired Dao<Trainer> trainerDao,
+                                           @Autowired Dao<Training> trainingDao,
+                                           @Autowired Dao<TrainingType> trainingTypeDao
+    ) {
+        TrainingServiceImpl trainingService = new TrainingServiceImpl();
+        trainingService.setTraineeDao(traineeDao);
+        trainingService.setTrainerDao(trainerDao);
+        trainingService.setTrainingDao(trainingDao);
+        trainingService.setTrainingTypeDao(trainingTypeDao);
+        return trainingService;
+    }
+
     @Bean
     public TrainerService trainerService(@Autowired Dao<Trainer> trainerDao, @Autowired UserUtils userUtils) {
         TrainerServiceImpl trainerService = new TrainerServiceImpl();
@@ -159,49 +156,14 @@ public class BeanConfiguration {
         trainerService.setUserUtils(userUtils);
         return trainerService;
     }
-//
-//    @Bean
-//    TraineeService traineeService(@Autowired Dao<Trainee> traineeDao, @Autowired UserUtils userUtils) {
-//        TraineeServiceImpl traineeService = new TraineeServiceImpl();
-//        traineeService.setTraineeDao(traineeDao);
-//        traineeService.setUserUtils(userUtils);
-//        return traineeService;
-//    }
-//
-//    @Bean("users")
-//    public Dao<User> userDao(@Autowired Storage storage) {
-//        DaoImpl<User> userDao = new DaoImpl<>();
-//        userDao.setStorageEntities(storage.getUsers());
-//        return userDao;
-//    }
-//
-//    @Bean("trainings")
-//    public Dao<Training> trainingDao(@Autowired Storage storage) {
-//        Dao<Training> trainingDao = new TrainingDao();
-//        trainingDao.setStorage(storage);
-//        return trainingDao;
-//    }
-//
-//    @Bean("trainingTypes")
-//    public Dao<TrainingType> trainingTypesDao(@Autowired Storage storage) {
-//        Dao<TrainingType> trainingTypesDao = new TrainingTypeDao();
-//        trainingTypesDao.setStorage(storage);
-//        return trainingTypesDao;
-//    }
-//
-//    @Bean("trainers")
-//    public Dao<Trainer> trainerDao(@Autowired Storage storage) {
-//        Dao<Trainer> trainerDao = new TrainerDao();
-//        trainerDao.setStorage(storage);
-//        return trainerDao;
-//    }
-//
-//    @Bean("trainees")
-//    public Dao<Trainee> traineeDao(@Autowired Storage storage) {
-//        Dao<Trainee> traineeDao = new TraineeDao();
-//        traineeDao.setStorage(storage);
-//        return traineeDao;
-//    }
+
+    @Bean
+    TraineeService traineeService(@Autowired Dao<Trainee> traineeDao, @Autowired UserUtils userUtils) {
+        TraineeServiceImpl traineeService = new TraineeServiceImpl();
+        traineeService.setTraineeDao(traineeDao);
+        traineeService.setUserUtils(userUtils);
+        return traineeService;
+    }
 
     @Bean
     public PasswordGenerator passwordGenerator() {

@@ -139,7 +139,6 @@
         }
       },
       "trainingName": "The Elite Program",
-      "trainingTypeId": 1,
       "trainingType": {
         "id": 1,
         "trainingTypeName": "Weightlifting"

@@ -1,5 +1,6 @@
 package org.example.configuration;
 
+import org.example.configuration.inMemory.storage.GymStorageImpl;
 import org.example.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
