@@ -44,16 +44,6 @@ public abstract class JpaDaoImpl<T extends EntityModel> implements Dao<T> {
         }
     }
 
-    @Override
-    public void setStorage(Storage storage) {
-
-    }
-
-    @Override
-    public int getNextId() {
-        return 0;
-    }
-
     public EntityManager getEntityManager() {
         return entityManager;
     }

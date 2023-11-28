@@ -11,7 +11,6 @@ import java.util.Optional;
 public class DaoImpl<T extends EntityModel> implements Dao<T> {
     private Map<Integer, T> storageEntities;
 
-    @Override
     public int getNextId() {
         if (storageEntities.isEmpty()) {
             return 1;
@@ -34,7 +33,6 @@ public class DaoImpl<T extends EntityModel> implements Dao<T> {
         return Optional.ofNullable(foundT);
     }
 
-    @Override
     public void setStorage(Storage storage) {
 
     }

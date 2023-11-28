@@ -4,7 +4,7 @@ import org.example.dao.Dao;
 import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainer;
 import org.example.model.User;
-import org.example.service.UserUtils;
+import org.example.service.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

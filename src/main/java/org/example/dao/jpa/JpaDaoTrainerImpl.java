@@ -1,7 +1,6 @@
 package org.example.dao.jpa;
 
 import jakarta.persistence.Query;
-import org.example.configuration.Storage;
 import org.example.model.Trainer;
 
 import java.util.List;

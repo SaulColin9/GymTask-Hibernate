@@ -8,6 +8,8 @@ import org.example.model.Training;
 import org.example.model.TrainingType;
 import org.example.model.Trainer;
 import org.example.model.User;
+import org.example.service.authentication.CredentialsAuthenticator;
+import org.example.service.authentication.CredentialsAuthenticatorImpl;
 import org.example.service.serviceImpl.TrainerServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -26,6 +28,7 @@ public class Main {
         JpaDaoTraineeImpl daoTrainee = context.getBean(JpaDaoTraineeImpl.class);
         JpaDaoTrainingTypeImpl daoTrainingType = context.getBean(JpaDaoTrainingTypeImpl.class);
         JpaDaoUserImpl jpaDaoUser = context.getBean(JpaDaoUserImpl.class);
+        CredentialsAuthenticatorImpl credentialsAuthenticator = context.getBean(CredentialsAuthenticatorImpl.class);
 
 
         User newUser = new User();
@@ -74,6 +77,8 @@ public class Main {
 //        daoTraining.getTrainingsByTraineeUsername("Gerardo.Lopez", "Some Name", 1.0).forEach(System.out::println);
 
         daoTraining.getTrainingsByTrainerUsername("Saul.Colin", null, 5.0).forEach(System.out::println);
+        System.out.println(credentialsAuthenticator.authenticate("Saul.Colin", "password"));
+
 
 //        daoTrainee.delete(1);
 //        daoTrainee.delete(3);

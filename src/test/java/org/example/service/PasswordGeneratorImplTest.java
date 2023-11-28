@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.service.utils.PasswordGeneratorImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

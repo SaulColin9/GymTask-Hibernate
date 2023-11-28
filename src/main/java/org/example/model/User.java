@@ -103,7 +103,6 @@ public class User implements EntityModel {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", isActive=" + isActive +
                 '}';
     }

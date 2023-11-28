@@ -4,6 +4,7 @@ import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.example.service.*;
+import org.example.service.utils.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

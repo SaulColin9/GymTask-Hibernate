@@ -1,8 +1,12 @@
 package org.example.configuration;
 
+import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.spi.PersistenceUnitInfo;
 import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.example.dao.jpa.*;
+import org.example.service.authentication.CredentialsAuthenticator;
+import org.example.service.authentication.CredentialsAuthenticatorImpl;
+import org.example.service.utils.*;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +33,29 @@ public class BeanConfiguration {
     String username;
     @Value("${entities.password}")
     String password;
+    @Value("${entities.driver}")
+    String driver;
 
     @Bean
-    PersistenceUnitInfo persistenceUnitInfo() {
+    DataSource dataSource() {
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setDriverClassName(driver);
+
+        return dataSource;
+    }
+
+    @Bean
+    CredentialsAuthenticator credentialsAuthenticator(@Autowired EntityManager entityManager) {
+        CredentialsAuthenticatorImpl credentialsAuthenticator = new CredentialsAuthenticatorImpl();
+        credentialsAuthenticator.setEntityManager(entityManager);
+        return credentialsAuthenticator;
+    }
+
+    @Bean
+    PersistenceUnitInfo persistenceUnitInfo(@Autowired DataSource dataSource) {
         PersistenceUnitInfoImpl persistenceUnitInfo = new PersistenceUnitInfoImpl();
         persistenceUnitInfo.setUrl(url);
         persistenceUnitInfo.setPassword(password);
@@ -40,6 +65,7 @@ public class BeanConfiguration {
         persistenceUnitInfo.setPersistenceUnitTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
         persistenceUnitInfo.setManagedClassNames(List.of(User.class.getName(), Trainer.class.getName(),
                 Trainee.class.getName(), Training.class.getName(), TrainingType.class.getName()));
+        persistenceUnitInfo.setDataSource(dataSource);
 
         return persistenceUnitInfo;
     }
@@ -49,6 +75,7 @@ public class BeanConfiguration {
         Map<String, String> props = new HashMap<>();
         props.put("hibernate.show_sql", "true");
         props.put("hibernate.hbm2ddl.auto", "create");
+        props.put("hibernate.hbm2ddl.import_files", "trainingTypes.sql");
         return props;
     }
 
