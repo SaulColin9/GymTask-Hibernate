@@ -1,0 +1,28 @@
+package org.example.service.serviceImpl.jpa;
+
+import org.example.dao.jpa.JpaDaoTrainingImpl;
+import org.example.model.Training;
+import org.example.service.serviceImpl.TrainingServiceImpl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class JpaTrainingServiceImpl extends TrainingServiceImpl implements JpaTrainingService {
+
+    @Override
+    public List<Training> selectTraineeTrainingsByUsername(String username, String trainingName, Double trainingDuration) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        validator.validateFieldsNotNull(params);
+        return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTraineeUsername(username, trainingName, trainingDuration);
+    }
+
+    @Override
+    public List<Training> selectTrainerTrainingsByUsername(String username, String trainingName, Double trainingDuration) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        validator.validateFieldsNotNull(params);
+        return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTrainerUsername(username, trainingName, trainingDuration);
+    }
+}

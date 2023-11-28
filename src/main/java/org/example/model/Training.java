@@ -16,7 +16,7 @@ public class Training implements EntityModel {
     Trainee trainee;
     @ManyToOne
     Trainer trainer;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "trainingType_id", referencedColumnName = "id")
     TrainingType trainingType;
 

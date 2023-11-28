@@ -5,29 +5,30 @@ import org.example.model.Trainer;
 import org.example.model.User;
 import org.example.service.*;
 import org.example.service.utils.UserUtils;
+import org.example.service.utils.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 
 public class TrainerServiceImpl implements TrainerService {
-    private Dao<Trainer> trainerDao;
+    protected Dao<Trainer> trainerDao;
     private UserUtils userUtils;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
-    private static final String NO_ID_MSG = "Provided Trainer Id does not exist";
-
+    protected Validator<Trainer> validator;
 
     @Override
     public int createTrainerProfile(String firstName, String lastName, int specialization) {
-        if (firstName == null || lastName == null || specialization <= 0) {
-            logger.error("The next fields were not provided: " +
-                    (firstName == null ? "firstName, " : "") +
-                    (lastName == null ? "lastName, " : "") +
-                    (specialization == 0 ? "specialization, " : "")
-            );
-            throw new IllegalArgumentException("firstName, lastName and specialization arguments cant be null");
-        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("firstName", firstName);
+        params.put("lastName", lastName);
+
+        validator.validateFieldsNotNull(params);
+        validator.validatePositiveField("specialization", specialization);
+
         User newUser = userUtils.createUser(firstName, lastName);
 
         logger.info("Creating Trainer Profile with id {}", newUser.getId());
@@ -38,10 +39,8 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public boolean updateTrainerProfile(int id, String firstName, String lastName, boolean isActive, int specialization) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
-        if (trainerToUpdate.isEmpty()) {
-            logger.error(NO_ID_MSG);
-            throw new IllegalArgumentException(NO_ID_MSG);
-        }
+        validator.validateEntityNotNull(id, trainerToUpdate);
+
         Trainer foundTrainer = trainerToUpdate.get();
 
         int userId = foundTrainer.getUser().getId();
@@ -61,12 +60,14 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Trainer selectTrainerProfile(int id) {
         Optional<Trainer> trainer = trainerDao.get(id);
-        if (trainer.isEmpty()) {
-            logger.info(NO_ID_MSG);
-            throw new IllegalArgumentException(NO_ID_MSG);
-        }
+        validator.validateEntityNotNull(id, trainer);
+
         logger.info("Selecting Trainer Profile with id {}", id);
         return trainer.get();
+    }
+
+    public void setValidator(Validator<Trainer> validator) {
+        this.validator = validator;
     }
 
     public void setTrainerDao(Dao<Trainer> trainerDao) {

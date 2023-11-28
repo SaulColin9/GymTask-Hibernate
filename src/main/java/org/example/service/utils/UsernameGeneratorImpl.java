@@ -18,6 +18,7 @@ public class UsernameGeneratorImpl implements UsernameGenerator {
         return serial;
     }
 
+    @Override
     public String generateUserName(String firstName, String lastName) {
         int serial = userNameExists(firstName, lastName);
         return serial > 0 ? firstName + separator + lastName + serial : firstName + separator + lastName;

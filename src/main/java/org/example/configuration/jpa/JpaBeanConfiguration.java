@@ -12,6 +12,7 @@ import org.example.facade.inMemory.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.*;
 import org.example.service.serviceImpl.*;
+import org.example.service.serviceImpl.jpa.*;
 import org.example.service.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -136,32 +137,35 @@ public class JpaBeanConfiguration {
     }
 
     @Bean
-    public TrainingService trainingService(@Autowired Dao<Trainee> traineeDao,
-                                           @Autowired Dao<Trainer> trainerDao,
-                                           @Autowired Dao<Training> trainingDao,
-                                           @Autowired Dao<TrainingType> trainingTypeDao
+    public JpaTrainingService trainingService(@Autowired Dao<Trainee> traineeDao,
+                                              @Autowired Dao<Trainer> trainerDao,
+                                              @Autowired Dao<Training> trainingDao,
+                                              @Autowired Dao<TrainingType> trainingTypeDao
     ) {
-        TrainingServiceImpl trainingService = new TrainingServiceImpl();
+        JpaTrainingServiceImpl trainingService = new JpaTrainingServiceImpl();
         trainingService.setTraineeDao(traineeDao);
         trainingService.setTrainerDao(trainerDao);
         trainingService.setTrainingDao(trainingDao);
         trainingService.setTrainingTypeDao(trainingTypeDao);
+        trainingService.setValidator(new Validator<>(Training.class));
         return trainingService;
     }
 
     @Bean
-    public TrainerService trainerService(@Autowired Dao<Trainer> trainerDao, @Autowired UserUtils userUtils) {
-        TrainerServiceImpl trainerService = new TrainerServiceImpl();
+    public JpaTrainerService trainerService(@Autowired Dao<Trainer> trainerDao, @Autowired UserUtils userUtils) {
+        JpaTrainerServiceImpl trainerService = new JpaTrainerServiceImpl();
         trainerService.setTrainerDao(trainerDao);
         trainerService.setUserUtils(userUtils);
+        trainerService.setValidator(new Validator<>(Trainer.class));
         return trainerService;
     }
 
     @Bean
-    TraineeService traineeService(@Autowired Dao<Trainee> traineeDao, @Autowired UserUtils userUtils) {
-        TraineeServiceImpl traineeService = new TraineeServiceImpl();
+    JpaTraineeService traineeService(@Autowired Dao<Trainee> traineeDao, @Autowired UserUtils userUtils) {
+        JpaTraineeServiceImpl traineeService = new JpaTraineeServiceImpl();
         traineeService.setTraineeDao(traineeDao);
         traineeService.setUserUtils(userUtils);
+        traineeService.setValidator(new Validator<>(Trainee.class));
         return traineeService;
     }
 

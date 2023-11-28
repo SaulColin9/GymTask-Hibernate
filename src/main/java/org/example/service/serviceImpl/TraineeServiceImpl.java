@@ -5,28 +5,29 @@ import org.example.model.Trainee;
 import org.example.model.User;
 import org.example.service.*;
 import org.example.service.utils.UserUtils;
+import org.example.service.utils.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class TraineeServiceImpl implements TraineeService {
     private UserUtils userUtils;
-    private static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
-
-    private static final String NO_ID_MSG = "Provided Trainee Id does not exist";
-    private Dao<Trainee> traineeDao;
+    protected static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
+    protected Validator<Trainee> validator;
+    protected Dao<Trainee> traineeDao;
 
 
     @Override
     public int createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
-        if (firstName == null || lastName == null) {
-            logger.error("The next fields were not provided: {} {}",
-                    (firstName == null ? "firstName, " : ""),
-                    (lastName == null ? "lastName, " : ""));
-            throw new IllegalArgumentException("firstName and lastName arguments cant be null");
-        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("firstName", firstName);
+        params.put("lastName", lastName);
+        validator.validateFieldsNotNull(params);
+
         User newUser = userUtils.createUser(firstName, lastName);
 
         logger.info("Creating Trainee Profile with id {}", newUser.getId());
@@ -37,10 +38,7 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public boolean updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
-        if (traineeToUpdate.isEmpty()) {
-            logger.error(NO_ID_MSG);
-            throw new IllegalArgumentException(NO_ID_MSG);
-        }
+        validator.validateEntityNotNull(id, traineeToUpdate);
         Trainee foundTrainee = traineeToUpdate.get();
 
 
@@ -62,10 +60,8 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public boolean deleteTraineeProfile(int id) {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
-        if (traineeToDelete.isEmpty()) {
-            logger.error(NO_ID_MSG);
-            throw new IllegalArgumentException(NO_ID_MSG);
-        }
+        validator.validateEntityNotNull(id, traineeToDelete);
+
         logger.info("Deleting Trainee Profile with id " + id);
         Optional<Trainee> deletedTrainee = traineeDao.delete(id);
         userUtils.deleteUser(traineeToDelete.get().getUser().getId());
@@ -75,14 +71,15 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Trainee selectTraineeProfile(int id) {
         Optional<Trainee> trainee = traineeDao.get(id);
-        if (trainee.isEmpty()) {
-            logger.error(NO_ID_MSG);
-            throw new IllegalArgumentException(NO_ID_MSG);
-        }
+        validator.validateEntityNotNull(id, trainee);
         logger.info("Selecting Trainee Profile with id " + id);
         return trainee.get();
     }
 
+
+    public void setValidator(Validator<Trainee> validator) {
+        this.validator = validator;
+    }
 
     public void setTraineeDao(Dao<Trainee> traineeDao) {
         this.traineeDao = traineeDao;

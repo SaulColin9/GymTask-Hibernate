@@ -62,6 +62,7 @@ public class BeanConfiguration {
         TraineeServiceImpl traineeService = new TraineeServiceImpl();
         traineeService.setTraineeDao(traineeDao);
         traineeService.setUserUtils(userUtils);
+        traineeService.setValidator(new Validator<>(Trainee.class));
         return traineeService;
     }
 
@@ -122,4 +123,5 @@ public class BeanConfiguration {
         userUtils.setPasswordGenerator(passwordGenerator);
         return userUtils;
     }
+
 }

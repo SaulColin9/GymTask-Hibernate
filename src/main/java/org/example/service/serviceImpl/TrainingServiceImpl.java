@@ -3,40 +3,43 @@ package org.example.service.serviceImpl;
 import org.example.dao.Dao;
 import org.example.model.*;
 import org.example.service.TrainingService;
+import org.example.service.utils.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class TrainingServiceImpl implements TrainingService {
     private Dao<Trainee> traineeDao;
     private Dao<Trainer> trainerDao;
     private Dao<TrainingType> trainingTypeDao;
-    private Dao<Training> trainingDao;
+    protected Dao<Training> trainingDao;
     private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
-    private static final String NO_ID_MSG = "Provided Training Id does not exist";
+    protected Validator<Training> validator;
 
 
     @Override
     public int createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        if (!validateFields(trainingName, trainingDate) || !validateIds(traineeId, trainerId, trainingTypeId, trainingDuration)) {
-            throw new IllegalArgumentException("Invalid fields were provided");
-        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("trainingName", trainingName);
+        params.put("trainingDate", trainingDate);
+        validator.validateFieldsNotNull(params);
+        validator.validatePositiveField("traineeId", traineeId);
+        validator.validatePositiveField("trainerId", trainerId);
+        validator.validatePositiveField("trainingTypeId", trainingTypeId);
+        validator.validatePositiveField("trainingDuration", (int) trainingDuration);
 
         Optional<Trainee> trainee = traineeDao.get(traineeId);
         Optional<Trainer> trainer = trainerDao.get(trainerId);
         Optional<TrainingType> trainingType = trainingTypeDao.get(trainingTypeId);
-        if (trainee.isEmpty() || trainer.isEmpty() || trainingType.isEmpty()) {
-            logger.error("The next Ids do not exist: " +
-                    (trainee.isEmpty() ? "traineeId, " : "") +
-                    (trainer.isEmpty() ? "trainerId, " : "") +
-                    (trainingType.isEmpty() ? "trainingTypeId " : "")
-            );
-            throw new IllegalArgumentException("Provided ids were not found");
 
-        }
+        Map<String, Object> entities = new HashMap<>();
+
+        entities.put("trainee", trainee.orElse(null));
+        entities.put("trainer", trainer.orElse(null));
+        entities.put("trainingType", trainingType.orElse(null));
+        validator.validateEntitiesNotNull(entities);
+
         Training newTraining = trainingDao.save(
                 new Training(trainee.get(), trainer.get(),
                         trainingName, trainingType.get(), trainingDate, trainingDuration)
@@ -48,40 +51,15 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training selectTrainingProfile(int id) {
         Optional<Training> training = trainingDao.get(id);
-        if (training.isEmpty()) {
-            logger.info(NO_ID_MSG);
-            throw new IllegalArgumentException(NO_ID_MSG);
-        }
+        validator.validateEntityNotNull(id, training);
+
         logger.info("Selecting Training Profile with id " + id);
         return training.get();
     }
 
-    public List<Training> selectTrainingsByTraineeUsername(String username) {
-        return null;
-    }
 
-    private boolean validateFields(String trainingName, Date trainingDate) {
-        if (trainingName == null || trainingDate == null) {
-            logger.error("The following fields were not provided: " +
-                    (trainingName == null ? "trainingName, " : "") +
-                    (trainingDate == null ? "trainingDate" : "")
-            );
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateIds(int traineeId, int trainerId, int trainingTypeId, double trainingDuration) {
-        if (traineeId <= 0 || trainerId <= 0 || trainingTypeId <= 0 || trainingDuration < 0) {
-            logger.error("The following fields are invalid: " +
-                    (traineeId <= 0 ? "traineeId, " : "") +
-                    (trainerId <= 0 ? "trainerId, " : "") +
-                    (trainingTypeId <= 0 ? "trainingTypeId, " : "") +
-                    (trainingDuration < 0 ? "trainingDuration" : "")
-            );
-            return false;
-        }
-        return true;
+    public void setValidator(Validator<Training> validator) {
+        this.validator = validator;
     }
 
     public void setTraineeDao(Dao<Trainee> traineeDao) {

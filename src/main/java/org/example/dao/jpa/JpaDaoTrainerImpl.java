@@ -1,5 +1,6 @@
 package org.example.dao.jpa;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import org.example.model.Trainer;
 
@@ -9,7 +10,11 @@ import java.util.Optional;
 public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
     @Override
     public Optional<Trainer> get(int id) {
-        return Optional.of(getEntityManager().find(Trainer.class, id));
+        try {
+            return Optional.of(getEntityManager().find(Trainer.class, id));
+        } catch (NullPointerException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -37,11 +42,16 @@ public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
     }
 
     public Optional<Trainer> getByUsername(String username) {
-        Query query = getEntityManager().createQuery("FROM Trainer t WHERE t.user.username = :username");
-        query.setParameter("username", username);
-        Optional<Trainer> foundTrainer = Optional.of((Trainer) query.getSingleResult());
+        try {
+            Query query = getEntityManager().createQuery("FROM Trainer t WHERE t.user.username = :username");
+            query.setParameter("username", username);
+            Optional<Trainer> foundTrainer = Optional.of((Trainer) query.getSingleResult());
 
-        return foundTrainer;
+            return foundTrainer;
+
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
 }

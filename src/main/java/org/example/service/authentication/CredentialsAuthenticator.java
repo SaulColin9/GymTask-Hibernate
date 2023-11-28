@@ -5,5 +5,5 @@ import org.example.model.User;
 import java.util.Optional;
 
 public interface CredentialsAuthenticator {
-    Optional<User> authenticate(String username, String password);
+    Optional<User> authenticate(Credentials credentials);
 }

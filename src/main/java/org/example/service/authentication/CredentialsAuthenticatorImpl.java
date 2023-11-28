@@ -10,10 +10,10 @@ public class CredentialsAuthenticatorImpl implements CredentialsAuthenticator {
     EntityManager entityManager;
 
     @Override
-    public Optional<User> authenticate(String username, String password) {
+    public Optional<User> authenticate(Credentials credentials) {
         Query query = entityManager.createQuery("FROM User WHERE username = :username AND password = :password");
-        query.setParameter("username", username);
-        query.setParameter("password", password);
+        query.setParameter("username", credentials.getUsername());
+        query.setParameter("password", credentials.getPassword());
         return query.getResultList().stream().findFirst();
     }
 

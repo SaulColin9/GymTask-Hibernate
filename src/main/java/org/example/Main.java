@@ -9,7 +9,12 @@ import org.example.model.Training;
 import org.example.model.TrainingType;
 import org.example.model.Trainer;
 import org.example.model.User;
+import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticatorImpl;
+import org.example.service.serviceImpl.jpa.JpaTraineeService;
+import org.example.service.serviceImpl.jpa.JpaTrainerService;
+import org.example.service.serviceImpl.jpa.JpaTrainingService;
+import org.example.service.serviceImpl.jpa.JpaTrainingServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -20,6 +25,9 @@ public class Main {
 
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(JpaBeanConfiguration.class);
+        JpaTraineeService jpaTraineeService = context.getBean(JpaTraineeService.class);
+        JpaTrainerService jpaTrainerService = context.getBean(JpaTrainerService.class);
+        JpaTrainingService jpaTrainingService = context.getBean(JpaTrainingService.class);
 
 //        GymFacade gymFacade = context.getBean(GymFacade.class);
 
@@ -31,6 +39,8 @@ public class Main {
         JpaDaoTrainingTypeImpl daoTrainingType = context.getBean(JpaDaoTrainingTypeImpl.class);
         JpaDaoUserImpl jpaDaoUser = context.getBean(JpaDaoUserImpl.class);
         CredentialsAuthenticatorImpl credentialsAuthenticator = context.getBean(CredentialsAuthenticatorImpl.class);
+
+        Credentials credentials = new Credentials("Gerardo.Lopez", "password");
 
 
         User newUser = new User();
@@ -79,12 +89,26 @@ public class Main {
 //        daoTraining.getTrainingsByTraineeUsername("Gerardo.Lopez", "Some Name", 1.0).forEach(System.out::println);
 
         daoTraining.getTrainingsByTrainerUsername("Saul.Colin", null, 5.0).forEach(System.out::println);
-        System.out.println(credentialsAuthenticator.authenticate("Saul.Colin", "password"));
+        System.out.println(credentialsAuthenticator.authenticate(credentials));
 
         System.out.println(gymFacade.getTrainer(1));
         int newTrainerId = gymFacade.addTrainer("Patricio", "Alvarez", 1);
         System.out.println(gymFacade.getTrainer(newTrainerId));
+        System.out.println(jpaTraineeService.selectTraineeProfileByUsername("Gerardo.Lopez"));
+        jpaTraineeService.updateTraineeTraineeStatus(1, false);
+//        jpaTraineeService.updateTraineePassword(1, "root123Password");
+//        jpaTraineeService.deleteTraineeProfile(5);
+//        jpaTraineeService.selectTraineeProfile(1);
+//        jpaTraineeService.createTraineeProfile("Alejandro", "Salas", new Date(), "Some Address");
+//        System.out.println(jpaTrainerService.selectTrainerProfileByUsername("Patricio.Alvaez"));
+//        System.out.println(jpaTrainerService.selectTrainerProfile(3));
+//        jpaTrainerService.updateTrainerPassword(1, "SomeNewPassword123");
+//        int martinId = jpaTrainerService.createTrainerProfile("Martin", "Garza", 1);
+//        jpaTrainerService.updateTrainerPassword(martinId, "martin123");
+//        jpaTrainerService.updateTrainerTraineeStatus(martinId, false);
 
+        jpaTrainingService.createTrainingProfile(1, 1, "New Training", 1, new Date(), 1.0);
+        System.out.println(jpaTrainingService.selectTraineeTrainingsByUsername("Gerardo.Lopez", null, 1.0));
 //        daoTrainee.delete(1);
 //        daoTrainee.delete(3);
 //        Optional<Trainee> optionalTrainee = daoTrainee.get(2);

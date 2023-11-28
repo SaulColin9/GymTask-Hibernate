@@ -1,5 +1,6 @@
 package org.example.dao.jpa;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import org.example.model.Trainee;
 
@@ -9,7 +10,11 @@ import java.util.Optional;
 public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
     @Override
     public Optional<Trainee> get(int id) {
-        return Optional.of(getEntityManager().find(Trainee.class, id));
+        try {
+            return Optional.of(getEntityManager().find(Trainee.class, id));
+        } catch (NullPointerException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -45,11 +50,15 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
     }
 
     public Optional<Trainee> getByUsername(String username) {
-        Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
-        query.setParameter("username", username);
-        Optional<Trainee> foundTrainee = Optional.of((Trainee) query.getSingleResult());
+        try {
+            Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
+            query.setParameter("username", username);
+            Optional<Trainee> foundTrainee = Optional.of((Trainee) query.getSingleResult());
 
-        return foundTrainee;
+            return foundTrainee;
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     public Optional<Trainee> deleteByUsername(String username) {
