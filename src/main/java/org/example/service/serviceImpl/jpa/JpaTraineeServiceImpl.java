@@ -2,9 +2,11 @@ package org.example.service.serviceImpl.jpa;
 
 import org.example.dao.jpa.JpaDaoTraineeImpl;
 import org.example.model.Trainee;
+import org.example.model.Trainer;
 import org.example.service.serviceImpl.TraineeServiceImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -64,4 +66,14 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
 
         return traineeDao.update(id, foundTrainee) != null;
     }
+
+    @Override
+    public List<Trainer> selectNotAssignedOnTraineeTrainersList(int trainee_id) {
+        Optional<Trainee> foundTrainee = traineeDao.get(trainee_id);
+        validator.validateEntityNotNull(trainee_id, foundTrainee);
+
+        return ((JpaDaoTraineeImpl) traineeDao).getNotAssignedOnTraineeTrainersList(foundTrainee.get());
+    }
+
+
 }

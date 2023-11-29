@@ -114,6 +114,15 @@ public class Main {
 //        System.out.println(jpaTrainingService.selectTraineeTrainingsByUsername("Gerardo.Lopez", null, 1.0));
         jpaGymFacade.updateTrainee(credentials, 1, "NewName", "NewLastName", false, new Date(), "New Address");
         jpaGymFacade.getTraineeTrainingsByTrainingDuration("NewName.NewLastName", 1.0).forEach(System.out::println);
+
+
+        System.out.println("======================");
+        daoTrainee.getNotAssignedOnTraineeTrainersList(jpaTraineeService.selectTraineeProfile(1)).forEach(System.out::println);
+        System.out.println("======================");
+
+        jpaTrainerService.updateTraineeTrainersList(jpaTraineeService.selectTraineeProfile(1).getId(), jpaTrainerService.selectTrainerProfileByUsername("Luke.Skywalker").getId()).forEach(System.out::println);
+
+        System.out.println(jpaGymFacade.getNotAssignedOnTraineeTrainersList(new Credentials("NewName.NewLastName", "password"), 1));
 //        daoTrainee.delete(1);
 //        daoTrainee.delete(3);
 //        Optional<Trainee> optionalTrainee = daoTrainee.get(2);

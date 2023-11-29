@@ -44,7 +44,7 @@ public interface JpaGymFacade {
 
     List<Training> getTraineeTrainings(String username);
 
-    List<Training> getTraineeTrainingsByTrainingName( String username, String trainingName);
+    List<Training> getTraineeTrainingsByTrainingName(String username, String trainingName);
 
     List<Training> getTraineeTrainingsByTrainingDuration(String username, Double trainingDuration);
 
@@ -53,6 +53,10 @@ public interface JpaGymFacade {
     List<Training> getTrainerTrainingsByTrainingName(String username, String trainingName);
 
     List<Training> getTrainerTrainingsByTrainingDuration(String username, Double trainingDuration);
+
+    List<Trainer> updateTrianeeTrainersList(Credentials credentials, int trainee_id, int trainer_id);
+
+    List<Trainer> getNotAssignedOnTraineeTrainersList(Credentials credentials, int trainee_id);
 
 
 }

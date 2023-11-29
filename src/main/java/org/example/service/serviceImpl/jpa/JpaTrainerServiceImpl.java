@@ -5,6 +5,7 @@ import org.example.model.Trainer;
 import org.example.service.serviceImpl.TrainerServiceImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,5 +42,13 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
         foundTrainer.getUser().setIsActive(false);
 
         return trainerDao.update(id, foundTrainer) != null;
+    }
+
+    @Override
+    public List<Trainer> updateTraineeTrainersList(int trainee_id, int trainer_id) {
+        Optional<Trainer> foundTrainer = trainerDao.get(trainer_id);
+        validator.validateEntityNotNull(trainer_id, foundTrainer);
+
+        return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(trainee_id, foundTrainer.get());
     }
 }
