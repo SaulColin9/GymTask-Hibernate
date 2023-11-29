@@ -1,5 +1,6 @@
 package org.example.dao.jpa;
 
+import org.example.model.TrainingType;
 import org.example.model.User;
 
 import java.util.List;
@@ -9,7 +10,11 @@ public class JpaDaoUserImpl extends JpaDaoImpl<User> {
 
     @Override
     public Optional<User> get(int id) {
-        return Optional.of(getEntityManager().find(User.class, id));
+        try {
+            return Optional.of(getEntityManager().find(User.class, id));
+        } catch (NullPointerException e) {
+            return Optional.empty();
+        }
     }
 
 

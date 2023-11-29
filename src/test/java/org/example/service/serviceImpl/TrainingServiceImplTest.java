@@ -7,6 +7,7 @@ import org.example.matchers.TrainerMatcher;
 import org.example.matchers.TrainingMatcher;
 import org.example.matchers.TrainingTypeMatcher;
 import org.example.model.*;
+import org.example.service.utils.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,6 +34,8 @@ class TrainingServiceImplTest {
     private Dao<TrainingType> trainingTypeDao;
     @Mock
     private Dao<Training> trainingDao;
+    @Mock
+    private Validator<Training> validator;
     @InjectMocks
     private TrainingServiceImpl trainingService;
 
@@ -86,31 +89,41 @@ class TrainingServiceImplTest {
 
     @Test
     void givenInvalidRequest_ThrowsException() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("trainingName", null);
+        params.put("trainingDate", null);
+
+        doThrow(new IllegalArgumentException()).when(validator).validateFieldsNotNull(params);
         assertThatThrownBy(() -> trainingService.
                 createTrainingProfile(1, 1, null, 0, null, -1)).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Invalid fields were provided");
+                isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void givenNonExistingIds_ThrowsException() {
+        Map<String, Object> entities = new HashMap<>();
+
+        entities.put("trainee", null);
+        entities.put("trainer", null);
+        entities.put("trainingType", null);
+
+        doThrow(new IllegalArgumentException()).when(validator).validateEntitiesNotNull(entities);
         when(traineeDao.get(88)).thenReturn(Optional.empty());
         when(trainerDao.get(99)).thenReturn(Optional.empty());
         when(trainingTypeDao.get(4)).thenReturn(Optional.empty());
         assertThatThrownBy(
                 () ->
                         trainingService.createTrainingProfile(88, 99, "Elite", 4, new Date(), 1.0)
-        ).isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Provided ids were not found");
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void givenNonExistingTrainingIdSelect_ThrowsException() {
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(99, Optional.empty());
         when(trainingDao.get(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> trainingService.selectTrainingProfile(99)).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Provided Training Id does not exist");
+                isInstanceOf(IllegalArgumentException.class);
     }
 
 
@@ -120,7 +133,6 @@ class TrainingServiceImplTest {
         TrainingType newTrainingType = new TrainingType();
         newTrainingType.setTrainingTypeName("Cardio");
         newTrainingType.setId(1);
-
 
         Training newTraining = new Training();
         newTraining.setTrainingType(newTrainingType);

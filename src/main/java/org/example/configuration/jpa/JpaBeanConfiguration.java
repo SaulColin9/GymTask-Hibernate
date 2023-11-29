@@ -66,8 +66,9 @@ public class JpaBeanConfiguration {
         persistenceUnitInfo.setPersistenceUnitName(persistenceUnit);
         persistenceUnitInfo.setPersistenceProviderClassName(persistenceProvider);
         persistenceUnitInfo.setPersistenceUnitTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
-        persistenceUnitInfo.setManagedClassNames(List.of(User.class.getName(), Trainer.class.getName(),
-                Trainee.class.getName(), Training.class.getName(), TrainingType.class.getName()));
+        persistenceUnitInfo.setManagedClassNames(
+                List.of(User.class.getName(), Trainer.class.getName(), Trainee.class.getName(),
+                        Training.class.getName(), TrainingType.class.getName()));
         persistenceUnitInfo.setDataSource(dataSource);
 
         return persistenceUnitInfo;

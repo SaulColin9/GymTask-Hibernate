@@ -5,6 +5,7 @@ import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.example.service.utils.UserUtils;
+import org.example.service.utils.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -26,6 +29,8 @@ class TrainerServiceImplTest {
     private Dao<User> userDao;
     @Mock
     private UserUtils userUtils;
+    @Mock
+    private Validator<Trainer> validator;
     private User user;
     private Trainer trainerTest;
 
@@ -114,35 +119,38 @@ class TrainerServiceImplTest {
     @Test
     void givenNonExistingTrainerId_ThrowsException() {
         // arrange
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
         when(trainerDao.get(77)).thenReturn(Optional.empty());
         // assert
         assertThatThrownBy(() -> trainerService.selectTrainerProfile(77)).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Provided Trainer Id does not exist");
+                isInstanceOf(IllegalArgumentException.class);
         verify(trainerDao, times(1)).get(77);
     }
 
     @Test
     void givenNonExistingTrainerIdUpdate_ThrowsException() {
         // arrange
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
         when(trainerDao.get(77)).thenReturn(Optional.empty());
         // assert
         assertThatThrownBy(
                 () -> trainerService
                         .updateTrainerProfile(77, "New Name",
                                 "New LastName", false, 2)).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Provided Trainer Id does not exist");
+                isInstanceOf(IllegalArgumentException.class);
         verify(trainerDao, times(1)).get(77);
 
     }
 
     @Test
     void givenInvalidRequestCreate_ThrowsException() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("firstName", null);
+        params.put("lastName", null);
+        doThrow(new IllegalArgumentException()).when(validator).validateFieldsNotNull(params);
         assertThatThrownBy(
                 () -> trainerService.createTrainerProfile(null, null, 2)).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("firstName, lastName and specialization arguments cant be null");
+                isInstanceOf(IllegalArgumentException.class);
     }
 
     Trainer createNewTrainer() {

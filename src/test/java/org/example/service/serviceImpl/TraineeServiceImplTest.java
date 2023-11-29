@@ -5,6 +5,7 @@ import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.example.service.utils.UserUtils;
+import org.example.service.utils.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,6 +17,8 @@ import static org.assertj.core.api.Assertions.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -27,6 +30,8 @@ class TraineeServiceImplTest {
     private Dao<Trainee> traineeDao;
     @Mock
     private UserUtils userUtils;
+    @Mock
+    private Validator<Trainee> validator;
     @InjectMocks
     private TraineeServiceImpl traineeService;
 
@@ -124,51 +129,53 @@ class TraineeServiceImplTest {
     void givenNonExistingTraineeIdSelect_ThrowsException() {
         // arrange
 
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
         when(traineeDao.get(77)).thenReturn(Optional.empty());
         // act
 
         // assert
         assertThatThrownBy(() -> traineeService.selectTraineeProfile(77)).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Provided Trainee Id does not exist");
+                isInstanceOf(IllegalArgumentException.class);
         verify(traineeDao, times(1)).get(77);
     }
 
     @Test
     void givenNonExistingTraineeIdDelete_ThrowsException() {
         // arrange
-
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
         when(traineeDao.get(77)).thenReturn(Optional.empty());
         // act
 
         // assert
-        assertThatThrownBy(() -> traineeService.deleteTraineeProfile(1)).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Provided Trainee Id does not exist");
-        verify(traineeDao, times(1)).get(1);
+        assertThatThrownBy(() -> traineeService.deleteTraineeProfile(77)).
+                isInstanceOf(IllegalArgumentException.class);
+        verify(traineeDao, times(1)).get(77);
     }
 
     @Test
     void givenNonExistingTraineeIdUpdate_ThrowsException() {
         // arrange
-
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
         when(traineeDao.get(77)).thenReturn(Optional.empty());
         // act
 
         // assert
         assertThatThrownBy(
-                () -> traineeService.updateTraineeProfile(1, "Jean", "Doe", false, new Date(), "New Address")).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("Provided Trainee Id does not exist");
-        verify(traineeDao, times(1)).get(1);
+                () -> traineeService.updateTraineeProfile(77, "Jean", "Doe", false, new Date(), "New Address")).
+                isInstanceOf(IllegalArgumentException.class);
+        verify(traineeDao, times(1)).get(77);
     }
 
     @Test
     void givenInvalidRequestCreate_ThrowsException() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("firstName", null);
+        params.put("lastName", null);
+        doThrow(new IllegalArgumentException()).when(validator).validateFieldsNotNull(params);
+
         assertThatThrownBy(
                 () -> traineeService.createTraineeProfile(null, null, new Date(), "Address")).
-                isInstanceOf(IllegalArgumentException.class).
-                hasMessage("firstName and lastName arguments cant be null");
+                isInstanceOf(IllegalArgumentException.class);
     }
 
 

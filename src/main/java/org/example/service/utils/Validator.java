@@ -9,7 +9,6 @@ import java.util.Optional;
 public class Validator<T> {
     private static final Logger logger = LoggerFactory.getLogger(Validator.class);
     private final Class<T> tClass;
-
     private static final String NULL_ENTITY_ID_MSG = "Provided id of %s for %s entities was not found";
     private static final String NULL_ENTITY_USERNAME_MSG = "Provided username of %s for %s entities was not found";
     private static final String NULL_FIELD = "%s argument cannot be null";
@@ -41,7 +40,6 @@ public class Validator<T> {
             if (entities.get(key) == null) {
                 String errorMsg = String.format(NULL_ENTITY, key);
                 logger.error(errorMsg);
-                System.out.println(entities.get(key));
                 throw new IllegalArgumentException(errorMsg);
             }
 

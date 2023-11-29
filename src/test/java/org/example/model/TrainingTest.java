@@ -22,7 +22,6 @@ class TrainingTest {
         training.setTrainingName("TrainingName");
         training.setTrainingDate(new Date());
         training.setTrainingDuration(1);
-        training.setTrainingTypeId(1);
         training.setId(1);
     }
 
@@ -39,10 +38,6 @@ class TrainingTest {
         assertThat(training.getTrainingDuration()).isEqualTo(trainingDuration);
     }
 
-    @Test
-    void getTrainingTypeId() {
-        assertThat(training.getTrainingTypeId()).isEqualTo(1);
-    }
 
     @Test
     void getTrainee() {
