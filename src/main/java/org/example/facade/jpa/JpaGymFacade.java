@@ -33,26 +33,26 @@ public interface JpaGymFacade {
 
     Trainer getTrainerByUsername(Credentials credentials, String username);
 
-    Trainer updateTrainerPassword(Credentials credentials, String newPassword);
+    boolean updateTrainerPassword(Credentials credentials, int id, String newPassword);
 
-    void updateActiveTrainerStatus(Credentials credentials, boolean isActive);
+    boolean updateActiveTrainerStatus(Credentials credentials, int id, boolean isActive);
 
 
-    int addTraining(Credentials credentials, int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
+    int addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
 
-    Training getTraining(Credentials credentials, int id);
+    Training getTraining(int id);
 
-    List<Training> getTraineeTrainings(Credentials credentials, String username);
+    List<Training> getTraineeTrainings(String username);
 
-    List<Training> getTraineeTrainingsByTrainingName(Credentials credentials, String username, String trainingName);
+    List<Training> getTraineeTrainingsByTrainingName( String username, String trainingName);
 
-    List<Training> getTraineeTrainingsByTrainingDuration(Credentials credentials, String username, Double trainingDuration);
+    List<Training> getTraineeTrainingsByTrainingDuration(String username, Double trainingDuration);
 
-    List<Training> getTrainerTrainingsByUsername(Credentials credentials, String username);
+    List<Training> getTrainerTrainingsByUsername(String username);
 
-    List<Training> getTrainerTrainingsByTrainingName(Credentials credentials, String username, String trainingName);
+    List<Training> getTrainerTrainingsByTrainingName(String username, String trainingName);
 
-    List<Training> getTrainerTrainingsByTrainingDuration(Credentials credentials, String username, Double trainingDuration);
+    List<Training> getTrainerTrainingsByTrainingDuration(String username, Double trainingDuration);
 
 
 }

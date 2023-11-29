@@ -104,62 +104,70 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
 
     @Override
     public Trainer getTrainer(Credentials credentials, int id) {
-        return null;
+        Trainer trainer = trainerService.selectTrainerProfile(id);
+        executeAuth(credentials, trainer.getUser());
+        return trainer;
     }
 
     @Override
     public Trainer getTrainerByUsername(Credentials credentials, String username) {
-        return null;
+        Trainer trainer = trainerService.selectTrainerProfileByUsername(username);
+        executeAuth(credentials, trainer.getUser());
+        return trainer;
     }
 
     @Override
-    public Trainer updateTrainerPassword(Credentials credentials, String newPassword) {
-        return null;
+    public boolean updateTrainerPassword(Credentials credentials, int id, String newPassword) {
+        Trainer trainer = trainerService.selectTrainerProfile(id);
+        executeAuth(credentials, trainer.getUser());
+        return trainerService.updateTrainerPassword(id, newPassword);
     }
 
     @Override
-    public void updateActiveTrainerStatus(Credentials credentials, boolean isActive) {
-
+    public boolean updateActiveTrainerStatus(Credentials credentials, int id, boolean isActive) {
+        Trainer trainer = trainerService.selectTrainerProfile(id);
+        executeAuth(credentials, trainer.getUser());
+        return trainerService.updateTrainerTraineeStatus(id, isActive);
     }
 
     @Override
-    public int addTraining(Credentials credentials, int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
-        return 0;
+    public int addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
+        return trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
     }
 
     @Override
-    public Training getTraining(Credentials credentials, int id) {
-        return null;
+    public Training getTraining(int id) {
+        return trainingService.selectTrainingProfile(id);
     }
 
     @Override
-    public List<Training> getTraineeTrainings(Credentials credentials, String username) {
-        return null;
+    public List<Training> getTraineeTrainings(String username) {
+        return trainingService.selectTraineeTrainingsByUsername(username, null, null);
     }
 
     @Override
-    public List<Training> getTraineeTrainingsByTrainingName(Credentials credentials, String username, String trainingName) {
-        return null;
+    public List<Training> getTraineeTrainingsByTrainingName(String username, String trainingName) {
+        return trainingService.selectTraineeTrainingsByUsername(username, trainingName, null);
     }
 
     @Override
-    public List<Training> getTraineeTrainingsByTrainingDuration(Credentials credentials, String username, Double trainingDuration) {
-        return null;
+    public List<Training> getTraineeTrainingsByTrainingDuration(String username, Double trainingDuration) {
+        return trainingService.selectTraineeTrainingsByUsername(username, null, trainingDuration);
     }
 
     @Override
-    public List<Training> getTrainerTrainingsByUsername(Credentials credentials, String username) {
-        return null;
+    public List<Training> getTrainerTrainingsByUsername(String username) {
+        return trainingService.selectTrainerTrainingsByUsername(username, null, null);
     }
 
     @Override
-    public List<Training> getTrainerTrainingsByTrainingName(Credentials credentials, String username, String trainingName) {
-        return null;
+    public List<Training> getTrainerTrainingsByTrainingName(String username, String trainingName) {
+        return trainingService.selectTrainerTrainingsByUsername(username, trainingName, null);
     }
 
     @Override
-    public List<Training> getTrainerTrainingsByTrainingDuration(Credentials credentials, String username, Double trainingDuration) {
-        return null;
+    public List<Training> getTrainerTrainingsByTrainingDuration(String username, Double trainingDuration) {
+        return trainingService.selectTrainerTrainingsByUsername(username, null, trainingDuration);
     }
 
     public void setCredentialsAuthenticator(CredentialsAuthenticator credentialsAuthenticator) {

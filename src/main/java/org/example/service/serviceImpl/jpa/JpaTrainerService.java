@@ -7,9 +7,9 @@ import org.example.service.TrainerService;
 import java.util.Optional;
 
 public interface JpaTrainerService extends TrainerService {
-    Optional<Trainer> selectTrainerProfileByUsername(String username);
+    Trainer selectTrainerProfileByUsername(String username);
 
     boolean updateTrainerPassword(int id, String newPassword);
 
-    void updateTrainerTraineeStatus(int id, boolean isActive);
+    boolean updateTrainerTraineeStatus(int id, boolean isActive);
 }
