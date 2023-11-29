@@ -1,32 +1,30 @@
 package org.example.configuration.jpa;
 
+import com.zaxxer.hikari.HikariDataSource;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.example.dao.Dao;
-
-import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.example.facade.inMemory.GymFacade;
-import org.example.facade.inMemory.GymFacadeImpl;
+import org.example.dao.jpa.*;
+import org.example.facade.jpa.JpaGymFacade;
+import org.example.facade.jpa.JpaGymFacadeImpl;
 import org.example.model.*;
-import org.example.service.*;
-import org.example.service.serviceImpl.*;
+import org.example.service.authentication.CredentialsAuthenticator;
+import org.example.service.authentication.CredentialsAuthenticatorImpl;
 import org.example.service.serviceImpl.jpa.*;
 import org.example.service.utils.*;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.hibernate.jpa.HibernatePersistenceProvider;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import com.zaxxer.hikari.HikariDataSource;
-import jakarta.persistence.spi.PersistenceUnitInfo;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
-import org.example.service.authentication.*;
-import org.example.dao.jpa.*;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 @PropertySource(value = "storage.properties")
@@ -131,9 +129,11 @@ public class JpaBeanConfiguration {
     }
 
     @Bean
-    public GymFacade gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
-                               @Autowired TrainingService trainingService) {
-        return new GymFacadeImpl(traineeService, trainerService, trainingService);
+    public JpaGymFacade gymFacade(@Autowired JpaTraineeService traineeService, @Autowired JpaTrainerService trainerService,
+                                  @Autowired JpaTrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {
+        JpaGymFacadeImpl jpaGymFacade = new JpaGymFacadeImpl(traineeService, trainerService, trainingService);
+        jpaGymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
+        return jpaGymFacade;
     }
 
     @Bean
@@ -191,4 +191,5 @@ public class JpaBeanConfiguration {
         userUtils.setPasswordGenerator(passwordGenerator);
         return userUtils;
     }
+
 }
