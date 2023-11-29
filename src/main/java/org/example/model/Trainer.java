@@ -9,6 +9,8 @@ public class Trainer implements EntityModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+//    @ManyToOne
+//            @JoinColumn()
     int specialization;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

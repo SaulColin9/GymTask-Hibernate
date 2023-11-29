@@ -19,11 +19,11 @@ public interface JpaGymFacade {
 
     Trainee getTraineeByUsername(Credentials credentials, String username);
 
-    Trainee updateTraineePassword(Credentials credentials, String newPassword);
+    boolean updateTraineePassword(Credentials credentials, int id, String newPassword);
 
-    void updateActiveTraineeStatus(Credentials credentials, boolean isActive);
+    boolean updateActiveTraineeStatus(Credentials credentials, int id, boolean isActive);
 
-    boolean deleteTraineeByUsername(Credentials credentials, int id);
+    boolean deleteTraineeByUsername(Credentials credentials, String username);
 
     int addTrainer(String firstName, String lastName, int specialization);
 

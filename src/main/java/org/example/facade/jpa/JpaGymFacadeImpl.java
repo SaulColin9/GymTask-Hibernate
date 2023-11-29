@@ -4,6 +4,7 @@ import org.example.facade.inMemory.GymFacade;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.Training;
+import org.example.model.User;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
@@ -17,6 +18,7 @@ import org.example.service.serviceImpl.jpa.JpaTrainingService;
 import javax.naming.AuthenticationException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class JpaGymFacadeImpl implements JpaGymFacade {
     private final JpaTraineeService traineeService;
@@ -41,42 +43,50 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
     @Override
     public boolean updateTrainee(Credentials credentials, int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         Trainee trainee = traineeService.selectTraineeProfile(id);
-        try {
-            credentialsAuthenticator.authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
-        return false;
+        executeAuth(credentials, trainee.getUser());
+        return traineeService.updateTraineeProfile(id, firstName, lastName, isActive, dateOfBirth, address);
     }
 
     @Override
     public boolean deleteTrainee(Credentials credentials, int id) {
-        return false;
+        Trainee trainee = traineeService.selectTraineeProfile(id);
+        executeAuth(credentials, trainee.getUser());
+        return traineeService.deleteTraineeProfile(id);
     }
 
     @Override
     public Trainee getTrainee(Credentials credentials, int id) {
-        return null;
+        Trainee trainee = traineeService.selectTraineeProfile(id);
+        executeAuth(credentials, trainee.getUser());
+        return trainee;
     }
 
     @Override
     public Trainee getTraineeByUsername(Credentials credentials, String username) {
-        return null;
+        Trainee trainee = traineeService.selectTraineeProfileByUsername(username);
+        executeAuth(credentials, trainee.getUser());
+        return trainee;
     }
 
     @Override
-    public Trainee updateTraineePassword(Credentials credentials, String newPassword) {
-        return null;
+    public boolean updateTraineePassword(Credentials credentials, int id, String newPassword) {
+        Trainee trainee = traineeService.selectTraineeProfile(id);
+        executeAuth(credentials, trainee.getUser());
+        return traineeService.updateTraineePassword(id, newPassword);
     }
 
     @Override
-    public void updateActiveTraineeStatus(Credentials credentials, boolean isActive) {
-
+    public boolean updateActiveTraineeStatus(Credentials credentials, int id, boolean isActive) {
+        Trainee trainee = traineeService.selectTraineeProfile(id);
+        executeAuth(credentials, trainee.getUser());
+        return traineeService.updateTraineeTraineeStatus(id, isActive);
     }
 
     @Override
-    public boolean deleteTraineeByUsername(Credentials credentials, int id) {
-        return false;
+    public boolean deleteTraineeByUsername(Credentials credentials, String username) {
+        Trainee trainee = traineeService.selectTraineeProfileByUsername(username);
+        executeAuth(credentials, trainee.getUser());
+        return traineeService.deleteTraineeProfileByUsername(username);
     }
 
     @Override
@@ -87,12 +97,9 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
     @Override
     public boolean updateTrainer(Credentials credentials, int id, String firstName, String lastName, boolean isActive, int specialization) {
         Trainer trainer = trainerService.selectTrainerProfile(id);
-        try {
-            credentialsAuthenticator.authorize(credentials, trainer.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
-        return false;
+        executeAuth(credentials, trainer.getUser());
+
+        return trainerService.updateTrainerProfile(id, firstName, lastName, isActive, specialization);
     }
 
     @Override
@@ -157,5 +164,13 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
 
     public void setCredentialsAuthenticator(CredentialsAuthenticator credentialsAuthenticator) {
         this.credentialsAuthenticator = credentialsAuthenticator;
+    }
+
+    private void executeAuth(Credentials credentials, User user) {
+        try {
+            credentialsAuthenticator.authorize(credentials, user);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

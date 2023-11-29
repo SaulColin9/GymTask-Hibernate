@@ -109,9 +109,10 @@ public class Main {
 //        jpaTrainerService.updateTrainerPassword(martinId, "martin123");
 //        jpaTrainerService.updateTrainerTraineeStatus(martinId, false);
 
+        jpaGymFacade.addTrainer("Luke", "Skywalker", 1);
         jpaTrainingService.createTrainingProfile(1, 1, "New Training", 1, new Date(), 1.0);
         System.out.println(jpaTrainingService.selectTraineeTrainingsByUsername("Gerardo.Lopez", null, 1.0));
-        jpaGymFacade.updateTrainer(credentials, 2, "NewName", "NewLastName", false, 1);
+        jpaGymFacade.updateTrainee(credentials, 1, "NewName", "NewLastName", false, new Date(), "New Address");
 //        daoTrainee.delete(1);
 //        daoTrainee.delete(3);
 //        Optional<Trainee> optionalTrainee = daoTrainee.get(2);

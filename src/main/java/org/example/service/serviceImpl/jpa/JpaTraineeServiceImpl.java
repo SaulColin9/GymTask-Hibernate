@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTraineeService {
     @Override
-    public Optional<Trainee> selectTraineeProfileByUsername(String username) {
+    public Trainee selectTraineeProfileByUsername(String username) {
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         validator.validateFieldsNotNull(params);
@@ -18,7 +18,7 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
         Optional<Trainee> foundTrainee = ((JpaDaoTraineeImpl) traineeDao).getByUsername(username);
 
         validator.validateEntityNotNull(username, foundTrainee);
-        return foundTrainee;
+        return foundTrainee.get();
     }
 
     @Override
@@ -55,13 +55,13 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     }
 
     @Override
-    public void updateTraineeTraineeStatus(int id, boolean isActive) {
+    public boolean updateTraineeTraineeStatus(int id, boolean isActive) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
         validator.validateEntityNotNull(id, traineeToUpdate);
 
         Trainee foundTrainee = traineeToUpdate.get();
         foundTrainee.getUser().setIsActive(false);
 
-        traineeDao.update(id, foundTrainee);
+        return traineeDao.update(id, foundTrainee) != null;
     }
 }
