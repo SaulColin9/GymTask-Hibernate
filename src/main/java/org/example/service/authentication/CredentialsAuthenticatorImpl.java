@@ -20,10 +20,11 @@ public class CredentialsAuthenticatorImpl implements CredentialsAuthenticator {
     @Override
     public void authorize(Credentials credentials, User user) throws AuthenticationException {
         Optional<User> foundUser = getUserByCredentials(credentials);
-        foundUser.orElseThrow(() -> {
+        if (foundUser.isEmpty()) {
+
             logger.error(FAILED_TO_AUTHENTICATE);
-            return new AuthenticationException(FAILED_TO_AUTHENTICATE);
-        });
+            throw new AuthenticationException(FAILED_TO_AUTHENTICATE);
+        }
 
         if (!foundUser.get().equals(user)) {
             logger.error(USER_NOT_AUTHORIZED);

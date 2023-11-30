@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
+    private static final String TRAINEE_ID_PARAM = "trainee_id";
+    private static final String USERNAME_PARAM = "username";
+
     @Override
     public Optional<Trainee> get(int id) {
         try {
@@ -42,7 +45,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
         foundTrainee.ifPresent(trainee -> {
             executeTransaction(entityManager -> {
                 Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
-                trainingDeleteQuery.setParameter("trainee_id", trainee.getId());
+                trainingDeleteQuery.setParameter(TRAINEE_ID_PARAM, trainee.getId());
                 trainingDeleteQuery.executeUpdate();
             });
             executeTransaction(entityManager -> entityManager.remove(trainee));
@@ -54,10 +57,8 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
     public Optional<Trainee> getByUsername(String username) {
         try {
             Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
-            query.setParameter("username", username);
-            Optional<Trainee> foundTrainee = Optional.of((Trainee) query.getSingleResult());
-
-            return foundTrainee;
+            query.setParameter(USERNAME_PARAM, username);
+            return Optional.of((Trainee) query.getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
         }
@@ -65,13 +66,13 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
 
     public Optional<Trainee> deleteByUsername(String username) {
         Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
-        query.setParameter("username", username);
+        query.setParameter(USERNAME_PARAM, username);
         Optional<Trainee> foundTrainee = Optional.of((Trainee) query.getSingleResult());
 
         foundTrainee.ifPresent(trainee -> {
                     executeTransaction(entityManager -> {
                         Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
-                        trainingDeleteQuery.setParameter("trainee_id", trainee.getId());
+                        trainingDeleteQuery.setParameter(TRAINEE_ID_PARAM, trainee.getId());
                         trainingDeleteQuery.executeUpdate();
                     });
                     executeTransaction(entityManager -> entityManager.remove(trainee));
@@ -86,7 +87,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
                 "FROM Trainer trainer LEFT JOIN Training training" +
                         " ON trainer.id = training.trainer.id " +
                         "WHERE trainer.user.isActive = true AND (training.trainee.id != :trainee_id OR training.trainee.id IS NULL)");
-        query.setParameter("trainee_id", trainee.getId());
+        query.setParameter(TRAINEE_ID_PARAM, trainee.getId());
 
         return query.getResultList();
     }

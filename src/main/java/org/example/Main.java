@@ -1,21 +1,11 @@
 package org.example;
 
-import jakarta.persistence.EntityManager;
 import org.example.configuration.jpa.JpaBeanConfiguration;
-import org.example.dao.jpa.*;
-import org.example.facade.inMemory.GymFacade;
 import org.example.facade.jpa.JpaGymFacadeImpl;
 import org.example.model.Trainee;
-import org.example.model.Training;
-import org.example.model.TrainingType;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.example.service.authentication.Credentials;
-import org.example.service.authentication.CredentialsAuthenticatorImpl;
-import org.example.service.serviceImpl.jpa.JpaTraineeService;
-import org.example.service.serviceImpl.jpa.JpaTrainerService;
-import org.example.service.serviceImpl.jpa.JpaTrainingService;
-import org.example.service.serviceImpl.jpa.JpaTrainingServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -32,29 +22,34 @@ public class Main {
         Trainee newTrainee = jpaGymFacade.addTrainee("Saul", "Colin", new Date(), "St 123");
         User traineeUser = newTrainee.getUser();
         Credentials traineeCredentials = new Credentials(traineeUser.getUsername(), traineeUser.getPassword());
-        System.out.println(jpaGymFacade.getTrainee(traineeCredentials, 1));
-        System.out.println(jpaGymFacade.getTraineeByUsername(traineeCredentials, "Saul.Colin"));
-        jpaGymFacade
-                .updateTrainee(traineeCredentials, newTrainee.getId(), "Alejandro",
-                        "Colin", true, new Date(), "New Address");
-        traineeCredentials = new Credentials("Alejandro.Colin", traineeUser.getPassword());
-        jpaGymFacade.updateActiveTraineeStatus(traineeCredentials, newTrainee.getId(), false);
-        jpaGymFacade.updateTraineePassword(traineeCredentials, 1, "1234");
+//        System.out.println(jpaGymFacade.getTrainee(traineeCredentials, 1));
+//        System.out.println(jpaGymFacade.getTraineeByUsername(traineeCredentials, "Saul.Colin"));
+//        jpaGymFacade
+//                .updateTrainee(traineeCredentials, newTrainee.getId(), "Alejandro",
+//                        "Colin", true, new Date(), "New Address");
+//        traineeCredentials = new Credentials("Alejandro.Colin", traineeUser.getPassword());
+//        jpaGymFacade.updateActiveTraineeStatus(traineeCredentials, newTrainee.getId(), false);
+//        jpaGymFacade.updateTraineePassword(traineeCredentials, 1, "1234");
 
         Trainer newTrainer = jpaGymFacade.addTrainer("John", "Doe", 1);
         User trainerUser = newTrainer.getUser();
         Credentials trainerCredentials = new Credentials(trainerUser.getUsername(), trainerUser.getPassword());
+
         System.out.println(jpaGymFacade.getTrainer(trainerCredentials, 1));
         System.out.println(jpaGymFacade.getTrainerByUsername(trainerCredentials, "John.Doe"));
+
         jpaGymFacade.updateTrainer(trainerCredentials, 1, "John", "Smith", true, 1);
         trainerCredentials = new Credentials("John.Smith", trainerUser.getPassword());
-        System.out.println(jpaGymFacade.getTrainer(trainerCredentials, 1));
 
-        int newTrainingId = jpaGymFacade
-                .addTraining(1, 1, "New Training", 1, new Date(), 2.0);
-        System.out.println(jpaGymFacade.getTraining(1));
-        System.out.println(jpaGymFacade.getTraineeTrainings("Alejandro.Colin"));
-        System.out.println(jpaGymFacade.getTrainerTrainingsByUsername("John.Smith"));
+        System.out.println(jpaGymFacade.getTrainer(trainerCredentials, 1));
+        jpaGymFacade.updateTrainerPassword(trainerCredentials, 1, "1234");
+        jpaGymFacade.updateTraineePassword(traineeCredentials, 1, "password");
+
+//        int newTrainingId = jpaGymFacade
+//                .addTraining(1, 1, "New Training", 1, new Date(), 2.0);
+//        System.out.println(jpaGymFacade.getTraining(1));
+//        System.out.println(jpaGymFacade.getTraineeTrainings("Alejandro.Colin"));
+//        System.out.println(jpaGymFacade.getTrainerTrainingsByUsername("John.Smith"));
 
 
     }

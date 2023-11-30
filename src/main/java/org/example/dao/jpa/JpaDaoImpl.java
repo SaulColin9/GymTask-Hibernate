@@ -12,24 +12,6 @@ import java.util.function.Consumer;
 public abstract class JpaDaoImpl<T extends EntityModel> implements Dao<T> {
     private EntityManager entityManager;
 
-    @Override
-    public abstract Optional<T> get(int id);
-
-
-    @Override
-    public abstract List<T> getAll();
-
-
-    @Override
-    public abstract T save(T t);
-
-    @Override
-    public abstract T update(int id, T t);
-
-    @Override
-    public abstract Optional<T> delete(int id);
-
-
     public void executeTransaction(Consumer<EntityManager> action) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {

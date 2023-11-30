@@ -2,7 +2,6 @@ package org.example.service.serviceImpl.jpa;
 
 import org.example.model.Training;
 import org.example.service.TrainingService;
-import org.example.service.authentication.Credentials;
 
 import java.util.List;
 

@@ -1,16 +1,11 @@
 package org.example.facade.jpa;
 
-import org.example.facade.inMemory.GymFacade;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.model.User;
-import org.example.service.TraineeService;
-import org.example.service.TrainerService;
-import org.example.service.TrainingService;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
-import org.example.service.authentication.CredentialsAuthenticatorImpl;
 import org.example.service.serviceImpl.jpa.JpaTraineeService;
 import org.example.service.serviceImpl.jpa.JpaTrainerService;
 import org.example.service.serviceImpl.jpa.JpaTrainingService;
@@ -18,7 +13,6 @@ import org.example.service.serviceImpl.jpa.JpaTrainingService;
 import javax.naming.AuthenticationException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class JpaGymFacadeImpl implements JpaGymFacade {
     private final JpaTraineeService traineeService;

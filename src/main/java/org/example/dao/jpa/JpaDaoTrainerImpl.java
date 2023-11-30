@@ -47,9 +47,7 @@ public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
         try {
             Query query = getEntityManager().createQuery("FROM Trainer t WHERE t.user.username = :username");
             query.setParameter("username", username);
-            Optional<Trainer> foundTrainer = Optional.of((Trainer) query.getSingleResult());
-
-            return foundTrainer;
+            return Optional.of((Trainer) query.getSingleResult());
 
         } catch (NoResultException e) {
             return Optional.empty();

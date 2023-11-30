@@ -36,9 +36,9 @@ public class Validator<T> {
     }
 
     public void validateEntitiesNotNull(Map<String, Object> entities) {
-        for (String key : entities.keySet()) {
-            if (entities.get(key) == null) {
-                String errorMsg = String.format(NULL_ENTITY, key);
+        for (Map.Entry<String, Object> entry : entities.entrySet()) {
+            if (entry.getValue() == null) {
+                String errorMsg = String.format(NULL_ENTITY, entry.getKey());
                 logger.error(errorMsg);
                 throw new IllegalArgumentException(errorMsg);
             }
@@ -47,9 +47,9 @@ public class Validator<T> {
     }
 
     public void validateFieldsNotNull(Map<String, Object> params) {
-        for (String key : params.keySet()) {
-            if (params.get(key) == null) {
-                String errorMsg = String.format(NULL_FIELD, key);
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if (entry.getValue() == null) {
+                String errorMsg = String.format(NULL_FIELD, entry.getKey());
                 logger.error(errorMsg);
                 throw new IllegalArgumentException(errorMsg);
             }
