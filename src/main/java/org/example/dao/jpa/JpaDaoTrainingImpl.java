@@ -70,8 +70,10 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
         Root<Training> root = criteriaQuery.from(Training.class);
 
         Predicate equalsUsername = criteriaBuilder.equal(root.get("trainer").get("user").get("username"), username);
+
         Predicate equalsTrainingName = trainingName == null ? criteriaBuilder.and() :
                 criteriaBuilder.equal(root.get("trainingName"), trainingName);
+
         Predicate equalsTrainingDuration = trainingDuration == null ? criteriaBuilder.and() :
                 criteriaBuilder.equal(root.get("trainingDuration"), trainingDuration);
 

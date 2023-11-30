@@ -171,7 +171,7 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
     }
 
     @Override
-    public List<Trainer> updateTrianeeTrainersList(Credentials credentials, int trainee_id, int trainer_id) {
+    public List<Trainer> updateTraineeTrainersList(Credentials credentials, int trainee_id, int trainer_id) {
         Trainee trainee = traineeService.selectTraineeProfile(trainee_id);
         executeAuth(credentials, trainee.getUser());
 

@@ -19,6 +19,8 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
         Optional<Trainer> foundTrainer = ((JpaDaoTrainerImpl) trainerDao).getByUsername(username);
 
         validator.validateEntityNotNull(username, foundTrainer);
+        logger.info("Selecting Trainer Profile with username {}", username);
+
         return foundTrainer.get();
     }
 
@@ -29,7 +31,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
 
         Trainer foundTrainer = trainerToUpdate.get();
         foundTrainer.getUser().setPassword(newPassword);
-
+        logger.info("Updating Trainer Password with id {}", id);
         return trainerDao.update(id, foundTrainer) != null;
     }
 
@@ -41,6 +43,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
         Trainer foundTrainer = trainerToUpdate.get();
         foundTrainer.getUser().setIsActive(false);
 
+        logger.info("Updating status for Trainer with id {} to {}", id, isActive);
         return trainerDao.update(id, foundTrainer) != null;
     }
 
@@ -49,6 +52,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
         Optional<Trainer> foundTrainer = trainerDao.get(trainer_id);
         validator.validateEntityNotNull(trainer_id, foundTrainer);
 
+        logger.info("Updating trainee with id {} trainers list with id {}", trainee_id, trainer_id);
         return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(trainee_id, foundTrainer.get());
     }
 }

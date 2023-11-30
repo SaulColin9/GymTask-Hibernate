@@ -14,7 +14,7 @@ public class TrainingServiceImpl implements TrainingService {
     private Dao<Trainer> trainerDao;
     private Dao<TrainingType> trainingTypeDao;
     protected Dao<Training> trainingDao;
-    private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
+    protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
     protected Validator<Training> validator;
 
 

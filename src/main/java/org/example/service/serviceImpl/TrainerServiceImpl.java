@@ -17,7 +17,7 @@ import java.util.Optional;
 public class TrainerServiceImpl implements TrainerService {
     protected Dao<Trainer> trainerDao;
     private UserUtils userUtils;
-    private static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
+    protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
     protected Validator<Trainer> validator;
 
     @Override

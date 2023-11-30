@@ -122,6 +122,7 @@ public class Main {
 
         jpaTrainerService.updateTraineeTrainersList(jpaTraineeService.selectTraineeProfile(1).getId(), jpaTrainerService.selectTrainerProfileByUsername("Luke.Skywalker").getId()).forEach(System.out::println);
 
+
         System.out.println(jpaGymFacade.getNotAssignedOnTraineeTrainersList(new Credentials("NewName.NewLastName", "password"), 1));
 //        daoTrainee.delete(1);
 //        daoTrainee.delete(3);

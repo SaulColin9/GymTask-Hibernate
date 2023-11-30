@@ -20,6 +20,8 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
         Optional<Trainee> foundTrainee = ((JpaDaoTraineeImpl) traineeDao).getByUsername(username);
 
         validator.validateEntityNotNull(username, foundTrainee);
+        logger.info("Selecting Trainee Profile with username {}", username);
+
         return foundTrainee.get();
     }
 
@@ -28,8 +30,8 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
         validator.validateEntityNotNull(id, traineeToDelete);
 
-        logger.info("Deleting Trainee Profile with id " + id);
         Optional<Trainee> deletedTrainee = traineeDao.delete(id);
+        logger.info("Deleting Trainee Profile with id {}", id);
 
         return deletedTrainee.isPresent();
     }
@@ -39,8 +41,8 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
         Optional<Trainee> traineeToDelete = ((JpaDaoTraineeImpl) traineeDao).getByUsername(username);
         validator.validateEntityNotNull(username, traineeToDelete);
 
-        logger.info("Deleting Trainee Profile with username " + username);
         Optional<Trainee> deletedTrainee = ((JpaDaoTraineeImpl) traineeDao).deleteByUsername(username);
+        logger.info("Deleting Trainee Profile with username {}", username);
 
         return deletedTrainee.isPresent();
     }
@@ -52,6 +54,7 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
 
         Trainee foundTrainee = traineeToUpdate.get();
         foundTrainee.getUser().setPassword(newPassword);
+        logger.info("Updating Trainee Password with id {}", id);
 
         return traineeDao.update(id, foundTrainee) != null;
     }
@@ -63,6 +66,7 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
 
         Trainee foundTrainee = traineeToUpdate.get();
         foundTrainee.getUser().setIsActive(false);
+        logger.info("Updating status for Trainee with id {} to {}", id, isActive);
 
         return traineeDao.update(id, foundTrainee) != null;
     }
@@ -71,6 +75,7 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     public List<Trainer> selectNotAssignedOnTraineeTrainersList(int trainee_id) {
         Optional<Trainee> foundTrainee = traineeDao.get(trainee_id);
         validator.validateEntityNotNull(trainee_id, foundTrainee);
+        logger.info("Selecting not assigned on trainee with id {} trainers list", trainee_id);
 
         return ((JpaDaoTraineeImpl) traineeDao).getNotAssignedOnTraineeTrainersList(foundTrainee.get());
     }

@@ -20,7 +20,8 @@ public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
 
     @Override
     public List<Trainer> getAll() {
-        return getEntityManager().createQuery("FROM Trainer").getResultList();
+        Query query = getEntityManager().createQuery("FROM Trainer");
+        return query.getResultList();
     }
 
     @Override

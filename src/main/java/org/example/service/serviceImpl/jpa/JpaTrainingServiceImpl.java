@@ -15,6 +15,8 @@ public class JpaTrainingServiceImpl extends TrainingServiceImpl implements JpaTr
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         validator.validateFieldsNotNull(params);
+
+        logger.info("Selecting Trainee with username {} Trainings", username);
         return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTraineeUsername(username, trainingName, trainingDuration);
     }
 
@@ -23,6 +25,8 @@ public class JpaTrainingServiceImpl extends TrainingServiceImpl implements JpaTr
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         validator.validateFieldsNotNull(params);
+
+        logger.info("Selecting Trainer with username {} Trainings", username);
         return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTrainerUsername(username, trainingName, trainingDuration);
     }
 }
