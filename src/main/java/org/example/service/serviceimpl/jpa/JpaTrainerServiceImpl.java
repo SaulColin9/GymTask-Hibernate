@@ -49,11 +49,11 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     }
 
     @Override
-    public List<Trainer> updateTraineeTrainersList(int trainee_id, int trainer_id) {
-        Optional<Trainer> foundTrainer = trainerDao.get(trainer_id);
-        validator.validateEntityNotNull(trainer_id, foundTrainer);
+    public List<Trainer> updateTraineeTrainersList(int traineeId, int trainerId) {
+        Optional<Trainer> foundTrainer = trainerDao.get(trainerId);
+        validator.validateEntityNotNull(trainerId, foundTrainer);
 
-        logger.info("Updating trainee with id {} trainers list with id {}", trainee_id, trainer_id);
-        return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(trainee_id, foundTrainer.get());
+        logger.info("Updating trainee with id {} trainers list with id {}", traineeId, trainerId);
+        return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(traineeId, foundTrainer.get());
     }
 }

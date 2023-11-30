@@ -54,9 +54,9 @@ public interface JpaGymFacade {
 
     List<Training> getTrainerTrainingsByTrainingDuration(String username, Double trainingDuration);
 
-    List<Trainer> updateTraineeTrainersList(Credentials credentials, int trainee_id, int trainer_id);
+    List<Trainer> updateTraineeTrainersList(Credentials credentials, int traineeId, int trainerId);
 
-    List<Trainer> getNotAssignedOnTraineeTrainersList(Credentials credentials, int trainee_id);
+    List<Trainer> getNotAssignedOnTraineeTrainersList(Credentials credentials, int traineeId);
 
 
 }

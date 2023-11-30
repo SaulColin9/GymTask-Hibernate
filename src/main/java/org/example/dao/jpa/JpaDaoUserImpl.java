@@ -17,7 +17,6 @@ public class JpaDaoUserImpl extends JpaDaoImpl<User> {
         }
     }
 
-
     @Override
     public List<User> getAll() {
         return getEntityManager().createQuery("FROM User").getResultList();

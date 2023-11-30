@@ -167,19 +167,19 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
     }
 
     @Override
-    public List<Trainer> updateTraineeTrainersList(Credentials credentials, int trainee_id, int trainer_id) {
-        Trainee trainee = traineeService.selectTraineeProfile(trainee_id);
+    public List<Trainer> updateTraineeTrainersList(Credentials credentials, int traineeId, int trainerId) {
+        Trainee trainee = traineeService.selectTraineeProfile(traineeId);
         executeAuth(credentials, trainee.getUser());
 
-        return trainerService.updateTraineeTrainersList(trainee_id, trainer_id);
+        return trainerService.updateTraineeTrainersList(traineeId, trainerId);
     }
 
     @Override
-    public List<Trainer> getNotAssignedOnTraineeTrainersList(Credentials credentials, int trainee_id) {
-        Trainee trainee = traineeService.selectTraineeProfile(trainee_id);
+    public List<Trainer> getNotAssignedOnTraineeTrainersList(Credentials credentials, int traineeId) {
+        Trainee trainee = traineeService.selectTraineeProfile(traineeId);
         executeAuth(credentials, trainee.getUser());
 
-        return traineeService.selectNotAssignedOnTraineeTrainersList(trainee_id);
+        return traineeService.selectNotAssignedOnTraineeTrainersList(traineeId);
     }
 
     public void setCredentialsAuthenticator(CredentialsAuthenticator credentialsAuthenticator) {

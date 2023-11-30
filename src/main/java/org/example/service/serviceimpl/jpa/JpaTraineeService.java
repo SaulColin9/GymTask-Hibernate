@@ -15,7 +15,7 @@ public interface JpaTraineeService extends TraineeService {
 
     boolean updateTraineeTraineeStatus(int id, boolean isActive);
 
-    List<Trainer> selectNotAssignedOnTraineeTrainersList(int trainee_id);
+    List<Trainer> selectNotAssignedOnTraineeTrainersList(int traineeId);
 
 }
 

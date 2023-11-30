@@ -16,7 +16,6 @@ public class Trainer implements EntityModel {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-
     public Trainer() {
     }
 

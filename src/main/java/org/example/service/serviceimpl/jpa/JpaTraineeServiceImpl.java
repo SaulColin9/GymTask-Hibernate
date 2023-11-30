@@ -72,10 +72,10 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     }
 
     @Override
-    public List<Trainer> selectNotAssignedOnTraineeTrainersList(int trainee_id) {
-        Optional<Trainee> foundTrainee = traineeDao.get(trainee_id);
-        validator.validateEntityNotNull(trainee_id, foundTrainee);
-        logger.info("Selecting not assigned on trainee with id {} trainers list", trainee_id);
+    public List<Trainer> selectNotAssignedOnTraineeTrainersList(int traineeId) {
+        Optional<Trainee> foundTrainee = traineeDao.get(traineeId);
+        validator.validateEntityNotNull(traineeId, foundTrainee);
+        logger.info("Selecting not assigned on trainee with id {} trainers list", traineeId);
 
         return ((JpaDaoTraineeImpl) traineeDao).getNotAssignedOnTraineeTrainersList(foundTrainee.get());
     }

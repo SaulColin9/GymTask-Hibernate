@@ -23,7 +23,6 @@ public class User implements EntityModel {
     private boolean isActive;
 
     public User() {
-
     }
 
     public User(String firstName, String lastName, String username, String password, boolean isActive) {

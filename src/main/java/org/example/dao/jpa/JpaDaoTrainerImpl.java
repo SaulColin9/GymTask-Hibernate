@@ -54,18 +54,18 @@ public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
         }
     }
 
-    public List<Trainer> updateTraineeTrainersList(int trainee_id, Trainer trainer) {
+    public List<Trainer> updateTraineeTrainersList(int traineeId, Trainer trainer) {
         executeTransaction(entityManager -> {
             Query query = entityManager.createQuery("UPDATE Training SET trainer = :newTrainer" +
                     " WHERE trainee.id = :trainee_id");
             query.setParameter("newTrainer", trainer);
-            query.setParameter("trainee_id", trainee_id);
+            query.setParameter("trainee_id", traineeId);
             query.executeUpdate();
         });
         Query query = getEntityManager().createQuery("FROM Trainer trainer LEFT JOIN Training training" +
                 " ON trainer.id = training.trainer.id" +
                 " WHERE training.trainee.id = :trainee_id");
-        query.setParameter("trainee_id", trainee_id);
+        query.setParameter("trainee_id", traineeId);
         return query.getResultList();
     }
 

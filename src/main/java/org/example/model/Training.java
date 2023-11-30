@@ -51,9 +51,6 @@ public class Training implements EntityModel {
     }
 
 
-
-
-
     public Date getTrainingDate() {
         return trainingDate;
     }
