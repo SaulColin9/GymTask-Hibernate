@@ -1,8 +1,10 @@
 package org.example.service.serviceImpl;
 
 import org.example.dao.Dao;
+import org.example.entitiesFactory.EntitiesFactory;
 import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainer;
+import org.example.model.TrainingType;
 import org.example.model.User;
 import org.example.service.utils.UserUtils;
 import org.example.service.utils.Validator;
@@ -21,8 +23,12 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 class TrainerServiceImplTest {
+    private EntitiesFactory entitiesFactory;
     @InjectMocks
     private TrainerServiceImpl trainerService;
+    @Mock
+    private Dao<TrainingType> trainingTypeDao;
+
     @Mock
     private Dao<Trainer> trainerDao;
     @Mock
@@ -38,10 +44,11 @@ class TrainerServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        entitiesFactory = new EntitiesFactory();
         user = new User("first", "last");
         user.setId(1);
 
-        trainerTest = new Trainer(1, user);
+        trainerTest = new Trainer(new TrainingType(), user);
         trainerTest.setUser(user);
         trainerTest.setId(1);
 
@@ -57,7 +64,9 @@ class TrainerServiceImplTest {
 
 
         when(userUtils.createUser("John", "Doe")).thenReturn(testTrainer.getUser());
+        when(trainingTypeDao.get(1)).thenReturn(Optional.of(entitiesFactory.createNewTrainingType()));
         when(trainerDao.save(argThat(new TrainerMatcher(testTrainer)))).thenReturn(testTrainer);
+
         // act
         int createdTrainerId = trainerService.createTrainerProfile("John", "Doe", 1);
 
@@ -79,18 +88,22 @@ class TrainerServiceImplTest {
         updatedUser.setIsActive(false);
         updatedUser.setUsername("Jean.Doe");
 
+
         Trainer updatedTrainer = new Trainer();
         updatedTrainer.setId(1);
         updatedTrainer.setUser(updatedUser);
-        updatedTrainer.setSpecialization(2);
+
+        updatedTrainer.setSpecialization(entitiesFactory.createNewTrainingType());
 
 
         when(trainerDao.get(1)).thenReturn(Optional.of(testTrainer));
         when(userUtils.updateUser(1, "Jean", "Doe", false)).thenReturn(updatedUser);
         when(trainerDao.update(eq(1), argThat(new TrainerMatcher(updatedTrainer)))).thenReturn(updatedTrainer);
+        when(trainingTypeDao.get(1)).thenReturn(Optional.of(entitiesFactory.createNewTrainingType()));
+
 
         // act
-        boolean actualResponse = trainerService.updateTrainerProfile(1, "Jean", "Doe", false, 2);
+        boolean actualResponse = trainerService.updateTrainerProfile(1, "Jean", "Doe", false, 1);
 
         // assert
         assertThat(actualResponse).isTrue();
@@ -164,7 +177,7 @@ class TrainerServiceImplTest {
         newUser.setId(1);
 
         Trainer newTrainer = new Trainer();
-        newTrainer.setSpecialization(1);
+        newTrainer.setSpecialization(entitiesFactory.createNewTrainingType());
         newTrainer.setId(1);
         newTrainer.setUser(newUser);
 

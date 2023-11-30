@@ -9,21 +9,22 @@ public class Trainer implements EntityModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    int specialization;
+    @ManyToOne
+    @JoinColumn(name = "trainingType_id", referencedColumnName = "id")
+    TrainingType specialization;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
 
-
     public Trainer() {
     }
 
-    public Trainer(int specialization) {
+    public Trainer(TrainingType specialization) {
         this.specialization = specialization;
     }
 
-    public Trainer(int specialization, User user) {
+    public Trainer(TrainingType specialization, User user) {
         this.specialization = specialization;
         this.user = user;
     }
@@ -42,11 +43,11 @@ public class Trainer implements EntityModel {
         return this.user;
     }
 
-    public int getSpecialization() {
+    public TrainingType getSpecialization() {
         return specialization;
     }
 
-    public Trainer setSpecialization(int specialization) {
+    public Trainer setSpecialization(TrainingType specialization) {
         this.specialization = specialization;
         return this;
     }

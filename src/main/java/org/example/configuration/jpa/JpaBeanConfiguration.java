@@ -153,9 +153,12 @@ public class JpaBeanConfiguration {
     }
 
     @Bean
-    public JpaTrainerService trainerService(@Autowired Dao<Trainer> trainerDao, @Autowired UserUtils userUtils) {
+    public JpaTrainerService trainerService(@Autowired Dao<Trainer> trainerDao,
+                                            @Autowired Dao<TrainingType> trainingTypeDao,
+                                            @Autowired UserUtils userUtils) {
         JpaTrainerServiceImpl trainerService = new JpaTrainerServiceImpl();
         trainerService.setTrainerDao(trainerDao);
+        trainerService.setTrainingTypeDao(trainingTypeDao);
         trainerService.setUserUtils(userUtils);
         trainerService.setValidator(new Validator<>(Trainer.class));
         return trainerService;

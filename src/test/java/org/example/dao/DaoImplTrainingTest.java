@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.configuration.inMemory.storage.GymStorageImpl;
 import org.example.dao.inMemory.TrainingDao;
+import org.example.entitiesFactory.EntitiesFactory;
 import org.example.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DaoImplTrainingTest {
+    EntitiesFactory entitiesFactory;
     @InjectMocks
     TrainingDao trainingDao;
     @Mock
@@ -22,6 +24,7 @@ public class DaoImplTrainingTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        entitiesFactory = new EntitiesFactory();
     }
 
     @Test
@@ -152,7 +155,7 @@ public class DaoImplTrainingTest {
         User user2 = new User("User Test2", "User Test2");
         user2.setId(2);
 
-        Trainer trainer = new Trainer(1, user);
+        Trainer trainer = new Trainer(entitiesFactory.createNewTrainingType(), user);
         trainer.setUser(user);
         trainer.setId(1);
 

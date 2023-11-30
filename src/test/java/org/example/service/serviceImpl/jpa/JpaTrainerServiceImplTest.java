@@ -1,6 +1,7 @@
 package org.example.service.serviceImpl.jpa;
 
 import org.example.dao.jpa.JpaDaoTrainerImpl;
+import org.example.entitiesFactory.EntitiesFactory;
 import org.example.matchers.TraineeMatcher;
 import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainee;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.*;
 
 class JpaTrainerServiceImplTest {
 
+    EntitiesFactory entitiesFactory;
     @Mock
     Validator<Trainer> validator;
     @Mock
@@ -34,6 +36,7 @@ class JpaTrainerServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        entitiesFactory = new EntitiesFactory();
     }
 
     @Test
@@ -110,20 +113,6 @@ class JpaTrainerServiceImplTest {
     }
 
     Trainer createNewTrainer() {
-        User newUser = new User();
-
-        newUser.setIsActive(true);
-        newUser.setFirstName("John");
-        newUser.setLastName("Doe");
-        newUser.setPassword("password");
-        newUser.setUsername("John.Doe");
-        newUser.setId(1);
-
-        Trainer newTrainer = new Trainer();
-        newTrainer.setSpecialization(1);
-        newTrainer.setId(1);
-        newTrainer.setUser(newUser);
-
-        return newTrainer;
+        return entitiesFactory.createNewTrainer();
     }
 }

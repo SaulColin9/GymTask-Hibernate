@@ -12,6 +12,6 @@ public class TrainerMatcher implements ArgumentMatcher<Trainer> {
 
     @Override
     public boolean matches(Trainer right) {
-        return left.getUser().equals(right.getUser()) && left.getSpecialization() == right.getSpecialization();
+        return left.getUser().equals(right.getUser()) && left.getSpecialization().getId() == right.getSpecialization().getId();
     }
 }

@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.configuration.inMemory.storage.GymStorageImpl;
 import org.example.dao.inMemory.TrainerDao;
+import org.example.entitiesFactory.EntitiesFactory;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,8 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DaoImplTrainerTest {
+
+    EntitiesFactory entitiesFactory;
     @InjectMocks
     TrainerDao trainerDao;
     @Mock
@@ -24,6 +27,7 @@ public class DaoImplTrainerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        entitiesFactory = new EntitiesFactory();
     }
 
     @Test
@@ -89,7 +93,7 @@ public class DaoImplTrainerTest {
         // arrange
         Trainer newTrainer = new Trainer();
 
-        newTrainer.setSpecialization(1);
+        newTrainer.setSpecialization(entitiesFactory.createNewTrainingType());
         newTrainer.setUser(new User());
 
         storageEntities = createNewStorageEntities();
@@ -110,7 +114,7 @@ public class DaoImplTrainerTest {
         // arrange
         Trainer newTrainer = new Trainer();
 
-        newTrainer.setSpecialization(2);
+        newTrainer.setSpecialization(entitiesFactory.createNewTrainingType());
         newTrainer.setUser(new User());
         newTrainer.setId(1);
 
@@ -123,7 +127,7 @@ public class DaoImplTrainerTest {
         Trainer actualResponse = trainerDao.update(1, newTrainer);
         // assert
         assertThat(actualResponse).isNotNull();
-        assertThat(actualResponse.getSpecialization()).isEqualTo(2);
+        assertThat(actualResponse.getSpecialization().getId()).isEqualTo(1);
         assertThat(actualResponse.getId()).isEqualTo(1);
     }
 
@@ -150,9 +154,9 @@ public class DaoImplTrainerTest {
         User user2 = new User("User Test2", "User Test2");
         user2.setId(2);
 
-        Trainer trainer = new Trainer(1, user);
+        Trainer trainer = new Trainer(entitiesFactory.createNewTrainingType(), user);
         trainer.setId(1);
-        Trainer trainer2 = new Trainer(2, user2);
+        Trainer trainer2 = new Trainer(entitiesFactory.createNewTrainingType(), user2);
         trainer2.setId(2);
         Map<Integer, Trainer> trainers = new HashMap<>();
         trainers.put(1, trainer);

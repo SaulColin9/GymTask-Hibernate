@@ -84,7 +84,10 @@
   "trainers": [
     {
       "id": 1,
-      "specialization": 1,
+      "specialization": {
+        "id": 1,
+        "trainingTypeName": "Weightlifting"
+      },
       "user": {
         "id": 6,
         "firstName": "UpdatedTrainerName",
@@ -128,7 +131,10 @@
       },
       "trainer": {
         "id": 1,
-        "specialization": 1,
+        "specialization": {
+          "id": 1,
+          "trainingTypeName": "Weightlifting"
+        },
         "user": {
           "id": 6,
           "firstName": "UpdatedTrainerName",

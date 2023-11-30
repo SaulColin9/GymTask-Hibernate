@@ -1,5 +1,6 @@
 package org.example.facade;
 
+import org.example.entitiesFactory.EntitiesFactory;
 import org.example.facade.inMemory.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.serviceImpl.TraineeServiceImpl;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 class GymFacadeImplTest {
 
+    EntitiesFactory entitiesFactory;
     @InjectMocks
     private GymFacadeImpl gymFacade;
     @Mock
@@ -33,6 +35,7 @@ class GymFacadeImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        entitiesFactory = new EntitiesFactory();
     }
 
     @Test
@@ -203,46 +206,11 @@ class GymFacadeImplTest {
     }
 
     Trainee createNewTrainee() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        User newUser = new User();
-
-        newUser.setIsActive(true);
-        newUser.setFirstName("John");
-        newUser.setLastName("Doe");
-        newUser.setPassword("password");
-        newUser.setUsername("John.Doe");
-        newUser.setId(1);
-
-        Trainee newTrainee = new Trainee();
-        newTrainee.setAddress("Test Address");
-        try {
-            newTrainee.setDateOfBirth(sdf.parse("2003-06-05"));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        newTrainee.setUser(newUser);
-        newTrainee.setId(1);
-
-        return newTrainee;
+        return entitiesFactory.createNewTrainee();
     }
 
     Trainer createNewTrainer() {
-        User newUser = new User();
-
-        newUser.setIsActive(true);
-        newUser.setFirstName("Jane");
-        newUser.setLastName("Doe");
-        newUser.setPassword("password");
-        newUser.setUsername("Jane.Doe");
-        newUser.setId(2);
-
-        Trainer newTrainer = new Trainer();
-        newTrainer.setSpecialization(1);
-        newTrainer.setId(1);
-        newTrainer.setUser(newUser);
-
-        return newTrainer;
+        return entitiesFactory.createNewTrainer();
     }
 
 }

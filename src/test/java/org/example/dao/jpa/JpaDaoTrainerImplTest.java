@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
+import org.example.entitiesFactory.EntitiesFactory;
 import org.example.matchers.TraineeMatcher;
 import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainee;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.*;
 
 class JpaDaoTrainerImplTest {
 
+    EntitiesFactory entitiesFactory;
     @Mock
     EntityManager entityManager;
     @Mock
@@ -37,6 +39,7 @@ class JpaDaoTrainerImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        entitiesFactory = new EntitiesFactory();
     }
 
     @Test
@@ -173,20 +176,6 @@ class JpaDaoTrainerImplTest {
     }
 
     Trainer createNewTrainer() {
-        User newUser = new User();
-
-        newUser.setIsActive(true);
-        newUser.setFirstName("John");
-        newUser.setLastName("Doe");
-        newUser.setPassword("password");
-        newUser.setUsername("John.Doe");
-        newUser.setId(1);
-
-        Trainer newTrainer = new Trainer();
-        newTrainer.setSpecialization(1);
-        newTrainer.setId(1);
-        newTrainer.setUser(newUser);
-
-        return newTrainer;
+        return entitiesFactory.createNewTrainer();
     }
 }

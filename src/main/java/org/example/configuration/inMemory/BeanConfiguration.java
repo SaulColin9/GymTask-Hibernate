@@ -46,6 +46,7 @@ public class BeanConfiguration {
         trainingService.setTrainerDao(trainerDao);
         trainingService.setTrainingDao(trainingDao);
         trainingService.setTrainingTypeDao(trainingTypeDao);
+        trainingService.setValidator(new Validator<>(Training.class));
         return trainingService;
     }
 
@@ -54,6 +55,7 @@ public class BeanConfiguration {
         TrainerServiceImpl trainerService = new TrainerServiceImpl();
         trainerService.setTrainerDao(trainerDao);
         trainerService.setUserUtils(userUtils);
+        trainerService.setValidator(new Validator<>(Trainer.class));
         return trainerService;
     }
 

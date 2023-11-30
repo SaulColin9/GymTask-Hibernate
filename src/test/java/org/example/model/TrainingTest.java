@@ -1,5 +1,6 @@
 package org.example.model;
 
+import org.example.entitiesFactory.EntitiesFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,20 +10,24 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.*;
 
 class TrainingTest {
+    EntitiesFactory entitiesFactory;
+
 
     @Mock
     private Training training;
 
     @BeforeEach
     void setUp() {
+        entitiesFactory = new EntitiesFactory();
         training = new Training();
         training.setTrainee(new Trainee(new Date(), "Address"));
-        training.setTrainer(new Trainer(1));
+        training.setTrainer(new Trainer(entitiesFactory.createNewTrainingType()));
         training.setTrainingType(new TrainingType("TrainingTypeName"));
         training.setTrainingName("TrainingName");
         training.setTrainingDate(new Date());
         training.setTrainingDuration(1);
         training.setId(1);
+
     }
 
     @Test
