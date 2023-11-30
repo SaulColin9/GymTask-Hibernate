@@ -31,6 +31,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
 
         Trainer foundTrainer = trainerToUpdate.get();
         foundTrainer.getUser().setPassword(newPassword);
+
         logger.info("Updating Trainer Password with id {}", id);
         return trainerDao.update(id, foundTrainer) != null;
     }

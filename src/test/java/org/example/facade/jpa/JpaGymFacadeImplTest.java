@@ -50,14 +50,17 @@ class JpaGymFacadeImplTest {
         String lastName = "Doe";
         Date dateOfBirth = new Date();
         String address = "Address";
+        Trainee trainee = createNewTrainee();
         when(traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address)).thenReturn(1);
+        when(traineeService.selectTraineeProfile(1)).thenReturn(trainee);
 
         // act
-        int actualResponse = jpaGymFacade.addTrainee(firstName, lastName, dateOfBirth, address);
+        Trainee actualResponse = jpaGymFacade.addTrainee(firstName, lastName, dateOfBirth, address);
 
         // assert
-        assertThat(actualResponse).isEqualTo(1);
+        assertThat(actualResponse).isEqualTo(trainee);
         verify(traineeService, times(1)).createTraineeProfile(firstName, lastName, dateOfBirth, address);
+        verify(traineeService, times(1)).selectTraineeProfile(1);
     }
 
     @Test
@@ -214,14 +217,17 @@ class JpaGymFacadeImplTest {
         String firstName = "John";
         String lastName = "Doe";
         int specialization = 1;
+        Trainer trainer = createNewTrainer();
         when(trainerService.createTrainerProfile(firstName, lastName, 1)).thenReturn(1);
+        when(trainerService.selectTrainerProfile(1)).thenReturn(trainer);
 
         // act
-        int actualResponse = jpaGymFacade.addTrainer(firstName, lastName, specialization);
+        Trainer actualResponse = jpaGymFacade.addTrainer(firstName, lastName, specialization);
 
         // assert
-        assertThat(actualResponse).isEqualTo(1);
+        assertThat(actualResponse).isEqualTo(trainer);
         verify(trainerService, times(1)).createTrainerProfile(firstName, lastName, specialization);
+        verify(trainerService, times(1)).selectTrainerProfile(1);
     }
 
     @Test

@@ -168,6 +168,7 @@ class GymFacadeImplTest {
     void givenTrainingId_TrainingShouldBeReturned() {
         // arrange
         Training testTraining = createNewTraining();
+        int id = 1;
 
         when(trainingService.selectTrainingProfile(1)).thenReturn(testTraining);
         // act

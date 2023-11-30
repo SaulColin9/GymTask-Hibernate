@@ -36,8 +36,9 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
 
 
     @Override
-    public int addTrainee(String firstName, String lastName, Date dateOfBirth, String address) {
-        return traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address);
+    public Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address) {
+        int newTraineeId = traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address);
+        return traineeService.selectTraineeProfile(newTraineeId);
     }
 
     @Override
@@ -90,8 +91,9 @@ public class JpaGymFacadeImpl implements JpaGymFacade {
     }
 
     @Override
-    public int addTrainer(String firstName, String lastName, int specialization) {
-        return trainerService.createTrainerProfile(firstName, lastName, specialization);
+    public Trainer addTrainer(String firstName, String lastName, int specialization) {
+        int newTrainerId = trainerService.createTrainerProfile(firstName, lastName, specialization);
+        return trainerService.selectTrainerProfile(newTrainerId);
     }
 
     @Override

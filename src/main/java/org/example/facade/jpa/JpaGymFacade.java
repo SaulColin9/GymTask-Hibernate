@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface JpaGymFacade {
-    int addTrainee(String firstName, String lastName, Date dateOfBirth, String address);
+    Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address);
 
     boolean updateTrainee(Credentials credentials, int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
 
@@ -25,7 +25,7 @@ public interface JpaGymFacade {
 
     boolean deleteTraineeByUsername(Credentials credentials, String username);
 
-    int addTrainer(String firstName, String lastName, int specialization);
+    Trainer addTrainer(String firstName, String lastName, int specialization);
 
     boolean updateTrainer(Credentials credentials, int id, String firstName, String lastName, boolean isActive, int specialization);
 
