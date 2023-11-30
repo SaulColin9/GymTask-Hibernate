@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.configuration.inMemory.BeanConfiguration;
-import org.example.configuration.inMemory.storage.GymStorageImpl;
 import org.example.configuration.jpa.JpaBeanConfiguration;
-import org.example.facade.inMemory.GymFacadeImpl;
 import org.example.facade.jpa.JpaGymFacadeImpl;
 import org.example.model.Trainee;
 import org.example.model.Trainer;

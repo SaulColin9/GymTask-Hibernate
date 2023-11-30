@@ -1,6 +1,6 @@
 package org.example.configuration;
 
-import org.example.configuration.inMemory.storage.EntitiesReader;
+import org.example.configuration.inmemory.storage.EntitiesReader;
 import org.example.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

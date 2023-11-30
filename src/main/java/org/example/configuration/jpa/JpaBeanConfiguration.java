@@ -12,7 +12,7 @@ import org.example.facade.jpa.JpaGymFacadeImpl;
 import org.example.model.*;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.authentication.CredentialsAuthenticatorImpl;
-import org.example.service.serviceImpl.jpa.*;
+import org.example.service.serviceimpl.jpa.*;
 import org.example.service.utils.*;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;

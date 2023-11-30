@@ -6,9 +6,9 @@ import org.example.model.Training;
 import org.example.model.User;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
-import org.example.service.serviceImpl.jpa.JpaTraineeService;
-import org.example.service.serviceImpl.jpa.JpaTrainerService;
-import org.example.service.serviceImpl.jpa.JpaTrainingService;
+import org.example.service.serviceimpl.jpa.JpaTraineeService;
+import org.example.service.serviceimpl.jpa.JpaTrainerService;
+import org.example.service.serviceimpl.jpa.JpaTrainingService;
 
 import javax.naming.AuthenticationException;
 import java.util.Date;

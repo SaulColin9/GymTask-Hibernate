@@ -4,25 +4,20 @@ import org.example.entitiesFactory.EntitiesFactory;
 import org.example.model.*;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
-import org.example.service.authentication.CredentialsAuthenticatorImpl;
-import org.example.service.serviceImpl.jpa.JpaTraineeService;
-import org.example.service.serviceImpl.jpa.JpaTrainerService;
-import org.example.service.serviceImpl.jpa.JpaTrainingService;
+import org.example.service.serviceimpl.jpa.JpaTraineeService;
+import org.example.service.serviceimpl.jpa.JpaTrainerService;
+import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javax.naming.AuthenticationException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class JpaGymFacadeImplTest {

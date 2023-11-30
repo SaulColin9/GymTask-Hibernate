@@ -1,7 +1,7 @@
 package org.example.dao;
 
-import org.example.configuration.inMemory.storage.GymStorageImpl;
-import org.example.dao.inMemory.TrainerDao;
+import org.example.configuration.inmemory.storage.GymStorageImpl;
+import org.example.dao.inmemory.TrainerDao;
 import org.example.entitiesFactory.EntitiesFactory;
 import org.example.model.Trainer;
 import org.example.model.User;

@@ -1,11 +1,11 @@
 package org.example.facade;
 
 import org.example.entitiesFactory.EntitiesFactory;
-import org.example.facade.inMemory.GymFacadeImpl;
+import org.example.facade.inmemory.GymFacadeImpl;
 import org.example.model.*;
-import org.example.service.serviceImpl.TraineeServiceImpl;
-import org.example.service.serviceImpl.TrainerServiceImpl;
-import org.example.service.serviceImpl.TrainingServiceImpl;
+import org.example.service.serviceimpl.TraineeServiceImpl;
+import org.example.service.serviceimpl.TrainerServiceImpl;
+import org.example.service.serviceimpl.TrainingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

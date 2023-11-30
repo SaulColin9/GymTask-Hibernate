@@ -22,11 +22,6 @@ public class User implements EntityModel {
     @Column(nullable = false)
     private boolean isActive;
 
-//    @OneToOne(mappedBy = "user")
-//    private Trainer trainer;
-//    @OneToOne(mappedBy = "user")
-//    private Trainee trainee;
-
     public User() {
 
     }
