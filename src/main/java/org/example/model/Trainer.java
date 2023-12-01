@@ -10,7 +10,7 @@ public class Trainer implements EntityModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     @ManyToOne
-    @JoinColumn(name = "trainingType_id", referencedColumnName = "id")
+    @JoinColumn(name = "specialization", referencedColumnName = "id")
     TrainingType specialization;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
