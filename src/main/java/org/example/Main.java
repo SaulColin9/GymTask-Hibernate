@@ -19,7 +19,7 @@ public class Main {
         JpaGymFacadeImpl jpaGymFacade = context.getBean(JpaGymFacadeImpl.class);
 
 
-        // Trainee
+        // Trainee methods from facade
         Trainee newTrainee = jpaGymFacade.addTrainee("Saul", "Colin", new Date(), "St 123");
         User traineeUser = newTrainee.getUser();
         Credentials traineeCredentials = new Credentials(traineeUser.getUsername(), traineeUser.getPassword());
@@ -35,7 +35,7 @@ public class Main {
         jpaGymFacade.updateActiveTraineeStatus(traineeCredentials, newTrainee.getId(), false);
         jpaGymFacade.updateTraineePassword(traineeCredentials, newTrainee.getId(), "1234");
 
-        // Trainer
+        // Trainer methods from facade
         Trainer newTrainer = jpaGymFacade.addTrainer("John", "Doe", 1);
         User trainerUser = newTrainer.getUser();
         Credentials trainerCredentials = new Credentials(trainerUser.getUsername(), trainerUser.getPassword());
@@ -50,7 +50,7 @@ public class Main {
         jpaGymFacade.updateTrainerPassword(trainerCredentials, newTrainer.getId(), "1234");
         jpaGymFacade.updateTraineePassword(new Credentials("Alejandro.Colin", "1234"), newTrainee.getId(), "password");
 
-        // Training
+        // Training methods from facade
         int newTrainingId = jpaGymFacade
                 .addTraining(newTrainee.getId(), 1, "New Training", 1, new Date(), 2.0);
         System.out.println(jpaGymFacade.getTraining(newTrainingId));
