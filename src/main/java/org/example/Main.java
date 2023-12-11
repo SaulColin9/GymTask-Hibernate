@@ -19,6 +19,7 @@ public class Main {
         JpaGymFacadeImpl jpaGymFacade = context.getBean(JpaGymFacadeImpl.class);
 
 
+
         // Trainee methods from facade
         Trainee newTrainee = jpaGymFacade.addTrainee("Saul", "Colin", new Date(), "St 123");
         User traineeUser = newTrainee.getUser();
