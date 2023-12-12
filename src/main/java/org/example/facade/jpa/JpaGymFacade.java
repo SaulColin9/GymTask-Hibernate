@@ -5,18 +5,9 @@ import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.service.authentication.Credentials;
 
-import java.util.Date;
 import java.util.List;
 
 public interface JpaGymFacade {
-    Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address);
-
-    boolean updateTrainee(Credentials credentials, int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address);
-
-    boolean deleteTrainee(Credentials credentials, int id);
-
-    Trainee getTrainee(Credentials credentials, int id);
-
     Trainee getTraineeByUsername(Credentials credentials, String username);
 
     boolean updateTraineePassword(Credentials credentials, int id, String newPassword);
@@ -25,22 +16,11 @@ public interface JpaGymFacade {
 
     boolean deleteTraineeByUsername(Credentials credentials, String username);
 
-    Trainer addTrainer(String firstName, String lastName, int specialization);
-
-    boolean updateTrainer(Credentials credentials, int id, String firstName, String lastName, boolean isActive, int specialization);
-
-    Trainer getTrainer(Credentials credentials, int id);
-
     Trainer getTrainerByUsername(Credentials credentials, String username);
 
     boolean updateTrainerPassword(Credentials credentials, int id, String newPassword);
 
     boolean updateActiveTrainerStatus(Credentials credentials, int id, boolean isActive);
-
-
-    int addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
-
-    Training getTraining(int id);
 
     List<Training> getTraineeTrainings(String username);
 

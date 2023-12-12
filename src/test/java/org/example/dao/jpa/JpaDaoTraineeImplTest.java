@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -49,7 +48,7 @@ class JpaDaoTraineeImplTest {
         Optional<Trainee> actualResponse = jpaDaoTrainee.get(id);
 
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(Trainee.class, 1);
     }
 
@@ -127,7 +126,7 @@ class JpaDaoTraineeImplTest {
         // act
         Optional<Trainee> actualResponse = jpaDaoTrainee.getByUsername(username);
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username");
         verify(query, times(1)).getSingleResult();
     }
@@ -160,7 +159,7 @@ class JpaDaoTraineeImplTest {
         // act
         Optional<Trainee> actualResponse = jpaDaoTrainee.deleteByUsername(username);
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username");
         verify(entityManager, times(1)).createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
         verify(query, times(1)).executeUpdate();

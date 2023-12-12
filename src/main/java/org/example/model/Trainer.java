@@ -5,13 +5,10 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Trainer implements EntityModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+public class Trainer extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "specialization", referencedColumnName = "id")
-    TrainingType specialization;
+    private TrainingType specialization;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -26,16 +23,6 @@ public class Trainer implements EntityModel {
     public Trainer(TrainingType specialization, User user) {
         this.specialization = specialization;
         this.user = user;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    public Trainer setId(int id) {
-        this.id = id;
-        return this;
     }
 
     public User getUser() {

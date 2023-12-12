@@ -33,10 +33,9 @@ public class TrainerServiceImpl implements TrainerService {
         validator.validatePositiveField("specialization", specialization);
 
         User newUser = userUtils.createUser(firstName, lastName);
-
         logger.info("Creating Trainer Profile with id {}", newUser.getId());
-
         Trainer newTrainer = trainerDao.save(new Trainer(trainingType.get(), newUser));
+
         return newTrainer.getId();
     }
 
@@ -44,31 +43,33 @@ public class TrainerServiceImpl implements TrainerService {
     public boolean updateTrainerProfile(int id, String firstName, String lastName, boolean isActive, int specialization) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
         Optional<TrainingType> trainingType = trainingTypeDao.get(specialization);
-        validator.validateEntityNotNull(id, trainerToUpdate);
+        validator.validateEntityNotNull(id, trainerToUpdate.orElse(null));
 
-        Trainer foundTrainer = trainerToUpdate.get();
+        Trainer foundTrainer = trainerToUpdate.orElse(null);
+        if (trainerToUpdate.isPresent()) {
+            int userId = foundTrainer.getUser().getId();
+            User updatedUser = userUtils.updateUser(userId,
+                    firstName == null ? foundTrainer.getUser().getFirstName() : firstName,
+                    lastName == null ? foundTrainer.getUser().getLastName() : lastName,
+                    isActive
+            );
+            foundTrainer.setUser(updatedUser);
 
-        int userId = foundTrainer.getUser().getId();
-        User updatedUser = userUtils.updateUser(userId,
-                firstName == null ? foundTrainer.getUser().getFirstName() : firstName,
-                lastName == null ? foundTrainer.getUser().getLastName() : lastName,
-                isActive
-        );
-        foundTrainer.setUser(updatedUser);
+            foundTrainer.setSpecialization(trainingType.get());
 
-        foundTrainer.setSpecialization(trainingType.get());
+            logger.info("Updating Trainer Profile with id {}", id);
+        }
 
-        logger.info("Updating Trainer Profile with id {}", id);
         return trainerDao.update(id, foundTrainer) != null;
     }
 
     @Override
     public Trainer selectTrainerProfile(int id) {
         Optional<Trainer> trainer = trainerDao.get(id);
-        validator.validateEntityNotNull(id, trainer);
+        validator.validateEntityNotNull(id, trainer.orElse(null));
 
         logger.info("Selecting Trainer Profile with id {}", id);
-        return trainer.get();
+        return trainer.orElse(null);
     }
 
     public void setValidator(Validator<Trainer> validator) {

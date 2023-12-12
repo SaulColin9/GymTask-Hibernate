@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.Optional;
 
 public class Validator<T> {
     private static final Logger logger = LoggerFactory.getLogger(Validator.class);
@@ -19,16 +18,16 @@ public class Validator<T> {
         this.tClass = tClass;
     }
 
-    public void validateEntityNotNull(int id, Optional<T> entity) {
-        if (entity.isEmpty()) {
+    public void validateEntityNotNull(int id, T entity) {
+        if (entity == null) {
             String errorMsg = String.format(NULL_ENTITY_ID_MSG, id, tClass.getSimpleName());
             logger.error(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
     }
 
-    public void validateEntityNotNull(String username, Optional<T> entity) {
-        if (entity.isEmpty()) {
+    public void validateEntityNotNull(String username, T entity) {
+        if (entity == null) {
             String errorMsg = String.format(NULL_ENTITY_USERNAME_MSG, username, tClass.getSimpleName());
             logger.error(errorMsg);
             throw new IllegalArgumentException(errorMsg);

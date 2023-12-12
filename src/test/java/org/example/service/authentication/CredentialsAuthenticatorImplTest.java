@@ -39,9 +39,7 @@ class CredentialsAuthenticatorImplTest {
         // act
 
         // assert
-        assertThatCode(() -> {
-            credentialsAuthenticator.authorize(credentials, createNewUser());
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> credentialsAuthenticator.authorize(credentials, createNewUser())).doesNotThrowAnyException();
     }
 
     @Test

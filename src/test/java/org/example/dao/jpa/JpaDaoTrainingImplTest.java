@@ -5,27 +5,23 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.assertj.core.internal.Predicates;
 import org.example.entitiesFactory.EntitiesFactory;
-import org.example.matchers.TraineeMatcher;
 import org.example.matchers.TrainingMatcher;
-import org.example.model.*;
+import org.example.model.Trainee;
+import org.example.model.Trainer;
+import org.example.model.Training;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class JpaDaoTrainingImplTest {
@@ -60,7 +56,7 @@ class JpaDaoTrainingImplTest {
         Optional<Training> actualResponse = jpaDaoTraining.get(id);
 
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(Training.class, 1);
     }
 

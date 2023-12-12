@@ -15,7 +15,7 @@ public class GymStorageImpl implements Storage, InitializingBean {
     private Map<Integer, TrainingType> trainingTypes;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         users = new HashMap<>();
         trainees = new HashMap<>();
         trainers = new HashMap<>();

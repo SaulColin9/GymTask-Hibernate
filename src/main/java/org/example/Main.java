@@ -1,7 +1,8 @@
 package org.example;
 
 import org.example.configuration.jpa.JpaBeanConfiguration;
-import org.example.facade.jpa.JpaGymFacadeImpl;
+import org.example.facade.GymFacadeImpl;
+//import org.example.facade.jpa.JpaGymFacadeImpl;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.User;
@@ -16,8 +17,7 @@ public class Main {
 
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(JpaBeanConfiguration.class);
-        JpaGymFacadeImpl jpaGymFacade = context.getBean(JpaGymFacadeImpl.class);
-
+        GymFacadeImpl jpaGymFacade = context.getBean(GymFacadeImpl.class);
 
 
         // Trainee methods from facade
@@ -25,13 +25,13 @@ public class Main {
         User traineeUser = newTrainee.getUser();
         Credentials traineeCredentials = new Credentials(traineeUser.getUsername(), traineeUser.getPassword());
         System.out.println(jpaGymFacade.getTrainee(traineeCredentials, newTrainee.getId()));
-        System.out.println(jpaGymFacade.getTraineeByUsername(traineeCredentials, traineeCredentials.getUsername()));
+        System.out.println(jpaGymFacade.getTraineeByUsername(traineeCredentials, traineeCredentials.username()));
 
         jpaGymFacade
                 .updateTrainee(traineeCredentials, newTrainee.getId(), "Alejandro",
                         "Colin", true, new Date(), "New Address");
 
-        traineeCredentials = new Credentials("Alejandro.Colin", traineeCredentials.getPassword());
+        traineeCredentials = new Credentials("Alejandro.Colin", traineeCredentials.password());
 
         jpaGymFacade.updateActiveTraineeStatus(traineeCredentials, newTrainee.getId(), false);
         jpaGymFacade.updateTraineePassword(traineeCredentials, newTrainee.getId(), "1234");
@@ -42,7 +42,7 @@ public class Main {
         Credentials trainerCredentials = new Credentials(trainerUser.getUsername(), trainerUser.getPassword());
 
         System.out.println(jpaGymFacade.getTrainer(trainerCredentials, newTrainer.getId()));
-        System.out.println(jpaGymFacade.getTrainerByUsername(trainerCredentials, trainerCredentials.getUsername()));
+        System.out.println(jpaGymFacade.getTrainerByUsername(trainerCredentials, trainerCredentials.username()));
 
         jpaGymFacade.updateTrainer(trainerCredentials, 1, "John", "Smith", true, 1);
         trainerCredentials = new Credentials("John.Smith", trainerUser.getPassword());

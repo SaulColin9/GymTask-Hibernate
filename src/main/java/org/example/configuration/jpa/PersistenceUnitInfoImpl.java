@@ -1,12 +1,10 @@
 package org.example.configuration.jpa;
 
-import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.SharedCacheMode;
 import jakarta.persistence.ValidationMode;
 import jakarta.persistence.spi.ClassTransformer;
 import jakarta.persistence.spi.PersistenceUnitInfo;
 import jakarta.persistence.spi.PersistenceUnitTransactionType;
-import org.example.model.User;
 
 import javax.sql.DataSource;
 import java.net.URL;

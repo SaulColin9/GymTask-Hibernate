@@ -6,10 +6,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-public class Trainee implements EntityModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Trainee extends BaseEntity {
     private Date dateOfBirth;
     private String address;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,16 +27,6 @@ public class Trainee implements EntityModel {
         this.user = user;
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public Trainee setId(int id) {
-        this.id = id;
-        return this;
-    }
 
     public User getUser() {
         return this.user;
@@ -61,7 +48,6 @@ public class Trainee implements EntityModel {
         this.address = address;
         return this;
     }
-
 
     public void setUser(User user) {
         this.user = user;

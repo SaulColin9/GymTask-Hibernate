@@ -1,16 +1,12 @@
 package org.example.model;
 
-import jakarta.persistence.*;
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
-import org.hibernate.annotations.Type;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
 import java.util.Objects;
 
 @Entity
-public class User implements EntityModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class User extends BaseEntity {
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)

@@ -65,7 +65,7 @@ public class DaoImplTrainingTypeTest {
         Optional<TrainingType> actualResponse = daoTrainingType.get(1);
 
         // assert
-        assertThat(actualResponse.get()).isEqualTo(storageEntities.get(1));
+        assertThat(actualResponse.orElse(null)).isEqualTo(storageEntities.get(1));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class DaoImplTrainingTypeTest {
         // act
         Optional<TrainingType> actualResponse = daoTrainingType.delete(1);
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         assertThat(storageEntities.get(1)).isNull();
     }
 

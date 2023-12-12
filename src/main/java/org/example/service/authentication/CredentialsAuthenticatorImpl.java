@@ -1,6 +1,7 @@
 package org.example.service.authentication;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import org.slf4j.Logger;
 import org.example.model.User;
@@ -38,9 +39,14 @@ public class CredentialsAuthenticatorImpl implements CredentialsAuthenticator {
 
     private Optional<User> getUserByCredentials(Credentials credentials) {
         Query query = entityManager.createQuery("FROM User WHERE username = :username AND password = :password");
-        query.setParameter("username", credentials.getUsername());
-        query.setParameter("password", credentials.getPassword());
-        return query.getResultList().stream().findFirst();
+        query.setParameter("username", credentials.username());
+        query.setParameter("password", credentials.password());
+
+        try {
+            return Optional.of((User) query.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     public void setEntityManager(EntityManager entityManager) {

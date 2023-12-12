@@ -17,7 +17,7 @@ public class JpaDaoTrainingTypeImpl extends JpaDaoImpl<TrainingType> {
 
     @Override
     public List<TrainingType> getAll() {
-        return getEntityManager().createQuery("FROM TrainingType").getResultList();
+        return getEntityManager().createQuery("FROM TrainingType", TrainingType.class).getResultList();
     }
 
     @Override

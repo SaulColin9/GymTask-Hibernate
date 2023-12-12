@@ -3,7 +3,6 @@ package org.example.dao.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
-import org.example.matchers.TraineeMatcher;
 import org.example.matchers.TrainingTypeMatcher;
 import org.example.model.Trainee;
 import org.example.model.TrainingType;
@@ -18,7 +17,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class JpaDaoTrainingTypeImplTest {
@@ -46,7 +44,7 @@ class JpaDaoTrainingTypeImplTest {
         Optional<TrainingType> actualResponse = jpaDaoTrainingType.get(id);
 
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(TrainingType.class, 1);
     }
 

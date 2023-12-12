@@ -1,12 +1,10 @@
 package org.example.dao.jpa;
 
-import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.example.model.Trainee;
-import org.example.model.Trainer;
 import org.example.model.Training;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
 
     @Override
     public List<Training> getAll() {
-        return getEntityManager().createQuery("FROM Training").getResultList();
+        return getEntityManager().createQuery("FROM Training", Training.class).getResultList();
     }
 
     @Override
@@ -59,7 +57,7 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
 
 
         criteriaQuery.select(root).where(criteriaBuilder.and(equalsUsername, equalsTrainingName, equalsTrainingDuration));
-        Query query = getEntityManager().createQuery(criteriaQuery);
+        TypedQuery<Training> query = getEntityManager().createQuery(criteriaQuery);
 
         return query.getResultList();
     }
@@ -79,7 +77,7 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
 
 
         criteriaQuery.select(root).where(criteriaBuilder.and(equalsUsername, equalsTrainingName, equalsTrainingDuration));
-        Query query = getEntityManager().createQuery(criteriaQuery);
+        TypedQuery<Training> query = getEntityManager().createQuery(criteriaQuery);
 
         return query.getResultList();
     }

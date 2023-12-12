@@ -68,7 +68,7 @@ class DaoImplUserTest {
         Optional<User> actualResponse = daoUser.get(1);
 
         // assert
-        assertThat(actualResponse.get()).isEqualTo(users.get(1));
+        assertThat(actualResponse.orElse(null)).isEqualTo(users.get(1));
 
     }
 
@@ -148,7 +148,7 @@ class DaoImplUserTest {
         // act
         Optional<User> actualResponse = daoUser.delete(1);
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         assertThat(users.get(1)).isNull();
     }
 

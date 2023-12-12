@@ -5,29 +5,17 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class TrainingType implements EntityModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String trainingTypeName;
+public class TrainingType extends BaseEntity {
+    private String trainingTypeName;
 
     public TrainingType() {
-
     }
 
     public TrainingType(String trainingTypeName) {
         this.trainingTypeName = trainingTypeName;
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
 
-    public TrainingType setId(int id) {
-        this.id = id;
-        return this;
-    }
 
     public String getTrainingTypeName() {
         return trainingTypeName;

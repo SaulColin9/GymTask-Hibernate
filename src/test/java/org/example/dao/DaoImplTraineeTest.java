@@ -24,6 +24,7 @@ public class DaoImplTraineeTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
     @Test
     void givenEmptyStorageEntities_NextIdShouldBeOne() {
         // arrange
@@ -65,7 +66,7 @@ public class DaoImplTraineeTest {
         Optional<Trainee> actualResponse = traineeDao.get(1);
 
         // assert
-        assertThat(actualResponse.get()).isEqualTo(storageEntities.get(1));
+        assertThat(actualResponse.orElse(null)).isEqualTo(storageEntities.get(1));
     }
 
     @Test
@@ -81,6 +82,7 @@ public class DaoImplTraineeTest {
         // assert
         assertThat(actualResponse).isEqualTo(new ArrayList<>(storageEntities.values()));
     }
+
     @Test
     void givenATrainee_TraineeShouldBeSaved() {
         // arrange
@@ -138,7 +140,7 @@ public class DaoImplTraineeTest {
         // act
         Optional<Trainee> actualResponse = traineeDao.delete(1);
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         assertThat(storageEntities.get(1)).isNull();
     }
 

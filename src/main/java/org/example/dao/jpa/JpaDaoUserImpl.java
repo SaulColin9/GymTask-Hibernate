@@ -1,6 +1,5 @@
 package org.example.dao.jpa;
 
-import org.example.model.TrainingType;
 import org.example.model.User;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class JpaDaoUserImpl extends JpaDaoImpl<User> {
 
     @Override
     public List<User> getAll() {
-        return getEntityManager().createQuery("FROM User").getResultList();
+        return getEntityManager().createQuery("FROM User", User.class).getResultList();
     }
 
     @Override

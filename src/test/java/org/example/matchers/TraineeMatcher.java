@@ -8,7 +8,7 @@ public class TraineeMatcher implements ArgumentMatcher<Trainee> {
         this.left = left;
     }
 
-    private Trainee left;
+    private final Trainee left;
 
     @Override
     public boolean matches(Trainee right) {

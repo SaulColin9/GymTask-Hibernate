@@ -5,11 +5,8 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import org.example.entitiesFactory.EntitiesFactory;
-import org.example.matchers.TraineeMatcher;
 import org.example.matchers.TrainerMatcher;
-import org.example.model.Trainee;
 import org.example.model.Trainer;
-import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +18,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class JpaDaoTrainerImplTest {
@@ -51,7 +47,7 @@ class JpaDaoTrainerImplTest {
         Optional<Trainer> actualResponse = jpaDaoTrainer.get(id);
 
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(Trainer.class, 1);
     }
 
@@ -129,7 +125,7 @@ class JpaDaoTrainerImplTest {
         // act
         Optional<Trainer> actualResponse = jpaDaoTrainer.getByUsername(username);
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainer t WHERE t.user.username = :username");
         verify(query, times(1)).getSingleResult();
     }

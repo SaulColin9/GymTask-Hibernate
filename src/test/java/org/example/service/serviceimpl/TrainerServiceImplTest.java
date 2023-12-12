@@ -37,23 +37,21 @@ class TrainerServiceImplTest {
     private UserUtils userUtils;
     @Mock
     private Validator<Trainer> validator;
-    private User user;
-    private Trainer trainerTest;
 
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         entitiesFactory = new EntitiesFactory();
-        user = new User("first", "last");
+        User user = new User("first", "last");
         user.setId(1);
 
-        trainerTest = new Trainer(new TrainingType(), user);
+        Trainer trainerTest = new Trainer(new TrainingType(), user);
         trainerTest.setUser(user);
         trainerTest.setId(1);
 
-        when(userDao.get(anyInt())).thenReturn(Optional.ofNullable(user));
-        when(trainerDao.get(anyInt())).thenReturn(Optional.ofNullable(trainerTest));
+        when(userDao.get(anyInt())).thenReturn(Optional.of(user));
+        when(trainerDao.get(anyInt())).thenReturn(Optional.of(trainerTest));
 
     }
 
@@ -132,7 +130,7 @@ class TrainerServiceImplTest {
     @Test
     void givenNonExistingTrainerId_ThrowsException() {
         // arrange
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(trainerDao.get(77)).thenReturn(Optional.empty());
         // assert
         assertThatThrownBy(() -> trainerService.selectTrainerProfile(77)).
@@ -143,7 +141,7 @@ class TrainerServiceImplTest {
     @Test
     void givenNonExistingTrainerIdUpdate_ThrowsException() {
         // arrange
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(trainerDao.get(77)).thenReturn(Optional.empty());
         // assert
         assertThatThrownBy(

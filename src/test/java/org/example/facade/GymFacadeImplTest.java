@@ -1,7 +1,7 @@
 package org.example.facade;
 
 import org.example.entitiesFactory.EntitiesFactory;
-import org.example.facade.inmemory.GymFacadeImpl;
+import org.example.facade.inmemory.SimpleGymFacadeImpl;
 import org.example.model.*;
 import org.example.service.serviceimpl.TraineeServiceImpl;
 import org.example.service.serviceimpl.TrainerServiceImpl;
@@ -24,7 +24,7 @@ class GymFacadeImplTest {
 
     EntitiesFactory entitiesFactory;
     @InjectMocks
-    private GymFacadeImpl gymFacade;
+    private SimpleGymFacadeImpl gymFacade;
     @Mock
     private TrainingServiceImpl trainingService;
     @Mock

@@ -370,16 +370,14 @@ class JpaGymFacadeImplTest {
     void givenValidTraineeUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = null;
-        Double trainingDuration = null;
-        when(trainingService.selectTraineeTrainingsByUsername(username, trainingName, trainingDuration))
+        when(trainingService.selectTraineeTrainingsByUsername(username, null, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
         List<Training> actualResponse = jpaGymFacade.getTraineeTrainings(username);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTraineeTrainingsByUsername(username, null, null);
     }
 
     @Test
@@ -387,47 +385,43 @@ class JpaGymFacadeImplTest {
         // arrange
         String username = "John.Doe";
         String trainingName = "Elite";
-        Double trainingDuration = null;
-        when(trainingService.selectTraineeTrainingsByUsername(username, trainingName, trainingDuration))
+        when(trainingService.selectTraineeTrainingsByUsername(username, trainingName, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
         List<Training> actualResponse = jpaGymFacade.getTraineeTrainingsByTrainingName(username, trainingName);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTraineeTrainingsByUsername(username, trainingName, null);
     }
 
     @Test
     void givenValidTraineeUsername_And_TrainingDuration_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = null;
         Double trainingDuration = 1.0;
-        when(trainingService.selectTraineeTrainingsByUsername(username, trainingName, trainingDuration))
+        when(trainingService.selectTraineeTrainingsByUsername(username, null, trainingDuration))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
         List<Training> actualResponse = jpaGymFacade.getTraineeTrainingsByTrainingDuration(username, trainingDuration);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTraineeTrainingsByUsername(username, null, trainingDuration);
     }
 
     @Test
     void givenValidTrainerUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = null;
-        Double trainingDuration = null;
-        when(trainingService.selectTrainerTrainingsByUsername(username, trainingName, trainingDuration))
+        when(trainingService.selectTrainerTrainingsByUsername(username, null, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
         List<Training> actualResponse = jpaGymFacade.getTrainerTrainingsByUsername(username);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTrainerTrainingsByUsername(username, null, null);
     }
 
     @Test
@@ -435,31 +429,29 @@ class JpaGymFacadeImplTest {
         // arrange
         String username = "John.Doe";
         String trainingName = "Elite";
-        Double trainingDuration = null;
-        when(trainingService.selectTrainerTrainingsByUsername(username, trainingName, trainingDuration))
+        when(trainingService.selectTrainerTrainingsByUsername(username, trainingName, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
         List<Training> actualResponse = jpaGymFacade.getTrainerTrainingsByTrainingName(username, trainingName);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTrainerTrainingsByUsername(username, trainingName, null);
     }
 
     @Test
     void givenValidTrainerUsername_And_TrainingDuration_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = null;
         Double trainingDuration = 1.0;
-        when(trainingService.selectTrainerTrainingsByUsername(username, trainingName, trainingDuration))
+        when(trainingService.selectTrainerTrainingsByUsername(username, null, trainingDuration))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
         List<Training> actualResponse = jpaGymFacade.getTrainerTrainingsByTrainingDuration(username, trainingDuration);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTrainerTrainingsByUsername(username, null, trainingDuration);
     }
 
     @Test

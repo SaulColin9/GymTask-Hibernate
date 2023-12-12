@@ -7,8 +7,9 @@ import jakarta.persistence.spi.PersistenceUnitInfo;
 import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.example.dao.Dao;
 import org.example.dao.jpa.*;
+import org.example.facade.GymFacadeImpl;
 import org.example.facade.jpa.JpaGymFacade;
-import org.example.facade.jpa.JpaGymFacadeImpl;
+//import org.example.facade.jpa.JpaGymFacadeImpl;
 import org.example.model.*;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.authentication.CredentialsAuthenticatorImpl;
@@ -79,7 +80,7 @@ public class JpaBeanConfiguration {
         Map<String, String> props = new HashMap<>();
         props.put("hibernate.show_sql", "true");
         props.put("hibernate.hbm2ddl.import_files", "trainingTypes.sql");
-        props.put("hibernate.hbm2ddl.auto", "create");
+        props.put("hibernate.hbm2ddl.auto", "create-drop");
         return props;
     }
 
@@ -130,9 +131,9 @@ public class JpaBeanConfiguration {
     }
 
     @Bean
-    public JpaGymFacade gymFacade(@Autowired JpaTraineeService traineeService, @Autowired JpaTrainerService trainerService,
-                                  @Autowired JpaTrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {
-        JpaGymFacadeImpl jpaGymFacade = new JpaGymFacadeImpl(traineeService, trainerService, trainingService);
+    public GymFacadeImpl gymFacade(@Autowired JpaTraineeService traineeService, @Autowired JpaTrainerService trainerService,
+                                   @Autowired JpaTrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {
+        GymFacadeImpl jpaGymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
         jpaGymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
         return jpaGymFacade;
     }

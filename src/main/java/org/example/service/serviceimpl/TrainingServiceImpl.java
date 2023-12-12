@@ -51,7 +51,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training selectTrainingProfile(int id) {
         Optional<Training> training = trainingDao.get(id);
-        validator.validateEntityNotNull(id, training);
+        validator.validateEntityNotNull(id, training.orElse(null));
 
         logger.info("Selecting Training Profile with id " + id);
         return training.get();

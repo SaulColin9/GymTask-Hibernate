@@ -5,20 +5,17 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Training implements EntityModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String trainingName;
-    Date trainingDate;
-    double trainingDuration;
+public class Training extends BaseEntity {
+    private String trainingName;
+    private Date trainingDate;
+    private double trainingDuration;
     @ManyToOne
-    Trainee trainee;
+    private Trainee trainee;
     @ManyToOne
-    Trainer trainer;
+    private Trainer trainer;
     @ManyToOne
     @JoinColumn(name = "trainingType_id", referencedColumnName = "id")
-    TrainingType trainingType;
+    private TrainingType trainingType;
 
     public Training() {
     }
@@ -32,15 +29,7 @@ public class Training implements EntityModel {
         this.trainingDuration = trainingDuration;
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
 
-    public Training setId(int id) {
-        this.id = id;
-        return this;
-    }
 
     public String getTrainingName() {
         return trainingName;

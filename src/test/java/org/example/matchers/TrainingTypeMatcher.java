@@ -4,7 +4,7 @@ import org.example.model.TrainingType;
 import org.mockito.ArgumentMatcher;
 
 public class TrainingTypeMatcher implements ArgumentMatcher<TrainingType> {
-    private TrainingType left;
+    private final TrainingType left;
 
     public TrainingTypeMatcher(TrainingType left) {
         this.left = left;

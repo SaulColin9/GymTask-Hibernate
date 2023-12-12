@@ -38,42 +38,48 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public boolean updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
-        validator.validateEntityNotNull(id, traineeToUpdate);
-        Trainee foundTrainee = traineeToUpdate.get();
+        validator.validateEntityNotNull(id, traineeToUpdate.orElse(null));
+
+        Trainee foundTrainee = traineeToUpdate.orElse(null);
+        if (traineeToUpdate.isPresent()) {
+            int userId = foundTrainee.getUser().getId();
+            User updatedUser = userUtils.updateUser(userId,
+                    firstName == null ? foundTrainee.getUser().getFirstName() : firstName,
+                    lastName == null ? foundTrainee.getUser().getLastName() : lastName,
+                    isActive
+            );
+            foundTrainee.setUser(updatedUser);
+
+            foundTrainee.setDateOfBirth(dateOfBirth == null ? foundTrainee.getDateOfBirth() : dateOfBirth);
+            foundTrainee.setAddress(address == null ? foundTrainee.getAddress() : address);
+
+            logger.info("Updating Trainee Profile with id {}", id);
+        }
 
 
-        int userId = foundTrainee.getUser().getId();
-        User updatedUser = userUtils.updateUser(userId,
-                firstName == null ? foundTrainee.getUser().getFirstName() : firstName,
-                lastName == null ? foundTrainee.getUser().getLastName() : lastName,
-                isActive
-        );
-        foundTrainee.setUser(updatedUser);
-
-        foundTrainee.setDateOfBirth(dateOfBirth == null ? foundTrainee.getDateOfBirth() : dateOfBirth);
-        foundTrainee.setAddress(address == null ? foundTrainee.getAddress() : address);
-
-        logger.info("Updating Trainee Profile with id {}", id);
         return traineeDao.update(id, foundTrainee) != null;
     }
 
     @Override
     public boolean deleteTraineeProfile(int id) {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
-        validator.validateEntityNotNull(id, traineeToDelete);
+        validator.validateEntityNotNull(id, traineeToDelete.orElse(null));
 
-        logger.info("Deleting Trainee Profile with id " + id);
+
         Optional<Trainee> deletedTrainee = traineeDao.delete(id);
-        userUtils.deleteUser(traineeToDelete.get().getUser().getId());
+        if (traineeToDelete.isPresent()) {
+            userUtils.deleteUser(traineeToDelete.get().getUser().getId());
+            logger.info("Deleting Trainee Profile with id " + id);
+        }
         return deletedTrainee.isPresent();
     }
 
     @Override
     public Trainee selectTraineeProfile(int id) {
         Optional<Trainee> trainee = traineeDao.get(id);
-        validator.validateEntityNotNull(id, trainee);
+        validator.validateEntityNotNull(id, trainee.orElse(null));
         logger.info("Selecting Trainee Profile with id " + id);
-        return trainee.get();
+        return trainee.orElse(null);
     }
 
 

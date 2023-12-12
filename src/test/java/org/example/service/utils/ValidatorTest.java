@@ -3,17 +3,14 @@ package org.example.service.utils;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import static org.assertj.core.api.Assertions.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ValidatorTest {
 
@@ -32,9 +29,7 @@ class ValidatorTest {
         Optional<User> user = Optional.of(createNewUser());
 
         // assert
-        assertThatCode(() -> {
-            validator.validateEntityNotNull(1, user);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> validator.validateEntityNotNull(1, user)).doesNotThrowAnyException();
     }
 
     @Test
@@ -50,9 +45,7 @@ class ValidatorTest {
         Optional<User> user = Optional.of(createNewUser());
 
         // assert
-        assertThatCode(() -> {
-            validator.validateEntityNotNull("John.Doe", user);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> validator.validateEntityNotNull("John.Doe", user)).doesNotThrowAnyException();
     }
 
     @Test
@@ -95,11 +88,12 @@ class ValidatorTest {
     }
 
     @Test
-    void givenInvalidNumField_ExceptionThrown(){
-        assertThatThrownBy(()->validator.validatePositiveField("specialization", -1))
+    void givenInvalidNumField_ExceptionThrown() {
+        assertThatThrownBy(() -> validator.validatePositiveField("specialization", -1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("specialization argument cannot be lower or equal to zero");
     }
+
     private User createNewUser() {
         User newUser = new User();
 

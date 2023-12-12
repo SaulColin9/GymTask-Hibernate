@@ -83,7 +83,7 @@ class UserUtilsImplTest {
         Optional<User> userDeleted = userUtils.deleteUser(1);
 
         // assert
-        assertThat(userDeleted.get()).isEqualTo(userToBeDeleted);
+        assertThat(userDeleted.orElse(null)).isEqualTo(userToBeDeleted);
         verify(userDao, times(1)).delete(1);
     }
 

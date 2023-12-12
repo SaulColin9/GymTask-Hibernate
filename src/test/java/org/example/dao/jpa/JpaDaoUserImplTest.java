@@ -3,9 +3,6 @@ package org.example.dao.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
-import org.example.matchers.TrainingTypeMatcher;
-import org.example.model.Trainee;
-import org.example.model.TrainingType;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +15,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class JpaDaoUserImplTest {
@@ -46,7 +42,7 @@ class JpaDaoUserImplTest {
         Optional<User> actualResponse = jpaDaoUser.get(id);
 
         // assert
-        assertThat(actualResponse.get()).isNotNull();
+        assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(User.class, 1);
     }
 

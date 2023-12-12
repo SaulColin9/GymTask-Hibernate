@@ -18,40 +18,42 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
 
         Optional<Trainer> foundTrainer = ((JpaDaoTrainerImpl) trainerDao).getByUsername(username);
 
-        validator.validateEntityNotNull(username, foundTrainer);
+        validator.validateEntityNotNull(username, foundTrainer.orElse(null));
         logger.info("Selecting Trainer Profile with username {}", username);
 
-        return foundTrainer.get();
+        return foundTrainer.orElse(null);
     }
 
     @Override
     public boolean updateTrainerPassword(int id, String newPassword) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
-        validator.validateEntityNotNull(id, trainerToUpdate);
+        validator.validateEntityNotNull(id, trainerToUpdate.orElse(null));
 
-        Trainer foundTrainer = trainerToUpdate.get();
-        foundTrainer.getUser().setPassword(newPassword);
-
-        logger.info("Updating Trainer Password with id {}", id);
+        Trainer foundTrainer = trainerToUpdate.orElse(null);
+        if (trainerToUpdate.isPresent()) {
+            foundTrainer.getUser().setPassword(newPassword);
+            logger.info("Updating Trainer Password with id {}", id);
+        }
         return trainerDao.update(id, foundTrainer) != null;
     }
 
     @Override
     public boolean updateTrainerTraineeStatus(int id, boolean isActive) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
-        validator.validateEntityNotNull(id, trainerToUpdate);
+        validator.validateEntityNotNull(id, trainerToUpdate.orElse(null));
 
-        Trainer foundTrainer = trainerToUpdate.get();
-        foundTrainer.getUser().setIsActive(false);
-
-        logger.info("Updating status for Trainer with id {} to {}", id, isActive);
+        Trainer foundTrainer = trainerToUpdate.orElse(null);
+        if (trainerToUpdate.isPresent()) {
+            foundTrainer.getUser().setIsActive(false);
+            logger.info("Updating status for Trainer with id {} to {}", id, isActive);
+        }
         return trainerDao.update(id, foundTrainer) != null;
     }
 
     @Override
     public List<Trainer> updateTraineeTrainersList(int traineeId, int trainerId) {
         Optional<Trainer> foundTrainer = trainerDao.get(trainerId);
-        validator.validateEntityNotNull(trainerId, foundTrainer);
+        validator.validateEntityNotNull(trainerId, foundTrainer.orElse(null));
 
         logger.info("Updating trainee with id {} trainers list with id {}", traineeId, trainerId);
         return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(traineeId, foundTrainer.get());

@@ -1,7 +1,7 @@
 package org.example.service.serviceimpl;
 
-import org.example.matchers.TraineeMatcher;
 import org.example.dao.Dao;
+import org.example.matchers.TraineeMatcher;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.example.service.utils.UserUtils;
@@ -12,8 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,8 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 
 class TraineeServiceImplTest {

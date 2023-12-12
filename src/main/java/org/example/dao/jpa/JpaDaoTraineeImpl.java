@@ -2,6 +2,7 @@ package org.example.dao.jpa;
 
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 
@@ -23,8 +24,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
 
     @Override
     public List<Trainee> getAll() {
-        Query query = getEntityManager().createQuery("FROM Trainee");
-        return query.getResultList();
+        return getEntityManager().createQuery("FROM Trainee", Trainee.class).getResultList();
     }
 
     @Override
@@ -83,10 +83,11 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
     }
 
     public List<Trainer> getNotAssignedOnTraineeTrainersList(Trainee trainee) {
-        Query query = getEntityManager().createQuery(
+        TypedQuery<Trainer> query = getEntityManager().createQuery(
                 "FROM Trainer trainer LEFT JOIN Training training" +
                         " ON trainer.id = training.trainer.id " +
-                        "WHERE trainer.user.isActive = true AND (training.trainee.id != :trainee_id OR training.trainee.id IS NULL)");
+                        "WHERE trainer.user.isActive = true AND (training.trainee.id != :trainee_id OR training.trainee.id IS NULL)",
+                Trainer.class);
         query.setParameter(TRAINEE_ID_PARAM, trainee.getId());
 
         return query.getResultList();

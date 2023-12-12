@@ -25,8 +25,7 @@ class GymStorageImplTest {
     @Test
     void givenInvalidFilePath_ShouldThrowException() {
         // arrange
-        String filePath = null;
-        gymStorage.setFilePath(filePath);
+        gymStorage.setFilePath(null);
         assertThatThrownBy(() -> gymStorage.afterPropertiesSet()).isInstanceOf(Exception.class);
     }
 
