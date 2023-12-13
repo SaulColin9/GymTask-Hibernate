@@ -1,12 +1,11 @@
 package org.example.dao.jpa;
 
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.example.model.Training;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,43 +43,46 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
         return foundTraining;
     }
 
-    public List<Training> getTrainingsByTraineeUsername(String username, String trainingName, Double trainingDuration) {
+    public List<Training> getTrainingsByTraineeUsername(String username, Integer trainingTypeId) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Training> criteriaQuery = criteriaBuilder.createQuery(Training.class);
         Root<Training> root = criteriaQuery.from(Training.class);
+        List<Predicate> predicates = new ArrayList<>();
 
         Predicate equalsUsername = criteriaBuilder.equal(root.get("trainee").get("user").get("username"), username);
-        Predicate equalsTrainingName = trainingName == null ? criteriaBuilder.and() :
-                criteriaBuilder.equal(root.get("trainingName"), trainingName);
-        Predicate equalsTrainingDuration = trainingDuration == null ? criteriaBuilder.and() :
-                criteriaBuilder.equal(root.get("trainingDuration"), trainingDuration);
+        predicates.add(equalsUsername);
 
+        if (trainingTypeId != null) {
+            Predicate equalsTrainingType = criteriaBuilder.equal(root.get("trainingType").get("id"), trainingTypeId);
+            predicates.add(equalsTrainingType);
+        }
 
-        criteriaQuery.select(root).where(criteriaBuilder.and(equalsUsername, equalsTrainingName, equalsTrainingDuration));
+        criteriaQuery.select(root).where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
         TypedQuery<Training> query = getEntityManager().createQuery(criteriaQuery);
 
         return query.getResultList();
     }
 
-    public List<Training> getTrainingsByTrainerUsername(String username, String trainingName, Double trainingDuration) {
+    public List<Training> getTrainingsByTrainerUsername(String username, Boolean isTrainingCompleted) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Training> criteriaQuery = criteriaBuilder.createQuery(Training.class);
         Root<Training> root = criteriaQuery.from(Training.class);
+        List<Predicate> predicates = new ArrayList<>();
 
         Predicate equalsUsername = criteriaBuilder.equal(root.get("trainer").get("user").get("username"), username);
+        predicates.add(equalsUsername);
 
-        Predicate equalsTrainingName = trainingName == null ? criteriaBuilder.and() :
-                criteriaBuilder.equal(root.get("trainingName"), trainingName);
+        if (isTrainingCompleted != null) {
+            Predicate isCompletedPredicate =
+                    isTrainingCompleted ? criteriaBuilder.lessThan(root.get("trainingDate"), new Date()) :
+                            criteriaBuilder.greaterThanOrEqualTo(root.get("trainingDate"), new Date());
+            predicates.add(isCompletedPredicate);
+        }
 
-        Predicate equalsTrainingDuration = trainingDuration == null ? criteriaBuilder.and() :
-                criteriaBuilder.equal(root.get("trainingDuration"), trainingDuration);
-
-
-        criteriaQuery.select(root).where(criteriaBuilder.and(equalsUsername, equalsTrainingName, equalsTrainingDuration));
+        criteriaQuery.select(root).where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
         TypedQuery<Training> query = getEntityManager().createQuery(criteriaQuery);
 
         return query.getResultList();
     }
-
 
 }

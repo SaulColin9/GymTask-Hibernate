@@ -1,23 +1,28 @@
 package org.example;
 
-import org.example.configuration.jpa.JpaBeanConfiguration;
-import org.example.facade.GymFacadeImpl;
-//import org.example.facade.jpa.JpaGymFacadeImpl;
+import org.example.configuration.BeanConfiguration;
+import org.example.facade.impl.GymFacadeImpl;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.User;
 import org.example.service.authentication.Credentials;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(JpaBeanConfiguration.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.getEnvironment().setActiveProfiles("jpa");
+        context.register(BeanConfiguration.class);
+        context.refresh();
         GymFacadeImpl jpaGymFacade = context.getBean(GymFacadeImpl.class);
+
+//        Trainee newTrainee = jpaGymFacade.addTrainee("Manuel", "Lopez", new Date(), "Address");
+//        System.out.println(jpaGymFacade.getTrainee(new Credentials(newTrainee.getUser().getUsername(), newTrainee.getUser().getPassword()), newTrainee.getId()));
 
 
         // Trainee methods from facade
@@ -51,12 +56,29 @@ public class Main {
         jpaGymFacade.updateTrainerPassword(trainerCredentials, newTrainer.getId(), "1234");
         jpaGymFacade.updateTraineePassword(new Credentials("Alejandro.Colin", "1234"), newTrainee.getId(), "password");
 
+        Date currentDate = new Date();
+
+        // Create a calendar instance and set it to the current date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        // Subtract one day from the current date
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+        // Get the Date object for yesterday
+        Date yesterday = calendar.getTime();
+
+        // Get the long value for yesterday
+        long yesterdayInMillis = yesterday.getTime();
+
+        System.out.println("Yesterday in milliseconds: " + yesterdayInMillis);
         // Training methods from facade
         int newTrainingId = jpaGymFacade
-                .addTraining(newTrainee.getId(), 1, "New Training", 1, new Date(), 2.0);
+                .addTraining(newTrainee.getId(), 1, "New Training", 1, new Date(yesterdayInMillis), 2.0);
         System.out.println(jpaGymFacade.getTraining(newTrainingId));
-        System.out.println(jpaGymFacade.getTraineeTrainings("Alejandro.Colin"));
+//        System.out.println(jpaGymFacade.getTraineeTrainings("Alejandro.Colin"));
         System.out.println(jpaGymFacade.getTrainerTrainingsByUsername("John.Smith"));
+        System.out.println(jpaGymFacade.getTrainerTrainingsByUsernameAndTrainingCompleteness("John.Smith", false));
 
 
     }

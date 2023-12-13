@@ -7,12 +7,10 @@ import jakarta.persistence.spi.PersistenceUnitInfo;
 import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.example.dao.Dao;
 import org.example.dao.jpa.*;
-import org.example.facade.GymFacadeImpl;
-import org.example.facade.jpa.JpaGymFacade;
-//import org.example.facade.jpa.JpaGymFacadeImpl;
+import org.example.facade.impl.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.authentication.CredentialsAuthenticator;
-import org.example.service.authentication.CredentialsAuthenticatorImpl;
+import org.example.service.authentication.JpaCredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.*;
 import org.example.service.utils.*;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -20,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
@@ -29,6 +28,7 @@ import java.util.Map;
 
 @Configuration
 @PropertySource(value = "storage.properties")
+@Profile("jpa")
 public class JpaBeanConfiguration {
     @Value("${entities.jpa.source}")
     String url;
@@ -56,7 +56,7 @@ public class JpaBeanConfiguration {
 
     @Bean
     CredentialsAuthenticator credentialsAuthenticator(@Autowired EntityManager entityManager) {
-        CredentialsAuthenticatorImpl credentialsAuthenticator = new CredentialsAuthenticatorImpl();
+        JpaCredentialsAuthenticator credentialsAuthenticator = new JpaCredentialsAuthenticator();
         credentialsAuthenticator.setEntityManager(entityManager);
         return credentialsAuthenticator;
     }
@@ -130,13 +130,13 @@ public class JpaBeanConfiguration {
         return jpaDaoTrainingType;
     }
 
-    @Bean
-    public GymFacadeImpl gymFacade(@Autowired JpaTraineeService traineeService, @Autowired JpaTrainerService trainerService,
-                                   @Autowired JpaTrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {
-        GymFacadeImpl jpaGymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
-        jpaGymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
-        return jpaGymFacade;
-    }
+//    @Bean
+//    public GymFacadeImpl gymFacade(@Autowired JpaTraineeService traineeService, @Autowired JpaTrainerService trainerService,
+//                                   @Autowired JpaTrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {
+//        GymFacadeImpl jpaGymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
+//        jpaGymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
+//        return jpaGymFacade;
+//    }
 
     @Bean
     public JpaTrainingService trainingService(@Autowired Dao<Trainee> traineeDao,

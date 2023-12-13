@@ -1,4 +1,4 @@
-package org.example.facade.inmemory;
+package org.example.facade;
 
 import org.example.model.Trainee;
 import org.example.model.Trainer;

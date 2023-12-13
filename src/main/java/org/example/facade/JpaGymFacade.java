@@ -1,4 +1,4 @@
-package org.example.facade.jpa;
+package org.example.facade;
 
 import org.example.model.Trainee;
 import org.example.model.Trainer;
@@ -22,17 +22,14 @@ public interface JpaGymFacade {
 
     boolean updateActiveTrainerStatus(Credentials credentials, int id, boolean isActive);
 
-    List<Training> getTraineeTrainings(String username);
+    List<Training> getTraineeTrainingsByUsername(String username);
 
-    List<Training> getTraineeTrainingsByTrainingName(String username, String trainingName);
-
-    List<Training> getTraineeTrainingsByTrainingDuration(String username, Double trainingDuration);
+    List<Training> getTraineeTrainingsByUsernameAndTrainingType(String username, Integer trainingTypeId);
 
     List<Training> getTrainerTrainingsByUsername(String username);
 
-    List<Training> getTrainerTrainingsByTrainingName(String username, String trainingName);
+    List<Training> getTrainerTrainingsByUsernameAndTrainingCompleteness(String username, Boolean isCompleted);
 
-    List<Training> getTrainerTrainingsByTrainingDuration(String username, Double trainingDuration);
 
     List<Trainer> updateTraineeTrainersList(Credentials credentials, int traineeId, int trainerId);
 

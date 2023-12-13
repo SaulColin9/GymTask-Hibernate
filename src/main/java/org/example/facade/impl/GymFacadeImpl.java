@@ -1,7 +1,7 @@
-package org.example.facade;
+package org.example.facade.impl;
 
-import org.example.facade.inmemory.SimpleGymFacade;
-import org.example.facade.jpa.JpaGymFacade;
+import org.example.facade.JpaGymFacade;
+import org.example.facade.SimpleGymFacade;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.Training;
@@ -25,9 +25,9 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     private final TrainingService trainingService;
     private CredentialsAuthenticator credentialsAuthenticator;
 
-    public GymFacadeImpl(JpaTraineeService traineeService,
-                         JpaTrainerService trainerService,
-                         JpaTrainingService trainingService) {
+    public GymFacadeImpl(TraineeService traineeService,
+                         TrainerService trainerService,
+                         TrainingService trainingService) {
         this.traineeService = traineeService;
         this.trainerService = trainerService;
         this.trainingService = trainingService;
@@ -142,41 +142,33 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     }
 
     @Override
-    public List<Training> getTraineeTrainings(String username) {
-        return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, null, null);
+    public List<Training> getTraineeTrainingsByUsername(String username) {
+        return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, null);
     }
 
     @Override
-    public List<Training> getTraineeTrainingsByTrainingName(String username, String trainingName) {
-        return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, trainingName, null);
+    public List<Training> getTraineeTrainingsByUsernameAndTrainingType(String username, Integer trainingTypeId) {
+        return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, trainingTypeId);
     }
 
-    @Override
-    public List<Training> getTraineeTrainingsByTrainingDuration(String username, Double trainingDuration) {
-        return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, null, trainingDuration);
-    }
 
     @Override
     public List<Training> getTrainerTrainingsByUsername(String username) {
-        return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, null, null);
+        return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, null);
     }
 
     @Override
-    public List<Training> getTrainerTrainingsByTrainingName(String username, String trainingName) {
-        return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, trainingName, null);
+    public List<Training> getTrainerTrainingsByUsernameAndTrainingCompleteness(String username, Boolean isCompleted) {
+        return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, isCompleted);
     }
 
-    @Override
-    public List<Training> getTrainerTrainingsByTrainingDuration(String username, Double trainingDuration) {
-        return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, null, trainingDuration);
-    }
 
     @Override
     public List<Trainer> updateTraineeTrainersList(Credentials credentials, int traineeId, int trainerId) {
         Trainee trainee = traineeService.selectTraineeProfile(traineeId);
         executeAuth(credentials, trainee.getUser());
 
-        return ((JpaTrainerService)trainerService).updateTraineeTrainersList(traineeId, trainerId);
+        return ((JpaTrainerService) trainerService).updateTraineeTrainersList(traineeId, trainerId);
     }
 
     @Override

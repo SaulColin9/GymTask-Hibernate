@@ -23,7 +23,7 @@ class CredentialsAuthenticatorImplTest {
     @Mock
     Query query;
     @InjectMocks
-    CredentialsAuthenticatorImpl credentialsAuthenticator;
+    AbstractCredentialsAuthenticator credentialsAuthenticator;
 
     @BeforeEach
     void setUp() {

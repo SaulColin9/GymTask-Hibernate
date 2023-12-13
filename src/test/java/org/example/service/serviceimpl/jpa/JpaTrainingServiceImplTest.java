@@ -35,17 +35,16 @@ class JpaTrainingServiceImplTest {
     void givenValidRequest_TraineeTrainingsShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = "Elite";
-        Double trainingDuration = 1.0;
+        Integer trainingTypeId = 1;
 
-        when(daoTraining.getTrainingsByTraineeUsername(username, trainingName, trainingDuration))
+        when(daoTraining.getTrainingsByTraineeUsername(username, trainingTypeId))
                 .thenReturn(List.of(createNewTraining()));
         // act
         List<Training> actualResponse = jpaTrainingService
-                .selectTraineeTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTraineeTrainingsByUsername(username, trainingTypeId);
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(daoTraining, times(1)).getTrainingsByTraineeUsername(username, trainingName, trainingDuration);
+        verify(daoTraining, times(1)).getTrainingsByTraineeUsername(username, trainingTypeId);
 
     }
 
@@ -53,17 +52,16 @@ class JpaTrainingServiceImplTest {
     void givenValidRequest_TrainerTrainingsShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = "Elite";
-        Double trainingDuration = 1.0;
+        Boolean isCompleted = true;
 
-        when(daoTraining.getTrainingsByTrainerUsername(username, trainingName, trainingDuration))
+        when(daoTraining.getTrainingsByTrainerUsername(username, isCompleted))
                 .thenReturn(List.of(createNewTraining()));
         // act
         List<Training> actualResponse = jpaTrainingService
-                .selectTrainerTrainingsByUsername(username, trainingName, trainingDuration);
+                .selectTrainerTrainingsByUsername(username, isCompleted);
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(daoTraining, times(1)).getTrainingsByTrainerUsername(username, trainingName, trainingDuration);
+        verify(daoTraining, times(1)).getTrainingsByTrainerUsername(username, isCompleted);
 
     }
 
@@ -71,11 +69,4 @@ class JpaTrainingServiceImplTest {
         return entitiesFactory.createNewTraining();
     }
 
-    Trainee createNewTrainee() {
-        return entitiesFactory.createNewTrainee();
-    }
-
-    Trainer createNewTrainer() {
-        return entitiesFactory.createNewTrainer();
-    }
 }

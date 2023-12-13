@@ -13,5 +13,5 @@
 * password
 * username
 
-#### properties, so make sure to change them in order to meet the values for your machine.
+#### so make sure to change them in order to meet the values for your machine.
 #### By default, port will have a value of 3306 and hostname will have localhost.

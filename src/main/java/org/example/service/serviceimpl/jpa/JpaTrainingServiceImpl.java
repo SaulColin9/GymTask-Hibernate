@@ -10,23 +10,26 @@ import java.util.Map;
 
 public class JpaTrainingServiceImpl extends TrainingServiceImpl implements JpaTrainingService {
 
+
     @Override
-    public List<Training> selectTraineeTrainingsByUsername(String username, String trainingName, Double trainingDuration) {
+    public List<Training> selectTraineeTrainingsByUsername(String username, Integer trainingTypeId) {
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         validator.validateFieldsNotNull(params);
+        validator.validatePositiveField("trainingTypeId", trainingTypeId);
 
-        logger.info("Selecting Trainee with username {} Trainings", username);
-        return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTraineeUsername(username, trainingName, trainingDuration);
+        logger.info("Selecting Trainings with Trainee username {}", username);
+        return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTraineeUsername(username, trainingTypeId);
     }
 
+
     @Override
-    public List<Training> selectTrainerTrainingsByUsername(String username, String trainingName, Double trainingDuration) {
+    public List<Training> selectTrainerTrainingsByUsername(String username, Boolean isCompleted) {
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         validator.validateFieldsNotNull(params);
 
-        logger.info("Selecting Trainer with username {} Trainings", username);
-        return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTrainerUsername(username, trainingName, trainingDuration);
+        logger.info("Selecting Trainings with Trainer username {}", username);
+        return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTrainerUsername(username, isCompleted);
     }
 }
