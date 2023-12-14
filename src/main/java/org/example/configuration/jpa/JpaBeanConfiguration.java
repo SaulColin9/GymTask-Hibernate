@@ -129,13 +129,6 @@ public class JpaBeanConfiguration {
         return jpaDaoTrainingType;
     }
 
-//    @Bean
-//    public GymFacadeImpl gymFacade(@Autowired JpaTraineeService traineeService, @Autowired JpaTrainerService trainerService,
-//                                   @Autowired JpaTrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {
-//        GymFacadeImpl jpaGymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
-//        jpaGymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
-//        return jpaGymFacade;
-//    }
 
     @Bean
     public JpaTrainingService trainingService(@Autowired Dao<Trainee> traineeDao,

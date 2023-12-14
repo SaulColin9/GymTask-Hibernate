@@ -35,10 +35,13 @@ public class DaoImplTrainingTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainings(storageEntities);
         trainingDao.setStorage(storage);
+
         // act
         int actualResponse = trainingDao.getNextId();
+
         // assert
         assertThat(actualResponse).isEqualTo(1);
+
     }
 
     @Test
@@ -49,11 +52,13 @@ public class DaoImplTrainingTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainings(storageEntities);
         trainingDao.setStorage(storage);
+
         // act
         int actualResponse = trainingDao.getNextId();
 
         // assert
         assertThat(actualResponse).isEqualTo(3);
+
     }
 
     @Test
@@ -64,11 +69,13 @@ public class DaoImplTrainingTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainings(storageEntities);
         trainingDao.setStorage(storage);
+
         // act
         Optional<Training> actualResponse = trainingDao.get(1);
 
         // assert
         assertThat(actualResponse.orElse(null)).isEqualTo(storageEntities.get(1));
+
     }
 
     @Test
@@ -81,9 +88,11 @@ public class DaoImplTrainingTest {
 
         // act
         Optional<Training> actualResponse = trainingDao.delete(1);
+
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         assertThat(storageEntities.get(1)).isNull();
+
     }
 
     @Test
@@ -102,12 +111,14 @@ public class DaoImplTrainingTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainings(storageEntities);
         trainingDao.setStorage(storage);
+
         // act
         Training actualResponse = trainingDao.save(newTraining);
 
         // assert
         assertThat(actualResponse).isEqualTo(newTraining);
         assertThat(actualResponse.getId()).isEqualTo(3);
+
     }
 
     @Test
@@ -127,12 +138,15 @@ public class DaoImplTrainingTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainings(storageEntities);
         trainingDao.setStorage(storage);
+
         // act
         Training actualResponse = trainingDao.update(1, newTraining);
+
         // assert
         assertThat(actualResponse).isNotNull();
         assertThat(actualResponse.getTrainingName()).isEqualTo("New Training Name");
         assertThat(actualResponse.getId()).isEqualTo(1);
+
     }
 
 
@@ -143,10 +157,13 @@ public class DaoImplTrainingTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainings(storageEntities);
         trainingDao.setStorage(storage);
+
         // act
         List<Training> actualResponse = trainingDao.getAll();
+
         // assert
         assertThat(actualResponse).isEqualTo(new ArrayList<>(storageEntities.values()));
+
     }
 
     Map<Integer, Training> createNewStorageEntities() {

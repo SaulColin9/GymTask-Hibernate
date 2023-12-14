@@ -54,11 +54,14 @@ class JpaTraineeServiceImplTest {
         // arrange
         int id = 1;
         when(traineeDao.delete(1)).thenReturn(Optional.of(createNewTrainee()));
+
         // act
         boolean actualResponse = jpaTraineeService.deleteTraineeProfile(id);
+
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeDao, times(1)).delete(1);
+
     }
 
     @Test
@@ -66,11 +69,14 @@ class JpaTraineeServiceImplTest {
         // arrange
         String username = "John.Doe";
         when(traineeDao.deleteByUsername("John.Doe")).thenReturn(Optional.of(createNewTrainee()));
+
         // act
         boolean actualResponse = jpaTraineeService.deleteTraineeProfileByUsername(username);
+
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeDao, times(1)).deleteByUsername("John.Doe");
+
     }
 
     @Test
@@ -83,6 +89,7 @@ class JpaTraineeServiceImplTest {
         when(traineeDao.get(1)).thenReturn(Optional.of(traineeToUpdate));
         traineeToUpdate.getUser().setPassword(newPassword);
         when(traineeDao.update(eq(1), argThat(new TraineeMatcher(traineeToUpdate)))).thenReturn(traineeToUpdate);
+
         // act
         boolean actualResponse = jpaTraineeService.updateTraineePassword(id, newPassword);
 
@@ -91,10 +98,12 @@ class JpaTraineeServiceImplTest {
         verify(traineeDao, times(1)).get(1);
         verify(traineeDao, times(1))
                 .update(eq(1), argThat(new TraineeMatcher(traineeToUpdate)));
+
     }
 
     @Test
     void givenValidRequest_TraineeStatusShouldBeUpdated() {
+        // arrange
         int id = 1;
         boolean isActive = false;
         Trainee traineeToUpdate = createNewTrainee();
@@ -102,6 +111,7 @@ class JpaTraineeServiceImplTest {
         when(traineeDao.get(1)).thenReturn(Optional.of(traineeToUpdate));
         traineeToUpdate.getUser().setIsActive(isActive);
         when(traineeDao.update(eq(1), argThat(new TraineeMatcher(traineeToUpdate)))).thenReturn(traineeToUpdate);
+
         // act
         boolean actualResponse = jpaTraineeService.updateTraineeTraineeStatus(id, isActive);
 
@@ -124,6 +134,7 @@ class JpaTraineeServiceImplTest {
 
         when(traineeDao.get(1)).thenReturn(foundTrainee);
         when(traineeDao.getNotAssignedOnTraineeTrainersList(argThat(new TraineeMatcher(foundTrainee.get())))).thenReturn(trainerList);
+
         // act
         List<Trainer> actualResponse = jpaTraineeService.selectNotAssignedOnTraineeTrainersList(id);
 

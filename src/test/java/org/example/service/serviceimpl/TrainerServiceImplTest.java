@@ -72,6 +72,7 @@ class TrainerServiceImplTest {
         assertThat(createdTrainerId).isEqualTo(1);
         verify(trainerDao, times(1)).save(argThat(new TrainerMatcher(testTrainer)));
         verify(userUtils, times(1)).createUser("John", "Doe");
+
     }
 
     @Test
@@ -99,7 +100,6 @@ class TrainerServiceImplTest {
         when(trainerDao.update(eq(1), argThat(new TrainerMatcher(updatedTrainer)))).thenReturn(updatedTrainer);
         when(trainingTypeDao.get(1)).thenReturn(Optional.of(entitiesFactory.createNewTrainingType()));
 
-
         // act
         boolean actualResponse = trainerService.updateTrainerProfile(1, "Jean", "Doe", false, 1);
 
@@ -108,6 +108,7 @@ class TrainerServiceImplTest {
         verify(trainerDao, times(1)).get(1);
         verify(userUtils, times(1)).updateUser(1, "Jean", "Doe", false);
         verify(trainerDao, times(1)).update(eq(1), argThat(new TrainerMatcher(testTrainer)));
+
     }
 
 
@@ -124,6 +125,7 @@ class TrainerServiceImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainerDao, times(1)).get(1);
+
     }
 
 
@@ -132,10 +134,14 @@ class TrainerServiceImplTest {
         // arrange
         doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(trainerDao.get(77)).thenReturn(Optional.empty());
+
+        // act
+
         // assert
         assertThatThrownBy(() -> trainerService.selectTrainerProfile(77)).
                 isInstanceOf(IllegalArgumentException.class);
         verify(trainerDao, times(1)).get(77);
+
     }
 
     @Test
@@ -143,6 +149,9 @@ class TrainerServiceImplTest {
         // arrange
         doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(trainerDao.get(77)).thenReturn(Optional.empty());
+
+        // act
+
         // assert
         assertThatThrownBy(
                 () -> trainerService
@@ -155,13 +164,19 @@ class TrainerServiceImplTest {
 
     @Test
     void givenInvalidRequestCreate_ThrowsException() {
+        // arrange
         Map<String, Object> params = new HashMap<>();
         params.put("firstName", null);
         params.put("lastName", null);
         doThrow(new IllegalArgumentException()).when(validator).validateFieldsNotNull(params);
+
+        // act
+
+        // assert
         assertThatThrownBy(
                 () -> trainerService.createTrainerProfile(null, null, 2)).
                 isInstanceOf(IllegalArgumentException.class);
+
     }
 
     Trainer createNewTrainer() {

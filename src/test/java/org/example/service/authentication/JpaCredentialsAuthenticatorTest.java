@@ -37,8 +37,10 @@ class JpaCredentialsAuthenticatorTest {
         when(query.getSingleResult()).thenReturn(user);
 
         // act
+
         // assert
         assertThatCode(() -> credentialsAuthenticator.authorize(credentials, user)).doesNotThrowAnyException();
+
     }
 
     @Test
@@ -51,7 +53,9 @@ class JpaCredentialsAuthenticatorTest {
         when(query.getSingleResult()).thenReturn(null);
 
         // act
+
         // assert
         assertThatThrownBy(() -> credentialsAuthenticator.authorize(credentials, user));
+
     }
 }

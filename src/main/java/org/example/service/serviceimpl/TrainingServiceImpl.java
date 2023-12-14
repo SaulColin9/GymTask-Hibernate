@@ -47,8 +47,8 @@ public class TrainingServiceImpl implements TrainingService {
         validator.validateEntitiesNotNull(entities);
 
         Training newTraining = trainingDao.save(
-                new Training(trainee.get(), trainer.get(),
-                        trainingName, trainingType.get(), trainingDate, trainingDuration)
+                new Training(trainee.orElse(null), trainer.orElse(null),
+                        trainingName, trainingType.orElse(null), trainingDate, trainingDuration)
         );
         logger.info("Creating Training Profile with id " + newTraining.getId());
         return newTraining.getId();
@@ -60,7 +60,7 @@ public class TrainingServiceImpl implements TrainingService {
         validator.validateEntityNotNull(id, training.orElse(null));
 
         logger.info("Selecting Training Profile with id " + id);
-        return training.get();
+        return training.orElse(null);
     }
 
 

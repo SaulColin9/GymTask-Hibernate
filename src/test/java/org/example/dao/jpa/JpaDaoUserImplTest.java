@@ -38,12 +38,14 @@ class JpaDaoUserImplTest {
         // arrange
         int id = 1;
         when(entityManager.find(User.class, 1)).thenReturn(createNewUser());
+
         // act
         Optional<User> actualResponse = jpaDaoUser.get(id);
 
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(User.class, 1);
+
     }
 
     @Test
@@ -51,12 +53,14 @@ class JpaDaoUserImplTest {
         // arrange
         int id = 77;
         when(entityManager.find(User.class, 77)).thenThrow(NullPointerException.class);
+
         // act
         Optional<User> actualResponse = jpaDaoUser.get(id);
 
         // assert
         assertThat(actualResponse.isEmpty()).isTrue();
         verify(entityManager, times(1)).find(User.class, 77);
+
     }
 
     @Test
@@ -65,12 +69,15 @@ class JpaDaoUserImplTest {
         when(entityManager.createQuery("FROM User", User.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewUser(), createNewUser()));
+
         // act
         List<User> actualResponse = jpaDaoUser.getAll();
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM User", User.class);
         verify(query, times(1)).getResultList();
+
     }
 
     @Test
@@ -78,10 +85,13 @@ class JpaDaoUserImplTest {
         // arrange
         User user = createNewUser();
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoUser.save(user)).doesNotThrowAnyException();
         verify(entityManager, times(1)).persist(user);
+
     }
 
     @Test
@@ -90,10 +100,13 @@ class JpaDaoUserImplTest {
         User user = createNewUser();
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoUser.update(id, user)).doesNotThrowAnyException();
         verify(entityManager, times(1)).merge(user);
+
     }
 
     @Test
@@ -103,10 +116,13 @@ class JpaDaoUserImplTest {
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
         when(entityManager.find(User.class, 1)).thenReturn(user);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoUser.delete(id)).doesNotThrowAnyException();
         verify(entityManager, times(1)).remove(user);
+
     }
 
     User createNewUser() {

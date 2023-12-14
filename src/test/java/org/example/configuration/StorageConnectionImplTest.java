@@ -27,18 +27,18 @@ class StorageConnectionImplTest {
     void givenValidFilePath_ShouldReturnEntityReader() {
         // arrange
         Trainee newTrainee = getTrainee();
-
         List<Trainee> expectedTrainees = new ArrayList<>();
         expectedTrainees.add(newTrainee);
         String filePath = "src\\test\\resources\\data\\entities.json";
-
         StorageConnectionImpl<EntitiesReader> storageConnection =
                 new StorageConnectionImpl<>(EntitiesReader.class);
+
         // act
         EntitiesReader actualResponse = storageConnection.getEntities(filePath);
 
         // assert
         assertThat(actualResponse.getTrainees()).isEqualTo(expectedTrainees);
+
     }
 
     private static Trainee getTrainee() {

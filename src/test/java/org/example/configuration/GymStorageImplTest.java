@@ -45,11 +45,13 @@ class GymStorageImplTest {
 
             String filePath = "src\\test\\resources\\data\\entities.json";
             gymStorage.setFilePath(filePath);
+
             // act
             gymStorage.afterPropertiesSet();
 
             // assert
             assertThat(gymStorage.getUsers().get(1)).isEqualTo(firstUser);
+
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }

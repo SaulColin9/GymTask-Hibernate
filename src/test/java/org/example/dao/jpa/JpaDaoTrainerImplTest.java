@@ -43,12 +43,14 @@ class JpaDaoTrainerImplTest {
         // arrange
         int id = 1;
         when(entityManager.find(Trainer.class, 1)).thenReturn(createNewTrainer());
+
         // act
         Optional<Trainer> actualResponse = jpaDaoTrainer.get(id);
 
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(Trainer.class, 1);
+
     }
 
     @Test
@@ -56,12 +58,14 @@ class JpaDaoTrainerImplTest {
         // arrange
         int id = 77;
         when(entityManager.find(Trainer.class, 77)).thenThrow(NullPointerException.class);
+
         // act
         Optional<Trainer> actualResponse = jpaDaoTrainer.get(id);
 
         // assert
         assertThat(actualResponse.isEmpty()).isTrue();
         verify(entityManager, times(1)).find(Trainer.class, 77);
+
     }
 
     @Test
@@ -70,12 +74,15 @@ class JpaDaoTrainerImplTest {
         when(entityManager.createQuery("FROM Trainer", Trainer.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTrainer(), createNewTrainer()));
+
         // act
         List<Trainer> actualResponse = jpaDaoTrainer.getAll();
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainer", Trainer.class);
         verify(query, times(1)).getResultList();
+
     }
 
     @Test
@@ -83,10 +90,12 @@ class JpaDaoTrainerImplTest {
         // arrange
         Trainer trainer = createNewTrainer();
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
         // assert
         assertThatCode(() -> jpaDaoTrainer.save(trainer)).doesNotThrowAnyException();
         verify(entityManager, times(1)).persist(argThat(new TrainerMatcher(trainer)));
+
     }
 
     @Test
@@ -95,10 +104,13 @@ class JpaDaoTrainerImplTest {
         Trainer trainer = createNewTrainer();
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainer.update(id, trainer)).doesNotThrowAnyException();
         verify(entityManager, times(1)).merge(argThat(new TrainerMatcher(trainer)));
+
     }
 
     @Test
@@ -109,10 +121,13 @@ class JpaDaoTrainerImplTest {
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
         when(entityManager.find(Trainer.class, 1)).thenReturn(trainer);
         when(entityManager.createQuery("DELETE Training tr WHERE tr.trainer.id = :trainer_id")).thenReturn(query);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainer.delete(id)).doesNotThrowAnyException();
         verify(entityManager, times(1)).remove(argThat(new TrainerMatcher(trainer)));
+
     }
 
     @Test
@@ -122,12 +137,15 @@ class JpaDaoTrainerImplTest {
         Trainer trainer = createNewTrainer();
         when(entityManager.createQuery("FROM Trainer t WHERE t.user.username = :username")).thenReturn(query);
         when(query.getSingleResult()).thenReturn(trainer);
+
         // act
         Optional<Trainer> actualResponse = jpaDaoTrainer.getByUsername(username);
+
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainer t WHERE t.user.username = :username");
         verify(query, times(1)).getSingleResult();
+
     }
 
 
@@ -137,12 +155,15 @@ class JpaDaoTrainerImplTest {
         String username = "JohnDe";
         when(entityManager.createQuery("FROM Trainer t WHERE t.user.username = :username")).thenReturn(query);
         when(query.getSingleResult()).thenThrow(NoResultException.class);
+
         // act
         Optional<Trainer> actualResponse = jpaDaoTrainer.getByUsername(username);
+
         // assert
         assertThat(actualResponse.isEmpty()).isTrue();
         verify(entityManager, times(1)).createQuery("FROM Trainer t WHERE t.user.username = :username");
         verify(query, times(1)).getSingleResult();
+
     }
 
     @Test
@@ -163,12 +184,14 @@ class JpaDaoTrainerImplTest {
 
         // act
         List<Trainer> actualResponse = jpaDaoTrainer.updateTraineeTrainersList(traineeId, trainer);
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).getTransaction();
         verify(entityManager, times(1)).createQuery(updateQuery);
         verify(entityManager, times(1)).createQuery(getListQuery, Trainer.class);
         verify(query, times(1)).getResultList();
+
     }
 
     Trainer createNewTrainer() {

@@ -34,7 +34,11 @@ public class TrainerServiceImpl implements TrainerService {
 
         User newUser = userUtils.createUser(firstName, lastName);
         logger.info("Creating Trainer Profile with id {}", newUser.getId());
-        Trainer newTrainer = trainerDao.save(new Trainer(trainingType.get(), newUser));
+        TrainingType foundTrainingType = null;
+        if (trainingType.isPresent()) {
+            foundTrainingType = trainingType.get();
+        }
+        Trainer newTrainer = trainerDao.save(new Trainer(foundTrainingType, newUser));
 
         return newTrainer.getId();
     }
@@ -54,8 +58,11 @@ public class TrainerServiceImpl implements TrainerService {
                     isActive
             );
             foundTrainer.setUser(updatedUser);
+            TrainingType foundTrainingType = null;
+            if (trainingType.isPresent())
+                foundTrainingType = trainingType.get();
 
-            foundTrainer.setSpecialization(trainingType.get());
+            foundTrainer.setSpecialization(foundTrainingType);
 
             logger.info("Updating Trainer Profile with id {}", id);
         }

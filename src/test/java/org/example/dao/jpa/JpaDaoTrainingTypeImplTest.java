@@ -40,12 +40,14 @@ class JpaDaoTrainingTypeImplTest {
         // arrange
         int id = 1;
         when(entityManager.find(TrainingType.class, 1)).thenReturn(createNewTrainingType());
+
         // act
         Optional<TrainingType> actualResponse = jpaDaoTrainingType.get(id);
 
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(TrainingType.class, 1);
+
     }
 
     @Test
@@ -53,12 +55,14 @@ class JpaDaoTrainingTypeImplTest {
         // arrange
         int id = 77;
         when(entityManager.find(Trainee.class, 77)).thenThrow(NullPointerException.class);
+
         // act
         Optional<TrainingType> actualResponse = jpaDaoTrainingType.get(id);
 
         // assert
         assertThat(actualResponse.isEmpty()).isTrue();
         verify(entityManager, times(1)).find(TrainingType.class, 77);
+
     }
 
     @Test
@@ -67,12 +71,15 @@ class JpaDaoTrainingTypeImplTest {
         when(entityManager.createQuery("FROM TrainingType", TrainingType.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTrainingType(), createNewTrainingType()));
+
         // act
         List<TrainingType> actualResponse = jpaDaoTrainingType.getAll();
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM TrainingType", TrainingType.class);
         verify(query, times(1)).getResultList();
+
     }
 
     @Test
@@ -80,10 +87,13 @@ class JpaDaoTrainingTypeImplTest {
         // arrange
         TrainingType trainingType = createNewTrainingType();
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainingType.save(trainingType)).doesNotThrowAnyException();
         verify(entityManager, times(1)).persist(argThat(new TrainingTypeMatcher(trainingType)));
+
     }
 
     @Test
@@ -92,10 +102,13 @@ class JpaDaoTrainingTypeImplTest {
         TrainingType trainingType = createNewTrainingType();
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainingType.update(id, trainingType)).doesNotThrowAnyException();
         verify(entityManager, times(1)).merge(argThat(new TrainingTypeMatcher(trainingType)));
+
     }
 
     @Test
@@ -105,10 +118,13 @@ class JpaDaoTrainingTypeImplTest {
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
         when(entityManager.find(TrainingType.class, 1)).thenReturn(trainingType);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainingType.delete(id)).doesNotThrowAnyException();
         verify(entityManager, times(1)).remove(argThat(new TrainingTypeMatcher(trainingType)));
+
     }
 
     TrainingType createNewTrainingType() {

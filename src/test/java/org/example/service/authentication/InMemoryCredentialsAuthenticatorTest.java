@@ -36,6 +36,7 @@ class InMemoryCredentialsAuthenticatorTest {
         when(storageEntities.values()).thenReturn(List.of(entitiesFactory.createNewUser(), entitiesFactory.createNewUser()));
 
         // act
+
         // assert
         assertThatCode(() -> credentialsAuthenticator.authorize(credentials, user)).doesNotThrowAnyException();
     }
@@ -49,7 +50,9 @@ class InMemoryCredentialsAuthenticatorTest {
         when(storageEntities.values()).thenReturn(List.of(entitiesFactory.createNewUser(), entitiesFactory.createNewUser()));
 
         // act
+
         // assert
         assertThatThrownBy(() -> credentialsAuthenticator.authorize(credentials, user));
+
     }
 }

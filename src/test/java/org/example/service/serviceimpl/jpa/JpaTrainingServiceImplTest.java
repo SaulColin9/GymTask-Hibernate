@@ -39,9 +39,11 @@ class JpaTrainingServiceImplTest {
 
         when(daoTraining.getTrainingsByTraineeUsername(username, trainingTypeId))
                 .thenReturn(List.of(createNewTraining()));
+
         // act
         List<Training> actualResponse = jpaTrainingService
                 .selectTraineeTrainingsByUsername(username, trainingTypeId);
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(daoTraining, times(1)).getTrainingsByTraineeUsername(username, trainingTypeId);
@@ -56,9 +58,11 @@ class JpaTrainingServiceImplTest {
 
         when(daoTraining.getTrainingsByTrainerUsername(username, isCompleted))
                 .thenReturn(List.of(createNewTraining()));
+
         // act
         List<Training> actualResponse = jpaTrainingService
                 .selectTrainerTrainingsByUsername(username, isCompleted);
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(daoTraining, times(1)).getTrainingsByTrainerUsername(username, isCompleted);

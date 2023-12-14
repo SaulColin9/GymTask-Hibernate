@@ -32,10 +32,13 @@ public class DaoImplTrainingTypeTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainingTypes(storageEntities);
         daoTrainingType.setStorage(storage);
+
         // act
         int actualResponse = daoTrainingType.getNextId();
+
         // assert
         assertThat(actualResponse).isEqualTo(1);
+
     }
 
     @Test
@@ -46,11 +49,13 @@ public class DaoImplTrainingTypeTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainingTypes(storageEntities);
         daoTrainingType.setStorage(storage);
+
         // act
         int actualResponse = daoTrainingType.getNextId();
 
         // assert
         assertThat(actualResponse).isEqualTo(3);
+
     }
 
     @Test
@@ -61,11 +66,13 @@ public class DaoImplTrainingTypeTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainingTypes(storageEntities);
         daoTrainingType.setStorage(storage);
+
         // act
         Optional<TrainingType> actualResponse = daoTrainingType.get(1);
 
         // assert
         assertThat(actualResponse.orElse(null)).isEqualTo(storageEntities.get(1));
+
     }
 
     @Test
@@ -74,10 +81,14 @@ public class DaoImplTrainingTypeTest {
         storageEntities = createNewStorageEntities();
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainingTypes(storageEntities);
-        daoTrainingType.setStorage(storage);        // act
+        daoTrainingType.setStorage(storage);
+
+        // act
         List<TrainingType> actualResponse = daoTrainingType.getAll();
+
         // assert
         assertThat(actualResponse).isEqualTo(new ArrayList<>(storageEntities.values()));
+
     }
 
     @Test
@@ -90,12 +101,15 @@ public class DaoImplTrainingTypeTest {
         storageEntities = createNewStorageEntities();
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainingTypes(storageEntities);
-        daoTrainingType.setStorage(storage);        // act
+        daoTrainingType.setStorage(storage);
+
+        // act
         TrainingType actualResponse = daoTrainingType.save(newTrainingType);
 
         // assert
         assertThat(actualResponse).isEqualTo(newTrainingType);
         assertThat(actualResponse.getId()).isEqualTo(3);
+
     }
 
     @Test
@@ -109,12 +123,15 @@ public class DaoImplTrainingTypeTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainingTypes(storageEntities);
         daoTrainingType.setStorage(storage);
+
         // act
         TrainingType actualResponse = daoTrainingType.update(1, newTrainingType);
+
         // assert
         assertThat(actualResponse).isNotNull();
         assertThat(actualResponse.getTrainingTypeName()).isEqualTo("Elite");
         assertThat(actualResponse.getId()).isEqualTo(1);
+
     }
 
 
@@ -125,11 +142,14 @@ public class DaoImplTrainingTypeTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setTrainingTypes(storageEntities);
         daoTrainingType.setStorage(storage);
+
         // act
         Optional<TrainingType> actualResponse = daoTrainingType.delete(1);
+
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         assertThat(storageEntities.get(1)).isNull();
+
     }
 
     Map<Integer, TrainingType> createNewStorageEntities() {

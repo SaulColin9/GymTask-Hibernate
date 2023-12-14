@@ -41,12 +41,14 @@ class JpaDaoTrainingImplTest {
         // arrange
         int id = 1;
         when(entityManager.find(Training.class, 1)).thenReturn(createNewTraining());
+
         // act
         Optional<Training> actualResponse = jpaDaoTraining.get(id);
 
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(Training.class, 1);
+
     }
 
     @Test
@@ -54,12 +56,14 @@ class JpaDaoTrainingImplTest {
         // arrange
         int id = 77;
         when(entityManager.find(Training.class, 77)).thenThrow(NullPointerException.class);
+
         // act
         Optional<Training> actualResponse = jpaDaoTraining.get(id);
 
         // assert
         assertThat(actualResponse.isEmpty()).isTrue();
         verify(entityManager, times(1)).find(Training.class, 77);
+
     }
 
 
@@ -69,12 +73,15 @@ class JpaDaoTrainingImplTest {
         when(entityManager.createQuery("FROM Training", Training.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
+
         // act
         List<Training> actualResponse = jpaDaoTraining.getAll();
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Training", Training.class);
         verify(query, times(1)).getResultList();
+
     }
 
     @Test
@@ -82,10 +89,13 @@ class JpaDaoTrainingImplTest {
         // arrange
         Training training = createNewTraining();
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTraining.save(training)).doesNotThrowAnyException();
         verify(entityManager, times(1)).persist(argThat(new TrainingMatcher(training)));
+
     }
 
 
@@ -95,10 +105,13 @@ class JpaDaoTrainingImplTest {
         Training training = createNewTraining();
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTraining.update(id, training)).doesNotThrowAnyException();
         verify(entityManager, times(1)).merge(argThat(new TrainingMatcher(training)));
+
     }
 
     @Test
@@ -108,10 +121,13 @@ class JpaDaoTrainingImplTest {
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
         when(entityManager.find(Training.class, 1)).thenReturn(training);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTraining.delete(id)).doesNotThrowAnyException();
         verify(entityManager, times(1)).remove(argThat(new TrainingMatcher(training)));
+
     }
 
 

@@ -34,10 +34,13 @@ class DaoImplUserTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setUsers(storageEntities);
         daoUser.setStorage(storage);
+
         // act
         int actualResponse = daoUser.getNextId();
+
         // assert
         assertThat(actualResponse).isEqualTo(1);
+
     }
 
     @Test
@@ -48,11 +51,13 @@ class DaoImplUserTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setUsers(users);
         daoUser.setStorage(storage);
+
         // act
         int actualResponse = daoUser.getNextId();
 
         // assert
         assertThat(actualResponse).isEqualTo(3);
+
     }
 
 
@@ -64,6 +69,7 @@ class DaoImplUserTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setUsers(users);
         daoUser.setStorage(storage);
+
         // act
         Optional<User> actualResponse = daoUser.get(1);
 
@@ -81,10 +87,13 @@ class DaoImplUserTest {
         storage.setUsers(users);
         daoUser.setStorage(storage);
         daoUser.setStorage(storage);
+
         // act
         List<User> actualResponse = daoUser.getAll();
+
         // assert
         assertThat(actualResponse).isEqualTo(new ArrayList<>(users.values()));
+
     }
 
     @Test
@@ -103,12 +112,14 @@ class DaoImplUserTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setUsers(users);
         daoUser.setStorage(storage);
+
         // act
         User actualResponse = daoUser.save(newUser);
 
         // assert
         assertThat(actualResponse).isEqualTo(newUser);
         assertThat(actualResponse.getId()).isEqualTo(3);
+
     }
 
     @Test
@@ -127,13 +138,16 @@ class DaoImplUserTest {
         GymStorageImpl storage = new GymStorageImpl();
         storage.setUsers(users);
         daoUser.setStorage(storage);
+
         // act
         User actualResponse = daoUser.update(1, newUser);
+
         // assert
         assertThat(actualResponse).isNotNull();
         assertThat(actualResponse.getUsername()).isEqualTo("John.Doe");
         assertThat(actualResponse.getId()).isEqualTo(1);
         assertThat(actualResponse.getIsActive()).isFalse();
+
     }
 
     @Test
@@ -147,9 +161,11 @@ class DaoImplUserTest {
 
         // act
         Optional<User> actualResponse = daoUser.delete(1);
+
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         assertThat(users.get(1)).isNull();
+
     }
 
     Map<Integer, User> createNewStorageEntities() {

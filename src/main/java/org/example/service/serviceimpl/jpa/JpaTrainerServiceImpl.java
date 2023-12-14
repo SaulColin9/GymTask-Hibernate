@@ -56,6 +56,6 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
         validator.validateEntityNotNull(trainerId, foundTrainer.orElse(null));
 
         logger.info("Updating trainee with id {} trainers list with id {}", traineeId, trainerId);
-        return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(traineeId, foundTrainer.get());
+        return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(traineeId, foundTrainer.orElse(null));
     }
 }

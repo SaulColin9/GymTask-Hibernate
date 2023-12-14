@@ -40,11 +40,14 @@ class JpaTrainerServiceImplTest {
         // arrange
         String username = "John.Doe";
         when(trainerDao.getByUsername("John.Doe")).thenReturn(Optional.of(createNewTrainer()));
+
         // act
         Trainer actualResponse = jpaTrainerService.selectTrainerProfileByUsername(username);
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainerDao, times(1)).getByUsername("John.Doe");
+
     }
 
     @Test
@@ -57,6 +60,7 @@ class JpaTrainerServiceImplTest {
         when(trainerDao.get(1)).thenReturn(Optional.of(trainerToUpdate));
         trainerToUpdate.getUser().setPassword(newPassword);
         when(trainerDao.update(eq(1), argThat(new TrainerMatcher(trainerToUpdate)))).thenReturn(trainerToUpdate);
+
         // act
         boolean actualResponse = jpaTrainerService.updateTrainerPassword(id, newPassword);
 
@@ -65,6 +69,7 @@ class JpaTrainerServiceImplTest {
         verify(trainerDao, times(1)).get(1);
         verify(trainerDao, times(1))
                 .update(eq(1), argThat(new TrainerMatcher(trainerToUpdate)));
+
     }
 
     @Test
@@ -77,6 +82,7 @@ class JpaTrainerServiceImplTest {
         when(trainerDao.get(1)).thenReturn(Optional.of(trainerToUpdate));
         trainerToUpdate.getUser().setIsActive(isActive);
         when(trainerDao.update(eq(1), argThat(new TrainerMatcher(trainerToUpdate)))).thenReturn(trainerToUpdate);
+
         // act
         boolean actualResponse = jpaTrainerService.updateTrainerTraineeStatus(id, isActive);
 
@@ -85,6 +91,7 @@ class JpaTrainerServiceImplTest {
         verify(trainerDao, times(1)).get(1);
         verify(trainerDao, times(1))
                 .update(eq(1), argThat(new TrainerMatcher(trainerToUpdate)));
+
     }
 
     @Test
@@ -100,12 +107,15 @@ class JpaTrainerServiceImplTest {
         when(trainerDao.get(trainer_id)).thenReturn(foundTrainer);
         when(trainerDao.updateTraineeTrainersList(eq(trainee_id), argThat(new TrainerMatcher(foundTrainer.get()))))
                 .thenReturn(trainerList);
+
         // act
         List<Trainer> actualResponse = jpaTrainerService.updateTraineeTrainersList(trainee_id, trainer_id);
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainerDao, times(1)).get(trainer_id);
         verify(trainerDao, times(1)).updateTraineeTrainersList(eq(trainee_id), argThat(new TrainerMatcher(foundTrainer.get())));
+
     }
 
     Trainer createNewTrainer() {

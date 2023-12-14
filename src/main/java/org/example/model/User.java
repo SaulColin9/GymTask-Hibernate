@@ -36,10 +36,6 @@ public class User extends BaseEntity {
         this.username = firstName + "." + lastName;
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
 
     public User setId(int id) {
         this.id = id;

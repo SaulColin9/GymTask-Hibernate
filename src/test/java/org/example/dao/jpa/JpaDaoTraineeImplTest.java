@@ -47,12 +47,14 @@ class JpaDaoTraineeImplTest {
         // arrange
         int id = 1;
         when(entityManager.find(Trainee.class, 1)).thenReturn(createNewTrainee());
+
         // act
         Optional<Trainee> actualResponse = jpaDaoTrainee.get(id);
 
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).find(Trainee.class, 1);
+
     }
 
     @Test
@@ -60,12 +62,14 @@ class JpaDaoTraineeImplTest {
         // arrange
         int id = 77;
         when(entityManager.find(Trainee.class, 77)).thenThrow(NullPointerException.class);
+
         // act
         Optional<Trainee> actualResponse = jpaDaoTrainee.get(id);
 
         // assert
         assertThat(actualResponse.isEmpty()).isTrue();
         verify(entityManager, times(1)).find(Trainee.class, 77);
+
     }
 
     @Test
@@ -74,12 +78,15 @@ class JpaDaoTraineeImplTest {
         when(entityManager.createQuery("FROM Trainee", Trainee.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTrainee(), createNewTrainee()));
+
         // act
         List<Trainee> actualResponse = jpaDaoTrainee.getAll();
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainee", Trainee.class);
         verify(query, times(1)).getResultList();
+
     }
 
     @Test
@@ -87,10 +94,13 @@ class JpaDaoTraineeImplTest {
         // arrange
         Trainee trainee = createNewTrainee();
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainee.save(trainee)).doesNotThrowAnyException();
         verify(entityManager, times(1)).persist(argThat(new TraineeMatcher(trainee)));
+
     }
 
     @Test
@@ -99,10 +109,13 @@ class JpaDaoTraineeImplTest {
         Trainee trainee = createNewTrainee();
         int id = 1;
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainee.update(id, trainee)).doesNotThrowAnyException();
         verify(entityManager, times(1)).merge(argThat(new TraineeMatcher(trainee)));
+
     }
 
     @Test
@@ -113,10 +126,13 @@ class JpaDaoTraineeImplTest {
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
         when(entityManager.find(Trainee.class, 1)).thenReturn(trainee);
         when(entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id")).thenReturn(query);
+
         // act
+
         // assert
         assertThatCode(() -> jpaDaoTrainee.delete(id)).doesNotThrowAnyException();
         verify(entityManager, times(1)).remove(argThat(new TraineeMatcher(trainee)));
+
     }
 
     @Test
@@ -126,12 +142,15 @@ class JpaDaoTraineeImplTest {
         Trainee trainee = createNewTrainee();
         when(entityManager.createQuery("FROM Trainee t WHERE t.user.username = :username")).thenReturn(query);
         when(query.getSingleResult()).thenReturn(trainee);
+
         // act
         Optional<Trainee> actualResponse = jpaDaoTrainee.getByUsername(username);
+
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username");
         verify(query, times(1)).getSingleResult();
+
     }
 
     @Test
@@ -140,12 +159,15 @@ class JpaDaoTraineeImplTest {
         String username = "JohnDe";
         when(entityManager.createQuery("FROM Trainee t WHERE t.user.username = :username")).thenReturn(query);
         when(query.getSingleResult()).thenThrow(NoResultException.class);
+
         // act
         Optional<Trainee> actualResponse = jpaDaoTrainee.getByUsername(username);
+
         // assert
         assertThat(actualResponse.isEmpty()).isTrue();
         verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username");
         verify(query, times(1)).getSingleResult();
+
     }
 
     @Test
@@ -161,11 +183,13 @@ class JpaDaoTraineeImplTest {
 
         // act
         Optional<Trainee> actualResponse = jpaDaoTrainee.deleteByUsername(username);
+
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
         verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username");
         verify(entityManager, times(1)).createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
         verify(query, times(1)).executeUpdate();
+
     }
 
     @Test
@@ -177,12 +201,15 @@ class JpaDaoTraineeImplTest {
         Trainee trainee = createNewTrainee();
         when(entityManager.createQuery(selectQuery, Trainer.class)).thenReturn(queryTrainer);
         when(query.getResultList()).thenReturn(List.of(createNewTrainee(), createNewTrainee()));
+
         // act
         List<Trainer> actualResponse = jpaDaoTrainee.getNotAssignedOnTraineeTrainersList(trainee);
+
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).createQuery(selectQuery, Trainer.class);
         verify(queryTrainer, times(1)).getResultList();
+
     }
 
 

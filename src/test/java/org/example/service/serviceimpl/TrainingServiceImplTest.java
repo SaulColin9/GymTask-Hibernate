@@ -59,7 +59,6 @@ class TrainingServiceImplTest {
         when(trainingDao.save(argThat(new TrainingMatcher(testTraining)))).thenReturn(testTraining);
 
         // act
-
         int actualResponse = trainingService.
                 createTrainingProfile(1, 1, "Elite", 1,
                         new Date(1054789200000L), 1.0);
@@ -70,7 +69,6 @@ class TrainingServiceImplTest {
         verify(trainerDao, times(1)).get(1);
         verify(trainingTypeDao, times(1)).get(1);
         verify(trainingDao, times(1)).save(argThat(new TrainingMatcher(testTraining)));
-
 
     }
 
@@ -87,22 +85,30 @@ class TrainingServiceImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingDao, times(1)).get(1);
+
     }
 
     @Test
     void givenInvalidRequest_ThrowsException() {
+        // arrange
         Map<String, Object> params = new HashMap<>();
         params.put("trainingName", null);
         params.put("trainingDate", null);
 
         doThrow(new IllegalArgumentException()).when(validator).validateFieldsNotNull(params);
+
+        // act
+
+        // assert
         assertThatThrownBy(() -> trainingService.
                 createTrainingProfile(1, 1, null, 0, null, -1)).
                 isInstanceOf(IllegalArgumentException.class);
+
     }
 
     @Test
     void givenNonExistingIds_ThrowsException() {
+        // arrange
         Map<String, Object> entities = new HashMap<>();
 
         entities.put("trainee", null);
@@ -113,19 +119,29 @@ class TrainingServiceImplTest {
         when(traineeDao.get(88)).thenReturn(Optional.empty());
         when(trainerDao.get(99)).thenReturn(Optional.empty());
         when(trainingTypeDao.get(4)).thenReturn(Optional.empty());
+
+        // act
+
+        // assert
         assertThatThrownBy(
                 () ->
                         trainingService.createTrainingProfile(88, 99, "Elite", 4, new Date(), 1.0)
         ).isInstanceOf(IllegalArgumentException.class);
+
     }
 
     @Test
     void givenNonExistingTrainingIdSelect_ThrowsException() {
+        // arrange
         doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(99, null);
         when(trainingDao.get(99)).thenReturn(Optional.empty());
 
+        // act
+
+        // assert
         assertThatThrownBy(() -> trainingService.selectTrainingProfile(99)).
                 isInstanceOf(IllegalArgumentException.class);
+
     }
 
 
@@ -133,12 +149,5 @@ class TrainingServiceImplTest {
         return entitiesFactory.createNewTraining();
     }
 
-    Trainee createNewTrainee() {
-        return entitiesFactory.createNewTrainee();
-    }
-
-    Trainer createNewTrainer() {
-        return entitiesFactory.createNewTrainer();
-    }
 
 }

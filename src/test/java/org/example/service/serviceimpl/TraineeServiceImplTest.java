@@ -55,6 +55,7 @@ class TraineeServiceImplTest {
                 .isEqualTo(1);
         verify(traineeDao, times(1)).save(argThat(new TraineeMatcher(testTrainee)));
         verify(userUtils, times(1)).createUser("John", "Doe");
+
     }
 
 
@@ -91,6 +92,7 @@ class TraineeServiceImplTest {
         verify(traineeDao, times(1)).get(1);
         verify(userUtils, times(1)).updateUser(1, "Jean", "Doe", false);
         verify(traineeDao, times(1)).update(eq(1), argThat(new TraineeMatcher(testTrainee)));
+
     }
 
     @Test
@@ -108,6 +110,7 @@ class TraineeServiceImplTest {
         assertThat(actualResponse).isTrue();
         verify(traineeDao, times(1)).get(1);
         verify(traineeDao, times(1)).delete(1);
+
     }
 
     @Test
@@ -122,20 +125,22 @@ class TraineeServiceImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(traineeDao, times(1)).get(1);
+
     }
 
     @Test
     void givenNonExistingTraineeIdSelect_ThrowsException() {
         // arrange
-
         doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(traineeDao.get(77)).thenReturn(Optional.empty());
+
         // act
 
         // assert
         assertThatThrownBy(() -> traineeService.selectTraineeProfile(77)).
                 isInstanceOf(IllegalArgumentException.class);
         verify(traineeDao, times(1)).get(77);
+
     }
 
     @Test
@@ -143,12 +148,14 @@ class TraineeServiceImplTest {
         // arrange
         doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(traineeDao.get(77)).thenReturn(Optional.empty());
+
         // act
 
         // assert
         assertThatThrownBy(() -> traineeService.deleteTraineeProfile(77)).
                 isInstanceOf(IllegalArgumentException.class);
         verify(traineeDao, times(1)).get(77);
+
     }
 
     @Test
@@ -156,6 +163,7 @@ class TraineeServiceImplTest {
         // arrange
         doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(traineeDao.get(77)).thenReturn(Optional.empty());
+
         // act
 
         // assert
@@ -163,18 +171,24 @@ class TraineeServiceImplTest {
                 () -> traineeService.updateTraineeProfile(77, "Jean", "Doe", false, new Date(), "New Address")).
                 isInstanceOf(IllegalArgumentException.class);
         verify(traineeDao, times(1)).get(77);
+
     }
 
     @Test
     void givenInvalidRequestCreate_ThrowsException() {
+        // arrange
         Map<String, Object> params = new HashMap<>();
         params.put("firstName", null);
         params.put("lastName", null);
         doThrow(new IllegalArgumentException()).when(validator).validateFieldsNotNull(params);
 
+        // act
+
+        // assert
         assertThatThrownBy(
                 () -> traineeService.createTraineeProfile(null, null, new Date(), "Address")).
                 isInstanceOf(IllegalArgumentException.class);
+
     }
 
 
