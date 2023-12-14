@@ -113,7 +113,7 @@ class JpaTraineeServiceImplTest {
         when(traineeDao.update(eq(1), argThat(new TraineeMatcher(traineeToUpdate)))).thenReturn(traineeToUpdate);
 
         // act
-        boolean actualResponse = jpaTraineeService.updateTraineeTraineeStatus(id, isActive);
+        boolean actualResponse = jpaTraineeService.updateTraineeActiveStatus(id, isActive);
 
         // assert
         assertThat(actualResponse).isTrue();

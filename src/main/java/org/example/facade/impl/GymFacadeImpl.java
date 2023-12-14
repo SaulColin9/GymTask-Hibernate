@@ -79,7 +79,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     public boolean updateActiveTraineeStatus(Credentials credentials, int id, boolean isActive) {
         Trainee trainee = traineeService.selectTraineeProfile(id);
         executeAuth(credentials, trainee.getUser());
-        return ((JpaTraineeService) traineeService).updateTraineeTraineeStatus(id, isActive);
+        return ((JpaTraineeService) traineeService).updateTraineeActiveStatus(id, isActive);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     public boolean updateActiveTrainerStatus(Credentials credentials, int id, boolean isActive) {
         Trainer trainer = trainerService.selectTrainerProfile(id);
         executeAuth(credentials, trainer.getUser());
-        return ((JpaTrainerService) trainerService).updateTrainerTraineeStatus(id, isActive);
+        return ((JpaTrainerService) trainerService).updateTrainerActiveStatus(id, isActive);
     }
 
     @Override

@@ -190,14 +190,14 @@ class GymFacadeImplTest {
         Credentials credentials = new Credentials("John.Doe", "password");
         Trainee trainee = createNewTrainee();
         when(traineeService.selectTraineeProfile(id)).thenReturn(trainee);
-        when(traineeService.updateTraineeTraineeStatus(id, isActive)).thenReturn(true);
+        when(traineeService.updateTraineeActiveStatus(id, isActive)).thenReturn(true);
 
         // act
         boolean actualResponse = gymFacade.updateActiveTraineeStatus(credentials, id, isActive);
 
         // assert
         assertThat(actualResponse).isTrue();
-        verify(traineeService, times(1)).updateTraineeTraineeStatus(id, isActive);
+        verify(traineeService, times(1)).updateTraineeActiveStatus(id, isActive);
         try {
             verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
         } catch (AuthenticationException e) {
@@ -352,14 +352,14 @@ class GymFacadeImplTest {
         Credentials credentials = new Credentials("John.Doe", "password");
         Trainer trainer = createNewTrainer();
         when(trainerService.selectTrainerProfile(id)).thenReturn(trainer);
-        when(trainerService.updateTrainerTraineeStatus(id, isActive)).thenReturn(true);
+        when(trainerService.updateTrainerActiveStatus(id, isActive)).thenReturn(true);
 
         // act
         boolean actualResponse = gymFacade.updateActiveTrainerStatus(credentials, id, isActive);
 
         // assert
         assertThat(actualResponse).isTrue();
-        verify(trainerService, times(1)).updateTrainerTraineeStatus(id, isActive);
+        verify(trainerService, times(1)).updateTrainerActiveStatus(id, isActive);
         try {
             verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
         } catch (AuthenticationException e) {

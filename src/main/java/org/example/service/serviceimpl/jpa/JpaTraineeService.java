@@ -13,7 +13,7 @@ public interface JpaTraineeService extends TraineeService {
 
     boolean updateTraineePassword(int id, String newPassword);
 
-    boolean updateTraineeTraineeStatus(int id, boolean isActive);
+    boolean updateTraineeActiveStatus(int id, boolean isActive);
 
     List<Trainer> selectNotAssignedOnTraineeTrainersList(int traineeId);
 

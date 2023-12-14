@@ -84,7 +84,7 @@ class JpaTrainerServiceImplTest {
         when(trainerDao.update(eq(1), argThat(new TrainerMatcher(trainerToUpdate)))).thenReturn(trainerToUpdate);
 
         // act
-        boolean actualResponse = jpaTrainerService.updateTrainerTraineeStatus(id, isActive);
+        boolean actualResponse = jpaTrainerService.updateTrainerActiveStatus(id, isActive);
 
         // assert
         assertThat(actualResponse).isTrue();

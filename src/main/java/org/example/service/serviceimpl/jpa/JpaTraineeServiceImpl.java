@@ -62,13 +62,13 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     }
 
     @Override
-    public boolean updateTraineeTraineeStatus(int id, boolean isActive) {
+    public boolean updateTraineeActiveStatus(int id, boolean isActive) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
         validator.validateEntityNotNull(id, traineeToUpdate.orElse(null));
 
         Trainee foundTrainee = traineeToUpdate.orElse(null);
         if (traineeToUpdate.isPresent()) {
-            foundTrainee.getUser().setIsActive(false);
+            foundTrainee.getUser().setIsActive(isActive);
             logger.info("Updating status for Trainee with id {} to {}", id, isActive);
         }
 
