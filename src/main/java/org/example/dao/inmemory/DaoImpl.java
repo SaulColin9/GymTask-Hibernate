@@ -34,7 +34,7 @@ public abstract class DaoImpl<T extends EntityModel> implements Dao<T> {
         return Optional.ofNullable(foundT);
     }
 
-    abstract public void setStorage(Storage storage);
+    public abstract void setStorage(Storage storage);
 
     @Override
     public List<T> getAll() {
