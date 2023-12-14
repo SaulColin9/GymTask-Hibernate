@@ -78,8 +78,6 @@ public class JpaBeanConfiguration {
     public Map<String, String> props() {
         Map<String, String> props = new HashMap<>();
         props.put("hibernate.show_sql", "true");
-        props.put("hibernate.hbm2ddl.import_files", "trainingTypes.sql");
-        props.put("hibernate.hbm2ddl.auto", "create-drop");
         return props;
     }
 
