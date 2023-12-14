@@ -39,8 +39,8 @@ public class Main {
         // Select Trainer by username
         logger.info(gymFacade.getTrainerByUsername(trainer1Credentials, updatedTrainerUsername).toString());
         // Trainer password change
-        String newTrainerPassword = "1234";
-        gymFacade.updateTrainerPassword(trainer1Credentials, trainer1.getId(), newTrainerPassword);
+        String newTrainerSecret = "1234";
+        gymFacade.updateTrainerPassword(trainer1Credentials, trainer1.getId(), newTrainerSecret);
 
         // Trainee
         // creating new Trainee
@@ -59,9 +59,9 @@ public class Main {
         // Select Trainee by username
         logger.info(gymFacade.getTraineeByUsername(updatedTrainee1Credentials, updatedTraineeUsername).toString());
         // Trainee password change
-        String newTraineePassword = "password";
-        gymFacade.updateTraineePassword(updatedTrainee1Credentials, trainee1.getId(), newTraineePassword);
-        updatedTrainee1Credentials = new Credentials(updatedTraineeUsername, newTraineePassword);
+        String newTraineeSecret = "password";
+        gymFacade.updateTraineePassword(updatedTrainee1Credentials, trainee1.getId(), newTraineeSecret);
+        updatedTrainee1Credentials = new Credentials(updatedTraineeUsername, newTraineeSecret);
 
         // Deleting a new Trainee by username
         Trainee trainee2 = gymFacade.addTrainee("John", "Doe", new Date(), "St 45");
