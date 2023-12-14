@@ -116,7 +116,7 @@ class TrainingServiceImplTest {
 
     @Test
     void givenNonExistingTrainingIdSelect_ThrowsException() {
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(99, Optional.empty());
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(99, null);
         when(trainingDao.get(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> trainingService.selectTrainingProfile(99)).

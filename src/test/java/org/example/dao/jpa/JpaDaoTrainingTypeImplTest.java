@@ -3,6 +3,7 @@ package org.example.dao.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.example.matchers.TrainingTypeMatcher;
 import org.example.model.Trainee;
 import org.example.model.TrainingType;
@@ -26,7 +27,7 @@ class JpaDaoTrainingTypeImplTest {
     @Mock
     EntityTransaction entityTransaction;
     @Mock
-    Query query;
+    TypedQuery<TrainingType> query;
     @InjectMocks
     JpaDaoTrainingTypeImpl jpaDaoTrainingType;
 
@@ -64,14 +65,14 @@ class JpaDaoTrainingTypeImplTest {
     @Test
     void shouldReturnListOfTrainingTypes() {
         // arrange
-        when(entityManager.createQuery("FROM TrainingType")).thenReturn(query);
+        when(entityManager.createQuery("FROM TrainingType", TrainingType.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTrainingType(), createNewTrainingType()));
         // act
         List<TrainingType> actualResponse = jpaDaoTrainingType.getAll();
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(entityManager, times(1)).createQuery("FROM TrainingType");
+        verify(entityManager, times(1)).createQuery("FROM TrainingType", TrainingType.class);
         verify(query, times(1)).getResultList();
     }
 

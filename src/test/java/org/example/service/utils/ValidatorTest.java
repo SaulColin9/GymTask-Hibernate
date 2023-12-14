@@ -26,7 +26,7 @@ class ValidatorTest {
     @Test
     void givenValidEntity_NoExceptionThrown() {
         // arrange
-        Optional<User> user = Optional.of(createNewUser());
+        User user = createNewUser();
 
         // assert
         assertThatCode(() -> validator.validateEntityNotNull(1, user)).doesNotThrowAnyException();
@@ -34,7 +34,7 @@ class ValidatorTest {
 
     @Test
     void givenInvalidEntity_ExceptionThrown() {
-        assertThatThrownBy(() -> validator.validateEntityNotNull(1, Optional.empty()))
+        assertThatThrownBy(() -> validator.validateEntityNotNull(1, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Provided id of 1 for User entities was not found");
     }
@@ -42,7 +42,7 @@ class ValidatorTest {
     @Test
     void givenValidEntity_WithUsername_NoExceptionThrown() {
         // arrange
-        Optional<User> user = Optional.of(createNewUser());
+        User user = createNewUser();
 
         // assert
         assertThatCode(() -> validator.validateEntityNotNull("John.Doe", user)).doesNotThrowAnyException();
@@ -50,7 +50,7 @@ class ValidatorTest {
 
     @Test
     void givenInvalidEntity_WithUsername_ExceptionThrown() {
-        assertThatThrownBy(() -> validator.validateEntityNotNull("John.Doe", Optional.empty()))
+        assertThatThrownBy(() -> validator.validateEntityNotNull("John.Doe", null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Provided username of John.Doe for User entities was not found");
     }

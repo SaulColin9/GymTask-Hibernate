@@ -4,9 +4,7 @@ import org.example.model.*;
 
 import java.util.Map;
 
-public interface Storage{
-
-
+public interface Storage {
     Map<Integer, User> getUsers();
 
     Map<Integer, Trainee> getTrainees();

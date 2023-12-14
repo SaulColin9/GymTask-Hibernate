@@ -1,9 +1,6 @@
 package org.example.dao.jpa;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
+import jakarta.persistence.*;
 import org.example.matchers.TraineeMatcher;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
@@ -30,7 +27,9 @@ class JpaDaoTraineeImplTest {
     @Mock
     EntityTransaction entityTransaction;
     @Mock
-    Query query;
+    TypedQuery<Trainee> query;
+    @Mock
+    TypedQuery<Trainer> queryTrainer;
     @InjectMocks
     JpaDaoTraineeImpl jpaDaoTrainee;
 
@@ -68,14 +67,14 @@ class JpaDaoTraineeImplTest {
     @Test
     void shouldReturnListOfTrainees() {
         // arrange
-        when(entityManager.createQuery("FROM Trainee")).thenReturn(query);
+        when(entityManager.createQuery("FROM Trainee", Trainee.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTrainee(), createNewTrainee()));
         // act
         List<Trainee> actualResponse = jpaDaoTrainee.getAll();
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(entityManager, times(1)).createQuery("FROM Trainee");
+        verify(entityManager, times(1)).createQuery("FROM Trainee", Trainee.class);
         verify(query, times(1)).getResultList();
     }
 
@@ -172,14 +171,14 @@ class JpaDaoTraineeImplTest {
                 " ON trainer.id = training.trainer.id " +
                 "WHERE trainer.user.isActive = true AND (training.trainee.id != :trainee_id OR training.trainee.id IS NULL)";
         Trainee trainee = createNewTrainee();
-        when(entityManager.createQuery(selectQuery)).thenReturn(query);
+        when(entityManager.createQuery(selectQuery, Trainer.class)).thenReturn(queryTrainer);
         when(query.getResultList()).thenReturn(List.of(createNewTrainee(), createNewTrainee()));
         // act
         List<Trainer> actualResponse = jpaDaoTrainee.getNotAssignedOnTraineeTrainersList(trainee);
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(entityManager, times(1)).createQuery(selectQuery);
-        verify(query, times(1)).getResultList();
+        verify(entityManager, times(1)).createQuery(selectQuery, Trainer.class);
+        verify(queryTrainer, times(1)).getResultList();
     }
 
 

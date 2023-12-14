@@ -1,6 +1,7 @@
 package org.example.facade.jpa;
 
 import org.example.entitiesFactory.EntitiesFactory;
+import org.example.facade.impl.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.*;
 class JpaGymFacadeImplTest {
     EntitiesFactory entitiesFactory;
     @InjectMocks
-    private JpaGymFacadeImpl jpaGymFacade;
+    private GymFacadeImpl gymFacade;
     @Mock
     private JpaTraineeService traineeService;
     @Mock
@@ -38,7 +39,7 @@ class JpaGymFacadeImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         entitiesFactory = new EntitiesFactory();
-        jpaGymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
+        gymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
     }
 
     @Test
@@ -53,7 +54,7 @@ class JpaGymFacadeImplTest {
         when(traineeService.selectTraineeProfile(1)).thenReturn(trainee);
 
         // act
-        Trainee actualResponse = jpaGymFacade.addTrainee(firstName, lastName, dateOfBirth, address);
+        Trainee actualResponse = gymFacade.addTrainee(firstName, lastName, dateOfBirth, address);
 
         // assert
         assertThat(actualResponse).isEqualTo(trainee);
@@ -76,7 +77,7 @@ class JpaGymFacadeImplTest {
         when(traineeService.selectTraineeProfile(traineeId)).thenReturn(trainee);
         when(traineeService.updateTraineeProfile(traineeId, firstName, lastName, isActive, dateOfBirth, address)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.updateTrainee(credentials, traineeId, firstName, lastName, isActive, dateOfBirth, address);
+        boolean actualResponse = gymFacade.updateTrainee(credentials, traineeId, firstName, lastName, isActive, dateOfBirth, address);
         // assert
 
         assertThat(actualResponse).isTrue();
@@ -97,7 +98,7 @@ class JpaGymFacadeImplTest {
         when(traineeService.selectTraineeProfile(id)).thenReturn(trainee);
         when(traineeService.deleteTraineeProfile(id)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.deleteTrainee(credentials, id);
+        boolean actualResponse = gymFacade.deleteTrainee(credentials, id);
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).deleteTraineeProfile(id);
@@ -116,7 +117,7 @@ class JpaGymFacadeImplTest {
         Trainee trainee = createNewTrainee();
         when(traineeService.selectTraineeProfile(id)).thenReturn(trainee);
         // act
-        Trainee actualResponse = jpaGymFacade.getTrainee(credentials, id);
+        Trainee actualResponse = gymFacade.getTrainee(credentials, id);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(traineeService, times(1)).selectTraineeProfile(id);
@@ -135,7 +136,7 @@ class JpaGymFacadeImplTest {
         Trainee trainee = createNewTrainee();
         when(traineeService.selectTraineeProfileByUsername(username)).thenReturn(trainee);
         // act
-        Trainee actualResponse = jpaGymFacade.getTraineeByUsername(credentials, username);
+        Trainee actualResponse = gymFacade.getTraineeByUsername(credentials, username);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(traineeService, times(1)).selectTraineeProfileByUsername(username);
@@ -156,7 +157,7 @@ class JpaGymFacadeImplTest {
         when(traineeService.selectTraineeProfile(id)).thenReturn(trainee);
         when(traineeService.updateTraineePassword(id, newPassword)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.updateTraineePassword(credentials, id, newPassword);
+        boolean actualResponse = gymFacade.updateTraineePassword(credentials, id, newPassword);
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).updateTraineePassword(id, newPassword);
@@ -177,7 +178,7 @@ class JpaGymFacadeImplTest {
         when(traineeService.selectTraineeProfile(id)).thenReturn(trainee);
         when(traineeService.updateTraineeTraineeStatus(id, isActive)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.updateActiveTraineeStatus(credentials, id, isActive);
+        boolean actualResponse = gymFacade.updateActiveTraineeStatus(credentials, id, isActive);
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).updateTraineeTraineeStatus(id, isActive);
@@ -198,7 +199,7 @@ class JpaGymFacadeImplTest {
         when(traineeService.selectTraineeProfileByUsername(username)).thenReturn(trainee);
         when(traineeService.deleteTraineeProfileByUsername(username)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.deleteTraineeByUsername(credentials, username);
+        boolean actualResponse = gymFacade.deleteTraineeByUsername(credentials, username);
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).deleteTraineeProfileByUsername(username);
@@ -220,7 +221,7 @@ class JpaGymFacadeImplTest {
         when(trainerService.selectTrainerProfile(1)).thenReturn(trainer);
 
         // act
-        Trainer actualResponse = jpaGymFacade.addTrainer(firstName, lastName, specialization);
+        Trainer actualResponse = gymFacade.addTrainer(firstName, lastName, specialization);
 
         // assert
         assertThat(actualResponse).isEqualTo(trainer);
@@ -242,7 +243,7 @@ class JpaGymFacadeImplTest {
         when(trainerService.selectTrainerProfile(trainerId)).thenReturn(trainer);
         when(trainerService.updateTrainerProfile(trainerId, firstName, lastName, isActive, specialization)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.updateTrainer(credentials, trainerId, firstName, lastName, isActive, specialization);
+        boolean actualResponse = gymFacade.updateTrainer(credentials, trainerId, firstName, lastName, isActive, specialization);
         // assert
 
         assertThat(actualResponse).isTrue();
@@ -262,7 +263,7 @@ class JpaGymFacadeImplTest {
         Trainer trainer = createNewTrainer();
         when(trainerService.selectTrainerProfile(id)).thenReturn(trainer);
         // act
-        Trainer actualResponse = jpaGymFacade.getTrainer(credentials, id);
+        Trainer actualResponse = gymFacade.getTrainer(credentials, id);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainerService, times(1)).selectTrainerProfile(id);
@@ -281,7 +282,7 @@ class JpaGymFacadeImplTest {
         Trainer trainer = createNewTrainer();
         when(trainerService.selectTrainerProfileByUsername(username)).thenReturn(trainer);
         // act
-        Trainer actualResponse = jpaGymFacade.getTrainerByUsername(credentials, username);
+        Trainer actualResponse = gymFacade.getTrainerByUsername(credentials, username);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainerService, times(1)).selectTrainerProfileByUsername(username);
@@ -302,7 +303,7 @@ class JpaGymFacadeImplTest {
         when(trainerService.selectTrainerProfile(id)).thenReturn(trainer);
         when(trainerService.updateTrainerPassword(id, newPassword)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.updateTrainerPassword(credentials, id, newPassword);
+        boolean actualResponse = gymFacade.updateTrainerPassword(credentials, id, newPassword);
         // assert
         assertThat(actualResponse).isTrue();
         verify(trainerService, times(1)).updateTrainerPassword(id, newPassword);
@@ -323,7 +324,7 @@ class JpaGymFacadeImplTest {
         when(trainerService.selectTrainerProfile(id)).thenReturn(trainer);
         when(trainerService.updateTrainerTraineeStatus(id, isActive)).thenReturn(true);
         // act
-        boolean actualResponse = jpaGymFacade.updateActiveTrainerStatus(credentials, id, isActive);
+        boolean actualResponse = gymFacade.updateActiveTrainerStatus(credentials, id, isActive);
         // assert
         assertThat(actualResponse).isTrue();
         verify(trainerService, times(1)).updateTrainerTraineeStatus(id, isActive);
@@ -346,7 +347,7 @@ class JpaGymFacadeImplTest {
 
         when(trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration)).thenReturn(1);
         // act
-        int actualResponse = jpaGymFacade.addTraining(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
+        int actualResponse = gymFacade.addTraining(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
         // assert
         assertThat(actualResponse).isEqualTo(1);
         verify(trainingService, times(1)).createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
@@ -360,7 +361,7 @@ class JpaGymFacadeImplTest {
 
         when(trainingService.selectTrainingProfile(1)).thenReturn(testTraining);
         // act
-        Training actualResponse = jpaGymFacade.getTraining(id);
+        Training actualResponse = gymFacade.getTraining(id);
         // assert
         assertThat(actualResponse).isEqualTo(testTraining);
         verify(trainingService, times(1)).selectTrainingProfile(1);
@@ -370,89 +371,61 @@ class JpaGymFacadeImplTest {
     void givenValidTraineeUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        when(trainingService.selectTraineeTrainingsByUsername(username, null, null))
+        when(trainingService.selectTraineeTrainingsByUsername(username, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
-        List<Training> actualResponse = jpaGymFacade.getTraineeTrainings(username);
+        List<Training> actualResponse = gymFacade.getTraineeTrainingsByUsername(username);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, null, null);
+                .selectTraineeTrainingsByUsername(username, null);
     }
 
     @Test
     void givenValidTraineeUsername_And_TrainingName_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = "Elite";
-        when(trainingService.selectTraineeTrainingsByUsername(username, trainingName, null))
+        Integer trainingTypeId = 1;
+        when(trainingService.selectTraineeTrainingsByUsername(username, trainingTypeId))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
-        List<Training> actualResponse = jpaGymFacade.getTraineeTrainingsByTrainingName(username, trainingName);
+        List<Training> actualResponse = gymFacade.getTraineeTrainingsByUsernameAndTrainingType(username, trainingTypeId);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, trainingName, null);
+                .selectTraineeTrainingsByUsername(username, trainingTypeId);
     }
 
-    @Test
-    void givenValidTraineeUsername_And_TrainingDuration_TrainingsListShouldBeReturned() {
-        // arrange
-        String username = "John.Doe";
-        Double trainingDuration = 1.0;
-        when(trainingService.selectTraineeTrainingsByUsername(username, null, trainingDuration))
-                .thenReturn(List.of(createNewTraining(), createNewTraining()));
-        // act
-        List<Training> actualResponse = jpaGymFacade.getTraineeTrainingsByTrainingDuration(username, trainingDuration);
-        // assert
-        assertThat(actualResponse).isNotNull();
-        verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, null, trainingDuration);
-    }
 
     @Test
     void givenValidTrainerUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        when(trainingService.selectTrainerTrainingsByUsername(username, null, null))
+        when(trainingService.selectTrainerTrainingsByUsername(username, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
-        List<Training> actualResponse = jpaGymFacade.getTrainerTrainingsByUsername(username);
+        List<Training> actualResponse = gymFacade.getTrainerTrainingsByUsername(username);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, null, null);
+                .selectTrainerTrainingsByUsername(username, null);
     }
 
     @Test
     void givenValidTrainerUsername_And_TrainingName_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        String trainingName = "Elite";
-        when(trainingService.selectTrainerTrainingsByUsername(username, trainingName, null))
+        Boolean isCompleted = true;
+        when(trainingService.selectTrainerTrainingsByUsername(username, isCompleted))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
-        List<Training> actualResponse = jpaGymFacade.getTrainerTrainingsByTrainingName(username, trainingName);
+        List<Training> actualResponse = gymFacade.getTrainerTrainingsByUsernameAndTrainingCompleteness(username, isCompleted);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, trainingName, null);
+                .selectTrainerTrainingsByUsername(username, isCompleted);
     }
 
-    @Test
-    void givenValidTrainerUsername_And_TrainingDuration_TrainingsListShouldBeReturned() {
-        // arrange
-        String username = "John.Doe";
-        Double trainingDuration = 1.0;
-        when(trainingService.selectTrainerTrainingsByUsername(username, null, trainingDuration))
-                .thenReturn(List.of(createNewTraining(), createNewTraining()));
-        // act
-        List<Training> actualResponse = jpaGymFacade.getTrainerTrainingsByTrainingDuration(username, trainingDuration);
-        // assert
-        assertThat(actualResponse).isNotNull();
-        verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, null, trainingDuration);
-    }
 
     @Test
     void givenValidRequest_TraineeTrainersListShouldBeUpdated() {
@@ -465,7 +438,7 @@ class JpaGymFacadeImplTest {
         when(trainerService.updateTraineeTrainersList(traineeId, trainerId))
                 .thenReturn(List.of(createNewTrainer(), createNewTrainer()));
         // act
-        List<Trainer> actualResponse = jpaGymFacade.updateTraineeTrainersList(credentials, traineeId, trainerId);
+        List<Trainer> actualResponse = gymFacade.updateTraineeTrainersList(credentials, traineeId, trainerId);
 
         // assert
         assertThat(actualResponse).isNotNull();
@@ -483,7 +456,7 @@ class JpaGymFacadeImplTest {
         when(traineeService.selectNotAssignedOnTraineeTrainersList(traineeId))
                 .thenReturn(List.of(createNewTrainer(), createNewTrainer()));
         // act
-        List<Trainer> actualResponse = jpaGymFacade.getNotAssignedOnTraineeTrainersList(credentials, traineeId);
+        List<Trainer> actualResponse = gymFacade.getNotAssignedOnTraineeTrainersList(credentials, traineeId);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(traineeService, times(1)).selectTraineeProfile(traineeId);

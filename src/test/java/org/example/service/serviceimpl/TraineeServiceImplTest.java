@@ -128,7 +128,7 @@ class TraineeServiceImplTest {
     void givenNonExistingTraineeIdSelect_ThrowsException() {
         // arrange
 
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(traineeDao.get(77)).thenReturn(Optional.empty());
         // act
 
@@ -141,7 +141,7 @@ class TraineeServiceImplTest {
     @Test
     void givenNonExistingTraineeIdDelete_ThrowsException() {
         // arrange
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(traineeDao.get(77)).thenReturn(Optional.empty());
         // act
 
@@ -154,7 +154,7 @@ class TraineeServiceImplTest {
     @Test
     void givenNonExistingTraineeIdUpdate_ThrowsException() {
         // arrange
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, Optional.empty());
+        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
         when(traineeDao.get(77)).thenReturn(Optional.empty());
         // act
 

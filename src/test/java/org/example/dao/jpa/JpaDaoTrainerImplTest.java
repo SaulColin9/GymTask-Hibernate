@@ -1,9 +1,6 @@
 package org.example.dao.jpa;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
+import jakarta.persistence.*;
 import org.example.entitiesFactory.EntitiesFactory;
 import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainer;
@@ -28,7 +25,7 @@ class JpaDaoTrainerImplTest {
     @Mock
     EntityTransaction entityTransaction;
     @Mock
-    Query query;
+    TypedQuery<Trainer> query;
     @InjectMocks
     JpaDaoTrainerImpl jpaDaoTrainer;
 
@@ -67,14 +64,14 @@ class JpaDaoTrainerImplTest {
     @Test
     void shouldReturnListOfTrainers() {
         // arrange
-        when(entityManager.createQuery("FROM Trainer")).thenReturn(query);
+        when(entityManager.createQuery("FROM Trainer", Trainer.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTrainer(), createNewTrainer()));
         // act
         List<Trainer> actualResponse = jpaDaoTrainer.getAll();
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(entityManager, times(1)).createQuery("FROM Trainer");
+        verify(entityManager, times(1)).createQuery("FROM Trainer", Trainer.class);
         verify(query, times(1)).getResultList();
     }
 
@@ -154,20 +151,20 @@ class JpaDaoTrainerImplTest {
                 " ON trainer.id = training.trainer.id" +
                 " WHERE training.trainee.id = :trainee_id";
         Trainer trainer = createNewTrainer();
-        int trainee_id = 1;
+        int traineeId = 1;
 
         when(entityManager.getTransaction()).thenReturn(entityTransaction);
         when(entityManager.createQuery(updateQuery)).thenReturn(query);
-        when(entityManager.createQuery(getListQuery)).thenReturn(query);
+        when(entityManager.createQuery(getListQuery, Trainer.class)).thenReturn(query);
         when(query.getResultList()).thenReturn(List.of(createNewTrainer(), createNewTrainer()));
 
         // act
-        List<Trainer> actualResponse = jpaDaoTrainer.updateTraineeTrainersList(trainee_id, trainer);
+        List<Trainer> actualResponse = jpaDaoTrainer.updateTraineeTrainersList(traineeId, trainer);
         // assert
         assertThat(actualResponse).isNotNull();
         verify(entityManager, times(1)).getTransaction();
         verify(entityManager, times(1)).createQuery(updateQuery);
-        verify(entityManager, times(1)).createQuery(getListQuery);
+        verify(entityManager, times(1)).createQuery(getListQuery, Trainer.class);
         verify(query, times(1)).getResultList();
     }
 

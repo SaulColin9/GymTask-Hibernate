@@ -3,6 +3,7 @@ package org.example.dao.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class JpaDaoUserImplTest {
     @Mock
     EntityTransaction entityTransaction;
     @Mock
-    Query query;
+    TypedQuery<User> query;
     @InjectMocks
     JpaDaoUserImpl jpaDaoUser;
 
@@ -62,14 +63,14 @@ class JpaDaoUserImplTest {
     @Test
     void shouldReturnListOfUser() {
         // arrange
-        when(entityManager.createQuery("FROM User")).thenReturn(query);
+        when(entityManager.createQuery("FROM User", User.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewUser(), createNewUser()));
         // act
         List<User> actualResponse = jpaDaoUser.getAll();
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(entityManager, times(1)).createQuery("FROM User");
+        verify(entityManager, times(1)).createQuery("FROM User", User.class);
         verify(query, times(1)).getResultList();
     }
 

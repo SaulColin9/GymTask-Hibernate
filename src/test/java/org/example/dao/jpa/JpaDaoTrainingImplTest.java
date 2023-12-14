@@ -3,9 +3,8 @@ package org.example.dao.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import org.example.entitiesFactory.EntitiesFactory;
 import org.example.matchers.TrainingMatcher;
 import org.example.model.Trainee;
@@ -17,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +31,7 @@ class JpaDaoTrainingImplTest {
     @Mock
     EntityTransaction entityTransaction;
     @Mock
-    Query query;
-    @Mock
-    CriteriaBuilder criteriaBuilder;
-    @Mock
-    CriteriaQuery<Training> criteriaQuery;
-    @Mock
-    Root<Training> root;
+    TypedQuery<Training> query;
     @InjectMocks
     JpaDaoTrainingImpl jpaDaoTraining;
 
@@ -77,14 +71,14 @@ class JpaDaoTrainingImplTest {
     @Test
     void shouldReturnListOfTrainings() {
         // arrange
-        when(entityManager.createQuery("FROM Training")).thenReturn(query);
+        when(entityManager.createQuery("FROM Training", Training.class)).thenReturn(query);
         when(query.getResultList())
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
         // act
         List<Training> actualResponse = jpaDaoTraining.getAll();
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(entityManager, times(1)).createQuery("FROM Training");
+        verify(entityManager, times(1)).createQuery("FROM Training", Training.class);
         verify(query, times(1)).getResultList();
     }
 
@@ -130,11 +124,5 @@ class JpaDaoTrainingImplTest {
         return entitiesFactory.createNewTraining();
     }
 
-    Trainee createNewTrainee() {
-        return entitiesFactory.createNewTrainee();
-    }
 
-    Trainer createNewTrainer() {
-        return entitiesFactory.createNewTrainer();
-    }
 }
