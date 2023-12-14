@@ -1,6 +1,9 @@
 package org.example.dao.jpa;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import org.example.matchers.TraineeMatcher;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
@@ -16,7 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.*;
 
 
@@ -180,7 +184,6 @@ class JpaDaoTraineeImplTest {
         verify(entityManager, times(1)).createQuery(selectQuery, Trainer.class);
         verify(queryTrainer, times(1)).getResultList();
     }
-
 
 
     Trainee createNewTrainee() {

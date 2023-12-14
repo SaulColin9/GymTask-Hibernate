@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class TrainerTest {
@@ -19,7 +19,6 @@ class TrainerTest {
         entitiesFactory = new EntitiesFactory();
         trainer = new Trainer(entitiesFactory.createNewTrainingType(), new User());
     }
-
 
     @Test
     void testToString() {

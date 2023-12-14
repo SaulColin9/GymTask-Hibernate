@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class DaoImplUserTest {

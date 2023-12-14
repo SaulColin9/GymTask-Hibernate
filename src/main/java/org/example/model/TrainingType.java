@@ -1,6 +1,6 @@
 package org.example.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 
 import java.util.Objects;
 
@@ -14,7 +14,6 @@ public class TrainingType extends BaseEntity {
     public TrainingType(String trainingTypeName) {
         this.trainingTypeName = trainingTypeName;
     }
-
 
 
     public String getTrainingTypeName() {

@@ -3,7 +3,7 @@ package org.example.service.serviceimpl;
 import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
-import org.example.service.*;
+import org.example.service.TraineeService;
 import org.example.service.utils.UserUtils;
 import org.example.service.utils.Validator;
 import org.slf4j.Logger;

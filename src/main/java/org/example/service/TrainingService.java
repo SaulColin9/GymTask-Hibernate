@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.model.*;
+import org.example.model.Training;
 
 import java.util.Date;
 

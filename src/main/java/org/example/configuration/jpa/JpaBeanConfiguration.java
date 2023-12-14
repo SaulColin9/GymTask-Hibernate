@@ -7,7 +7,6 @@ import jakarta.persistence.spi.PersistenceUnitInfo;
 import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.example.dao.Dao;
 import org.example.dao.jpa.*;
-import org.example.facade.impl.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.authentication.JpaCredentialsAuthenticator;

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.example.dao.Dao;
 import org.example.model.EntityModel;
+
 import java.util.function.Consumer;
 
 public abstract class JpaDaoImpl<T extends EntityModel> implements Dao<T> {

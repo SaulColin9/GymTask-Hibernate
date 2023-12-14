@@ -2,7 +2,7 @@ package org.example.service.serviceimpl.jpa;
 
 import org.example.dao.jpa.JpaDaoTrainingImpl;
 import org.example.entitiesFactory.EntitiesFactory;
-import org.example.model.*;
+import org.example.model.Training;
 import org.example.service.utils.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 

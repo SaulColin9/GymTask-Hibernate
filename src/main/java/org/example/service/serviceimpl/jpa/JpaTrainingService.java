@@ -10,5 +10,4 @@ public interface JpaTrainingService extends TrainingService {
 
     List<Training> selectTrainerTrainingsByUsername(String username, Boolean isCompleted);
 
-
 }

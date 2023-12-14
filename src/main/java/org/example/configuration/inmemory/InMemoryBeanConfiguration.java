@@ -4,8 +4,6 @@ import org.example.configuration.inmemory.storage.GymStorageImpl;
 import org.example.configuration.inmemory.storage.Storage;
 import org.example.dao.Dao;
 import org.example.dao.inmemory.*;
-import org.example.facade.SimpleGymFacade;
-import org.example.facade.impl.GymFacadeImpl;
 import org.example.model.*;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
@@ -34,14 +32,6 @@ public class InMemoryBeanConfiguration {
         gymStorage.setFilePath(filePath);
         return gymStorage;
     }
-
-//    @Bean
-//    public SimpleGymFacade gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
-//                                     @Autowired TrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {
-//        GymFacadeImpl gymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
-//        gymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
-//        return gymFacade;
-//    }
 
     @Bean
     public TrainingService trainingService(@Autowired Dao<Trainee> traineeDao,

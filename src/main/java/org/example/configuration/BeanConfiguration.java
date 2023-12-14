@@ -2,7 +2,6 @@ package org.example.configuration;
 
 import org.example.configuration.inmemory.InMemoryBeanConfiguration;
 import org.example.configuration.jpa.JpaBeanConfiguration;
-import org.example.facade.SimpleGymFacade;
 import org.example.facade.impl.GymFacadeImpl;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;

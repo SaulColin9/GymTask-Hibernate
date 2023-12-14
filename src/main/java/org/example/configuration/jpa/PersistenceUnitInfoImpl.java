@@ -18,7 +18,6 @@ public class PersistenceUnitInfoImpl implements PersistenceUnitInfo {
     private DataSource dataSource;
     private List<String> managedClassNames;
 
-
     @Override
     public String getPersistenceUnitName() {
         return persistenceUnitName;

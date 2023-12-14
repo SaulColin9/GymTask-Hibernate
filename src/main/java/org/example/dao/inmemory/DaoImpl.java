@@ -2,7 +2,7 @@ package org.example.dao.inmemory;
 
 import org.example.configuration.inmemory.storage.Storage;
 import org.example.dao.Dao;
-import org.example.model.*;
+import org.example.model.EntityModel;
 
 import java.util.ArrayList;
 import java.util.List;

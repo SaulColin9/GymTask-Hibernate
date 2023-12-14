@@ -2,11 +2,9 @@ package org.example.service.authentication;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.example.model.User;
 
-import java.util.List;
 import java.util.Optional;
 
 public class JpaCredentialsAuthenticator extends AbstractCredentialsAuthenticator {

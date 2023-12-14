@@ -12,8 +12,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 class UsernameGeneratorImplTest {
@@ -27,7 +26,6 @@ class UsernameGeneratorImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
     }
 
     @Test
@@ -38,12 +36,14 @@ class UsernameGeneratorImplTest {
         users.add(new User(TEST_NAME, TEST_LASTNAME));
 
         when(userDao.getAll()).thenReturn(users);
+
         // act
         int serial = usernameGenerator.userNameExists(TEST_NAME, TEST_LASTNAME);
 
         // assert
         assertThat(serial).isEqualTo(2);
         verify(userDao, times(1)).getAll();
+
     }
 
     @Test
@@ -54,12 +54,14 @@ class UsernameGeneratorImplTest {
         users.add(new User(TEST_NAME, TEST_LASTNAME));
 
         when(userDao.getAll()).thenReturn(users);
+
         // act
         int serial = usernameGenerator.userNameExists("John", "Doe");
 
         // assert
         assertThat(serial).isEqualTo(0);
         verify(userDao, times(1)).getAll();
+
     }
 
     @Test
@@ -70,12 +72,14 @@ class UsernameGeneratorImplTest {
         users.add(new User(TEST_NAME, TEST_LASTNAME));
 
         when(userDao.getAll()).thenReturn(users);
+
         // act
         String actualResponse = usernameGenerator.generateUserName("John", "Doe");
 
         // assert
         assertThat(actualResponse).isEqualTo("John.Doe");
         verify(userDao, times(1)).getAll();
+
     }
 
 

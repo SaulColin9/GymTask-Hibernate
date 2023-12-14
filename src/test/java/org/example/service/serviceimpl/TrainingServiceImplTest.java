@@ -4,7 +4,10 @@ package org.example.service.serviceimpl;
 import org.example.dao.Dao;
 import org.example.entitiesFactory.EntitiesFactory;
 import org.example.matchers.TrainingMatcher;
-import org.example.model.*;
+import org.example.model.Trainee;
+import org.example.model.Trainer;
+import org.example.model.Training;
+import org.example.model.TrainingType;
 import org.example.service.utils.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 

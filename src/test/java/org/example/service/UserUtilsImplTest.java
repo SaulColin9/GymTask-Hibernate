@@ -40,6 +40,7 @@ class UserUtilsImplTest {
 
         when(usernameGenerator.generateUserName("John", "Doe")).thenReturn("John.Doe");
         when(passwordGenerator.generatePassword(10)).thenReturn("randomPassword");
+
         // act
         User actualResponse = userUtils.createUser(firstName, lastName);
 
@@ -48,6 +49,7 @@ class UserUtilsImplTest {
         assertThat(actualResponse.getUsername()).isEqualTo("John.Doe");
         verify(usernameGenerator, times(1)).generateUserName("John", "Doe");
         verify(passwordGenerator, times(1)).generatePassword(10);
+
     }
 
 
@@ -61,6 +63,7 @@ class UserUtilsImplTest {
 
         when(usernameGenerator.generateUserName("Jane", "Foo")).thenReturn("Jane.Foo");
         when(userDao.get(1)).thenReturn(Optional.of(createNewUser()));
+
         // act
         User updatedUser = userUtils.updateUser(userId, newFirstName, newLastName, isActive);
 
@@ -79,14 +82,15 @@ class UserUtilsImplTest {
         // arrange
         User userToBeDeleted = createNewUser();
         when(userDao.delete(1)).thenReturn(Optional.of(userToBeDeleted));
+
         // act
         Optional<User> userDeleted = userUtils.deleteUser(1);
 
         // assert
         assertThat(userDeleted.orElse(null)).isEqualTo(userToBeDeleted);
         verify(userDao, times(1)).delete(1);
-    }
 
+    }
 
     User createNewUser() {
         User newUser = new User();

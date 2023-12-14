@@ -1,7 +1,7 @@
 package org.example.service.authentication;
 
-import org.slf4j.Logger;
 import org.example.model.User;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.naming.AuthenticationException;

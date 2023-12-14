@@ -6,7 +6,7 @@ import org.mockito.Mock;
 
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class TraineeTest {

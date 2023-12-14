@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.*;
 class TrainingTest {
     EntitiesFactory entitiesFactory;
 
-
     @Mock
     private Training training;
 

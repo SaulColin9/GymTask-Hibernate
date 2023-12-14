@@ -1,13 +1,14 @@
 package org.example.configuration;
 
 import org.example.configuration.inmemory.storage.GymStorageImpl;
-import org.example.model.*;
+import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 class GymStorageImplTest {

@@ -1,13 +1,19 @@
 package org.example.service.serviceimpl;
 
 import org.example.dao.Dao;
-import org.example.model.*;
+import org.example.model.Trainee;
+import org.example.model.Trainer;
+import org.example.model.Training;
+import org.example.model.TrainingType;
 import org.example.service.TrainingService;
 import org.example.service.utils.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
     private Dao<Trainee> traineeDao;

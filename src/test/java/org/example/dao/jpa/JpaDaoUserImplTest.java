@@ -2,7 +2,6 @@ package org.example.dao.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;

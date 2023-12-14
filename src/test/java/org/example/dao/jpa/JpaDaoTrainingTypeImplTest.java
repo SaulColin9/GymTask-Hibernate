@@ -2,7 +2,6 @@ package org.example.dao.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.example.matchers.TrainingTypeMatcher;
 import org.example.model.Trainee;

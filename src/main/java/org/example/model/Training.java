@@ -1,6 +1,8 @@
 package org.example.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.util.Date;
 
@@ -28,7 +30,6 @@ public class Training extends BaseEntity {
         this.trainingDate = trainingDate;
         this.trainingDuration = trainingDuration;
     }
-
 
 
     public String getTrainingName() {
