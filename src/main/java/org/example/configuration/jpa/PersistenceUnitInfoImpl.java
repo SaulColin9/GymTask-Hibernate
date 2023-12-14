@@ -95,7 +95,7 @@ public class PersistenceUnitInfoImpl implements PersistenceUnitInfo {
 
     @Override
     public void addTransformer(ClassTransformer classTransformer) {
-
+        // Not needed for this implementation
     }
 
     @Override

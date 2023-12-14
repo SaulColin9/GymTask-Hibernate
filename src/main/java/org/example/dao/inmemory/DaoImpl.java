@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class DaoImpl<T extends EntityModel> implements Dao<T> {
+public abstract class DaoImpl<T extends EntityModel> implements Dao<T> {
     private Map<Integer, T> storageEntities;
 
     public int getNextId() {
@@ -34,9 +34,7 @@ public class DaoImpl<T extends EntityModel> implements Dao<T> {
         return Optional.ofNullable(foundT);
     }
 
-    public void setStorage(Storage storage) {
-
-    }
+    abstract public void setStorage(Storage storage);
 
     @Override
     public List<T> getAll() {

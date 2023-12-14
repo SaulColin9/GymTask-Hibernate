@@ -68,7 +68,7 @@ public class InMemoryBeanConfiguration {
 
     @Bean("users")
     public Dao<User> userDao(@Autowired Storage storage) {
-        DaoImpl<User> userDao = new DaoImpl<>();
+        DaoImpl<User> userDao = new UserDao();
         userDao.setStorageEntities(storage.getUsers());
         return userDao;
     }

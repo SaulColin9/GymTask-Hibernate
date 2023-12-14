@@ -23,7 +23,7 @@ public class StorageConnectionImpl<T> implements StorageConnection<T> {
 
         } catch (IOException e) {
             logger.error("No file path specified for getEntities");
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 

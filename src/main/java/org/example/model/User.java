@@ -37,6 +37,7 @@ public class User extends BaseEntity {
     }
 
 
+    @Override
     public User setId(int id) {
         this.id = id;
         return this;

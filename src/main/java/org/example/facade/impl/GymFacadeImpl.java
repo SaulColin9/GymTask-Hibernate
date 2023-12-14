@@ -187,7 +187,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
         try {
             credentialsAuthenticator.authorize(credentials, user);
         } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 }
