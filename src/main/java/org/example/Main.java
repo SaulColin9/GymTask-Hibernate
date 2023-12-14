@@ -39,7 +39,7 @@ public class Main {
         // Select Trainer by username
         logger.info(gymFacade.getTrainerByUsername(trainer1Credentials, updatedTrainerUsername).toString());
         // Trainer password change
-        String newTrainerPassword = "s3cr3t";
+        String newTrainerPassword = "1234";
         gymFacade.updateTrainerPassword(trainer1Credentials, trainer1.getId(), newTrainerPassword);
 
         // Trainee
