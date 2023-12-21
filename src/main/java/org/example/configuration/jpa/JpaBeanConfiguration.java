@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@PropertySource(value = "storage.properties")
+@PropertySource(value = "classpath:storage.properties")
 @Profile("jpa")
 public class JpaBeanConfiguration {
     @Value("${entities.jpa.source}")

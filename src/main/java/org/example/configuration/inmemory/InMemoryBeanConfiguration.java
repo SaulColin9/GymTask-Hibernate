@@ -23,7 +23,7 @@ import org.springframework.context.annotation.PropertySource;
 
 
 @Configuration
-@PropertySource(value = "storage.properties")
+@PropertySource(value = "classpath:storage.properties")
 @Profile("inMemory")
 public class InMemoryBeanConfiguration {
     @Bean
