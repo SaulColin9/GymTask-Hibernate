@@ -22,13 +22,10 @@ public interface JpaGymFacade {
 
     boolean updateActiveTrainerStatus(Credentials credentials, int id, boolean isActive);
 
-    List<Training> getTraineeTrainingsByUsername(String username);
 
-    List<Training> getTraineeTrainingsByUsernameAndTrainingType(String username, Integer trainingTypeId);
+    List<Training> getTraineeTrainings(String username, String trainingTypeName, Double minDuration, Double maxDuration);
 
-    List<Training> getTrainerTrainingsByUsername(String username);
-
-    List<Training> getTrainerTrainingsByUsernameAndTrainingCompleteness(String username, Boolean isCompleted);
+    List<Training> getTrainerTrainings(String username, Boolean isCompleted, String trainingName);
 
 
     List<Trainer> updateTraineeTrainersList(Credentials credentials, int traineeId, int trainerId);

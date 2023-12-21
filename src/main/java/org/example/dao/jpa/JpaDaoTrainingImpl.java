@@ -46,7 +46,8 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
         return foundTraining;
     }
 
-    public List<Training> getTrainingsByTraineeUsername(String username, Integer trainingTypeId) {
+    public List<Training> getTraineeTrainings(String username, String trainingTypeName,
+                                              Double minDuration, Double maxDuration) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Training> criteriaQuery = criteriaBuilder.createQuery(Training.class);
         Root<Training> root = criteriaQuery.from(Training.class);
@@ -55,9 +56,13 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
         Predicate equalsUsername = criteriaBuilder.equal(root.get("trainee").get("user").get("username"), username);
         predicates.add(equalsUsername);
 
-        if (trainingTypeId != null) {
-            Predicate equalsTrainingType = criteriaBuilder.equal(root.get("trainingType").get("id"), trainingTypeId);
+        if (trainingTypeName != null) {
+            Predicate equalsTrainingType = criteriaBuilder.equal(root.get("trainingType").get("trainingTypeName"), trainingTypeName);
             predicates.add(equalsTrainingType);
+        }
+        if (minDuration != null && maxDuration != null) {
+            Predicate durationPredicate = criteriaBuilder.between(root.get("trainingDuration"), maxDuration, minDuration);
+            predicates.add(durationPredicate);
         }
 
         criteriaQuery.select(root).where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
@@ -66,7 +71,9 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
         return query.getResultList();
     }
 
-    public List<Training> getTrainingsByTrainerUsername(String username, Boolean isTrainingCompleted) {
+    public List<Training> getTrainingsByTrainerUsername(String username,
+                                                        Boolean isTrainingCompleted,
+                                                        String trainingName) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Training> criteriaQuery = criteriaBuilder.createQuery(Training.class);
         Root<Training> root = criteriaQuery.from(Training.class);
@@ -80,6 +87,10 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
                     isTrainingCompleted ? criteriaBuilder.lessThan(root.get("trainingDate"), new Date()) :
                             criteriaBuilder.greaterThanOrEqualTo(root.get("trainingDate"), new Date());
             predicates.add(isCompletedPredicate);
+        }
+        if (trainingName != null) {
+            Predicate trainingNamePredicate = criteriaBuilder.equal(root.get("trainingName"), trainingName);
+            predicates.add(trainingNamePredicate);
         }
 
         criteriaQuery.select(root).where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));

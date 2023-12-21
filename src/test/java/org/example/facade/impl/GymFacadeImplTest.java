@@ -410,7 +410,7 @@ class GymFacadeImplTest {
     void givenValidTraineeUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        when(trainingService.selectTraineeTrainingsByUsername(username, null))
+        when(trainingService.selectTraineeTrainings(username, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
@@ -419,7 +419,7 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, null);
+                .selectTraineeTrainings(username, null);
 
     }
 
@@ -428,7 +428,7 @@ class GymFacadeImplTest {
         // arrange
         String username = "John.Doe";
         Integer trainingTypeId = 1;
-        when(trainingService.selectTraineeTrainingsByUsername(username, trainingTypeId))
+        when(trainingService.selectTraineeTrainings(username, trainingTypeId))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
@@ -437,7 +437,7 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainingsByUsername(username, trainingTypeId);
+                .selectTraineeTrainings(username, trainingTypeId);
 
     }
 
@@ -446,7 +446,7 @@ class GymFacadeImplTest {
     void givenValidTrainerUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        when(trainingService.selectTrainerTrainingsByUsername(username, null))
+        when(trainingService.selectTrainerTrainings(username, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
@@ -455,7 +455,7 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, null);
+                .selectTrainerTrainings(username, null);
 
     }
 
@@ -464,7 +464,7 @@ class GymFacadeImplTest {
         // arrange
         String username = "John.Doe";
         Boolean isCompleted = true;
-        when(trainingService.selectTrainerTrainingsByUsername(username, isCompleted))
+        when(trainingService.selectTrainerTrainings(username, isCompleted))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
@@ -473,7 +473,7 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainingsByUsername(username, isCompleted);
+                .selectTrainerTrainings(username, isCompleted);
 
     }
 

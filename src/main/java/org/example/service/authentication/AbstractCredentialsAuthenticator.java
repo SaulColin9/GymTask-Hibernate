@@ -1,5 +1,7 @@
 package org.example.service.authentication;
 
+import org.example.exception.UserAuthenticationException;
+import org.example.exception.UserAuthorizationException;
 import org.example.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,19 +17,20 @@ public abstract class AbstractCredentialsAuthenticator implements CredentialsAut
     private static final String FAILED_TO_AUTHENTICATE = "No user was found with the provided credentials";
 
     @Override
-    public void authorize(Credentials credentials, User user) throws AuthenticationException {
-        // TODO use Optional methods instead of manual checks
+    public void authorize(Credentials credentials, User user) {
         Optional<User> foundUser = getUserByCredentials(credentials);
-        if (foundUser.isEmpty()) {
-            logger.error(FAILED_TO_AUTHENTICATE);
-            throw new AuthenticationException(FAILED_TO_AUTHENTICATE);
-        }
-
-        if (!foundUser.get().equals(user)) {
-            logger.error(USER_NOT_AUTHORIZED);
-            throw new AuthenticationException(USER_NOT_AUTHORIZED);
-        }
-
+        foundUser.ifPresentOrElse(
+                (existentUser) -> {
+                    if (!existentUser.equals(user)) {
+                        logger.error(USER_NOT_AUTHORIZED);
+                        throw new UserAuthorizationException(USER_NOT_AUTHORIZED);
+                    }
+                },
+                () -> {
+                    logger.error(FAILED_TO_AUTHENTICATE);
+                    throw new UserAuthenticationException(FAILED_TO_AUTHENTICATE);
+                }
+        );
         logger.info(USER_AUTHENTICATED);
         logger.info(USER_AUTHORIZED);
     }

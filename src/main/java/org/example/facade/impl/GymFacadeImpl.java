@@ -143,20 +143,18 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     }
 
     @Override
-    // TODO reimplement it with only one method
-    public List<Training> getTraineeTrainingsByUsername(String username,
-                                                        String trainingTypeName,
-                                                        Double minDuration,
-                                                        Double maxDuration) {
-        return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, null);
+    public List<Training> getTraineeTrainings(String username,
+                                              String trainingTypeName,
+                                              Double minDuration,
+                                              Double maxDuration) {
+        return ((JpaTrainingService) trainingService).selectTraineeTrainings(username, trainingTypeName, minDuration, maxDuration);
     }
 
     @Override
-    // TODO reimplement it with only one method
-    public List<Training> getTrainerTrainingsByUsername(String username,
-                                                        Boolean isCompleted,
-                                                        String trainingName) {
-        return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, null);
+    public List<Training> getTrainerTrainings(String username,
+                                              Boolean isCompleted,
+                                              String trainingName) {
+        return ((JpaTrainingService) trainingService).selectTrainerTrainings(username, isCompleted, trainingName);
     }
 
 
@@ -181,11 +179,6 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     }
 
     private void executeAuth(Credentials credentials, User user) {
-        // TODO remove try-catch block and replace AuthenticationException.class with your own
-        try {
-            credentialsAuthenticator.authorize(credentials, user);
-        } catch (AuthenticationException e) {
-            throw new IllegalArgumentException(e);
-        }
+        credentialsAuthenticator.authorize(credentials, user);
     }
 }

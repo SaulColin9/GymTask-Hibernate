@@ -58,10 +58,9 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
 
     public Optional<Trainee> getByUsername(String username) {
         try {
-            Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
+            TypedQuery<Trainee> query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username", Trainee.class);
             query.setParameter(USERNAME_PARAM, username);
-            // TODO remove down-casting to Trainee.class
-            return Optional.of((Trainee) query.getSingleResult());
+            return Optional.of(query.getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
         }

@@ -37,16 +37,16 @@ class JpaTrainingServiceImplTest {
         String username = "John.Doe";
         Integer trainingTypeId = 1;
 
-        when(daoTraining.getTrainingsByTraineeUsername(username, trainingTypeId))
+        when(daoTraining.getTraineeTrainings(username, trainingTypeId))
                 .thenReturn(List.of(createNewTraining()));
 
         // act
         List<Training> actualResponse = jpaTrainingService
-                .selectTraineeTrainingsByUsername(username, trainingTypeId);
+                .selectTraineeTrainings(username, trainingTypeId);
 
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(daoTraining, times(1)).getTrainingsByTraineeUsername(username, trainingTypeId);
+        verify(daoTraining, times(1)).getTraineeTrainings(username, trainingTypeId);
 
     }
 
@@ -61,7 +61,7 @@ class JpaTrainingServiceImplTest {
 
         // act
         List<Training> actualResponse = jpaTrainingService
-                .selectTrainerTrainingsByUsername(username, isCompleted);
+                .selectTrainerTrainings(username, isCompleted);
 
         // assert
         assertThat(actualResponse).isNotNull();
