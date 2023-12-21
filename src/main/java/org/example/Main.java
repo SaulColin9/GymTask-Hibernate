@@ -28,6 +28,7 @@ public class Main {
         Trainer trainer1 = gymFacade.addTrainer("George", "Smith", 1);
         Credentials trainer1Credentials = new Credentials(trainer1.getUser().getUsername(), trainer1.getUser().getPassword());
         // Selecting trainer by id
+//        logger.info(gymFacade.getTrainer(trainer1Credentials, trainer1.getId()).toString());
         logger.info(gymFacade.getTrainer(trainer1Credentials, trainer1.getId()).toString());
         // Updating Trainer
         gymFacade.updateTrainer(trainer1Credentials, trainer1.getId(), "George", "Ford", false, 2);

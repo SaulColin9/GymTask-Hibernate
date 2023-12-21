@@ -9,11 +9,7 @@ public class JpaDaoUserImpl extends JpaDaoImpl<User> {
 
     @Override
     public Optional<User> get(int id) {
-        try {
-            return Optional.of(getEntityManager().find(User.class, id));
-        } catch (NullPointerException e) {
-            return Optional.empty();
-        }
+        return Optional.of(getEntityManager().find(User.class, id));
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface SimpleGymFacade {
 
     Trainer getTrainer(Credentials credentials, int id);
 
-    int addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
+    Training addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration);
 
     Training getTraining(int id);
 }

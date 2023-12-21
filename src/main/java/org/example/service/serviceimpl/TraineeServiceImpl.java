@@ -22,7 +22,7 @@ public class TraineeServiceImpl implements TraineeService {
 
 
     @Override
-    public int createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
+    public Trainee createTraineeProfile(String firstName, String lastName, Date dateOfBirth, String address) {
         Map<String, Object> params = new HashMap<>();
         params.put("firstName", firstName);
         params.put("lastName", lastName);
@@ -32,8 +32,7 @@ public class TraineeServiceImpl implements TraineeService {
         User newUser = userUtils.createUser(firstName, lastName);
 
         logger.info("Creating Trainee Profile with id {}", newUser.getId());
-        Trainee newTrainee = traineeDao.save(new Trainee(dateOfBirth, address, newUser));
-        return newTrainee.getId();
+        return traineeDao.save(new Trainee(dateOfBirth, address, newUser));
     }
 
     @Override

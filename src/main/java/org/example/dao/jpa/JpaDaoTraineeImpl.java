@@ -15,12 +15,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
 
     @Override
     public Optional<Trainee> get(int id) {
-        // TODO remove try-catch with the same behaviour
-        try {
-            return Optional.of(getEntityManager().find(Trainee.class, id));
-        } catch (NullPointerException e) {
-            return Optional.empty();
-        }
+        return Optional.of(getEntityManager().find(Trainee.class, id));
     }
 
     @Override
@@ -43,16 +38,19 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
     @Override
     public Optional<Trainee> delete(int id) {
         Optional<Trainee> foundTrainee = get(id);
-        // TODO code is duplicated
-        foundTrainee.ifPresent(trainee -> {
-            executeTransaction(entityManager -> {
-                Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
-                trainingDeleteQuery.setParameter(TRAINEE_ID_PARAM, trainee.getId());
-                trainingDeleteQuery.executeUpdate();
-            });
-            executeTransaction(entityManager -> entityManager.remove(trainee));
 
-        });
+        foundTrainee.ifPresent(this::deleteTrainee);
+
+        return foundTrainee;
+    }
+
+    public Optional<Trainee> deleteByUsername(String username) {
+        Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
+        query.setParameter(USERNAME_PARAM, username);
+        Optional<Trainee> foundTrainee = Optional.of((Trainee) query.getSingleResult());
+
+        foundTrainee.ifPresent(this::deleteTrainee);
+
         return foundTrainee;
     }
 
@@ -66,24 +64,6 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
         }
     }
 
-    public Optional<Trainee> deleteByUsername(String username) {
-        Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
-        query.setParameter(USERNAME_PARAM, username);
-        Optional<Trainee> foundTrainee = Optional.of((Trainee) query.getSingleResult());
-
-        // TODO code is duplicated
-        foundTrainee.ifPresent(trainee -> {
-                    executeTransaction(entityManager -> {
-                        Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
-                        trainingDeleteQuery.setParameter(TRAINEE_ID_PARAM, trainee.getId());
-                        trainingDeleteQuery.executeUpdate();
-                    });
-                    executeTransaction(entityManager -> entityManager.remove(trainee));
-                }
-        );
-
-        return foundTrainee;
-    }
 
     public List<Trainer> getNotAssignedOnTraineeTrainersList(Trainee trainee) {
         TypedQuery<Trainer> query = getEntityManager().createQuery(
@@ -96,5 +76,14 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
         return query.getResultList();
     }
 
+    private void deleteTrainee(Trainee trainee) {
+        executeTransaction(entityManager -> {
+            Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
+            trainingDeleteQuery.setParameter(TRAINEE_ID_PARAM, trainee.getId());
+            trainingDeleteQuery.executeUpdate();
+        });
+
+        executeTransaction(entityManager -> entityManager.remove(trainee));
+    }
 
 }

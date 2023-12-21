@@ -23,7 +23,7 @@ public class TrainerServiceImpl implements TrainerService {
     protected Validator<Trainer> validator;
 
     @Override
-    public int createTrainerProfile(String firstName, String lastName, int specialization) {
+    public Trainer createTrainerProfile(String firstName, String lastName, int specialization) {
         Optional<TrainingType> trainingType = trainingTypeDao.get(specialization);
         Map<String, Object> params = new HashMap<>();
         params.put("firstName", firstName);
@@ -38,9 +38,7 @@ public class TrainerServiceImpl implements TrainerService {
         if (trainingType.isPresent()) {
             foundTrainingType = trainingType.get();
         }
-        Trainer newTrainer = trainerDao.save(new Trainer(foundTrainingType, newUser));
-
-        return newTrainer.getId();
+        return trainerDao.save(new Trainer(foundTrainingType, newUser));
     }
 
     @Override

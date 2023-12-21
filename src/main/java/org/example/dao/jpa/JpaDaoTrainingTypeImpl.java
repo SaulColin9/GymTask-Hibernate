@@ -8,11 +8,7 @@ import java.util.Optional;
 public class JpaDaoTrainingTypeImpl extends JpaDaoImpl<TrainingType> {
     @Override
     public Optional<TrainingType> get(int id) {
-        try {
-            return Optional.of(getEntityManager().find(TrainingType.class, id));
-        } catch (NullPointerException e) {
-            return Optional.empty();
-        }
+        return Optional.of(getEntityManager().find(TrainingType.class, id));
     }
 
     @Override

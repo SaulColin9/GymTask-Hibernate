@@ -36,9 +36,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
 
     @Override
     public Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address) {
-        int newTraineeId = traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address);
-        // TODO one DB call instead of two to return the Entity
-        return traineeService.selectTraineeProfile(newTraineeId);
+        return traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address);
     }
 
     @Override
@@ -92,8 +90,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
 
     @Override
     public Trainer addTrainer(String firstName, String lastName, int specialization) {
-        int newTrainerId = trainerService.createTrainerProfile(firstName, lastName, specialization);
-        return trainerService.selectTrainerProfile(newTrainerId);
+        return trainerService.createTrainerProfile(firstName, lastName, specialization);
     }
 
     @Override
@@ -133,7 +130,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     }
 
     @Override
-    public int addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
+    public Training addTraining(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
         return trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
     }
 

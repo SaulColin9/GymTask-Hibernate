@@ -11,11 +11,8 @@ import java.util.Optional;
 public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
     @Override
     public Optional<Trainer> get(int id) {
-        try {
-            return Optional.of(getEntityManager().find(Trainer.class, id));
-        } catch (NullPointerException e) {
-            return Optional.empty();
-        }
+        return Optional.of(getEntityManager().find(Trainer.class, id));
+
     }
 
     @Override

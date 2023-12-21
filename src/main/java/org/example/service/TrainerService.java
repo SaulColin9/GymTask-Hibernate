@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.model.Trainer;
 
 public interface TrainerService {
-    int createTrainerProfile(String firstName, String lastName, int specialization);
+    Trainer createTrainerProfile(String firstName, String lastName, int specialization);
 
     boolean updateTrainerProfile(int id, String firstName, String lastName, boolean isActive, int specialization);
 

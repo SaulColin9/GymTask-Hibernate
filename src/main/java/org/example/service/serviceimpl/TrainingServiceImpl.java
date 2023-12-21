@@ -25,7 +25,7 @@ public class TrainingServiceImpl implements TrainingService {
 
 
     @Override
-    public int createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
+    public Training createTrainingProfile(int traineeId, int trainerId, String trainingName, int trainingTypeId, Date trainingDate, double trainingDuration) {
         Map<String, Object> params = new HashMap<>();
         params.put("trainingName", trainingName);
         params.put("trainingDate", trainingDate);
@@ -51,7 +51,7 @@ public class TrainingServiceImpl implements TrainingService {
                         trainingName, trainingType.orElse(null), trainingDate, trainingDuration)
         );
         logger.info("Creating Training Profile with id " + newTraining.getId());
-        return newTraining.getId();
+        return newTraining;
     }
 
     @Override
