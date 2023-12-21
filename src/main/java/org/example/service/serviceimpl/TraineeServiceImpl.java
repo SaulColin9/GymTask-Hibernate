@@ -28,6 +28,7 @@ public class TraineeServiceImpl implements TraineeService {
         params.put("lastName", lastName);
         validator.validateFieldsNotNull(params);
 
+        // TODO 2 different transactions, merge it into one
         User newUser = userUtils.createUser(firstName, lastName);
 
         logger.info("Creating Trainee Profile with id {}", newUser.getId());
@@ -37,6 +38,7 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public boolean updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
+        // TODO additional check of user existence, not necessary
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
         validator.validateEntityNotNull(id, traineeToUpdate.orElse(null));
 

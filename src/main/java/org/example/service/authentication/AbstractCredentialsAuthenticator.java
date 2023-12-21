@@ -16,6 +16,7 @@ public abstract class AbstractCredentialsAuthenticator implements CredentialsAut
 
     @Override
     public void authorize(Credentials credentials, User user) throws AuthenticationException {
+        // TODO use Optional methods instead of manual checks
         Optional<User> foundUser = getUserByCredentials(credentials);
         if (foundUser.isEmpty()) {
             logger.error(FAILED_TO_AUTHENTICATE);

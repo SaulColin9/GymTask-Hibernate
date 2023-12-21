@@ -15,6 +15,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
 
     @Override
     public Optional<Trainee> get(int id) {
+        // TODO remove try-catch with the same behaviour
         try {
             return Optional.of(getEntityManager().find(Trainee.class, id));
         } catch (NullPointerException e) {
@@ -42,6 +43,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
     @Override
     public Optional<Trainee> delete(int id) {
         Optional<Trainee> foundTrainee = get(id);
+        // TODO code is duplicated
         foundTrainee.ifPresent(trainee -> {
             executeTransaction(entityManager -> {
                 Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");
@@ -58,6 +60,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
         try {
             Query query = getEntityManager().createQuery("FROM Trainee t WHERE t.user.username = :username");
             query.setParameter(USERNAME_PARAM, username);
+            // TODO remove down-casting to Trainee.class
             return Optional.of((Trainee) query.getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
@@ -69,6 +72,7 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
         query.setParameter(USERNAME_PARAM, username);
         Optional<Trainee> foundTrainee = Optional.of((Trainee) query.getSingleResult());
 
+        // TODO code is duplicated
         foundTrainee.ifPresent(trainee -> {
                     executeTransaction(entityManager -> {
                         Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");

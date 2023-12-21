@@ -37,6 +37,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     @Override
     public Trainee addTrainee(String firstName, String lastName, Date dateOfBirth, String address) {
         int newTraineeId = traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address);
+        // TODO one DB call instead of two to return the Entity
         return traineeService.selectTraineeProfile(newTraineeId);
     }
 
@@ -142,24 +143,20 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     }
 
     @Override
-    public List<Training> getTraineeTrainingsByUsername(String username) {
+    // TODO reimplement it with only one method
+    public List<Training> getTraineeTrainingsByUsername(String username,
+                                                        String trainingTypeName,
+                                                        Double minDuration,
+                                                        Double maxDuration) {
         return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, null);
     }
 
     @Override
-    public List<Training> getTraineeTrainingsByUsernameAndTrainingType(String username, Integer trainingTypeId) {
-        return ((JpaTrainingService) trainingService).selectTraineeTrainingsByUsername(username, trainingTypeId);
-    }
-
-
-    @Override
-    public List<Training> getTrainerTrainingsByUsername(String username) {
+    // TODO reimplement it with only one method
+    public List<Training> getTrainerTrainingsByUsername(String username,
+                                                        Boolean isCompleted,
+                                                        String trainingName) {
         return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, null);
-    }
-
-    @Override
-    public List<Training> getTrainerTrainingsByUsernameAndTrainingCompleteness(String username, Boolean isCompleted) {
-        return ((JpaTrainingService) trainingService).selectTrainerTrainingsByUsername(username, isCompleted);
     }
 
 
@@ -184,6 +181,7 @@ public class GymFacadeImpl implements JpaGymFacade, SimpleGymFacade {
     }
 
     private void executeAuth(Credentials credentials, User user) {
+        // TODO remove try-catch block and replace AuthenticationException.class with your own
         try {
             credentialsAuthenticator.authorize(credentials, user);
         } catch (AuthenticationException e) {
