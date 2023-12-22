@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class JpaTrainingServiceImplTest {
     EntitiesFactory entitiesFactory;
     @Mock
-    Validator<Training> validator;
+    Validator validator;
     @Mock
     JpaDaoTrainingImpl daoTraining;
     @InjectMocks

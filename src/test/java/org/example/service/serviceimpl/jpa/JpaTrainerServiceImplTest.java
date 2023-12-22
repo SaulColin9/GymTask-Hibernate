@@ -23,7 +23,7 @@ class JpaTrainerServiceImplTest {
 
     EntitiesFactory entitiesFactory;
     @Mock
-    Validator<Trainer> validator;
+    Validator validator;
     @Mock
     JpaDaoTrainerImpl trainerDao;
     @InjectMocks

@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 class JpaTraineeServiceImplTest {
 
     @Mock
-    Validator<Trainee> validator;
+    Validator validator;
     @Mock
     JpaDaoTraineeImpl traineeDao;
     @InjectMocks

@@ -36,7 +36,7 @@ class TrainerServiceImplTest {
     @Mock
     private UserUtils userUtils;
     @Mock
-    private Validator<Trainer> validator;
+    private Validator validator;
 
 
     @BeforeEach

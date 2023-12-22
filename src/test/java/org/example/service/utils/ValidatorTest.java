@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ValidatorTest {
     @InjectMocks
-    Validator<User> validator;
+    Validator validator;
 
     @BeforeEach
     void setUp() {

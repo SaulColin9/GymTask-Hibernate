@@ -36,7 +36,7 @@ class TrainingServiceImplTest {
     @Mock
     private Dao<Training> trainingDao;
     @Mock
-    private Validator<Training> validator;
+    private Validator validator;
     @InjectMocks
     private TrainingServiceImpl trainingService;
 

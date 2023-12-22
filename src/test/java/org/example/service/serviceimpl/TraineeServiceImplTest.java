@@ -30,7 +30,7 @@ class TraineeServiceImplTest {
     @Mock
     private UserUtils userUtils;
     @Mock
-    private Validator<Trainee> validator;
+    private Validator validator;
     @InjectMocks
     private TraineeServiceImpl traineeService;
 
