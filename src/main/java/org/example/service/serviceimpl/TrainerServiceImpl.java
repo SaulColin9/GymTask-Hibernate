@@ -5,8 +5,8 @@ import org.example.model.Trainer;
 import org.example.model.TrainingType;
 import org.example.model.User;
 import org.example.service.TrainerService;
-import org.example.service.utils.user.UserUtils;
 import org.example.service.utils.Validator;
+import org.example.service.utils.user.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

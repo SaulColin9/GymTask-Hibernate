@@ -4,8 +4,8 @@ import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.example.service.TraineeService;
-import org.example.service.utils.user.UserUtils;
 import org.example.service.utils.Validator;
+import org.example.service.utils.user.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
