@@ -17,7 +17,7 @@ import java.util.Optional;
 public class TraineeServiceImpl implements TraineeService {
     private UserUtils userUtils;
     protected static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
-    protected Validator<Trainee> validator;
+    protected Validator validator;
     protected Dao<Trainee> traineeDao;
 
 
@@ -83,7 +83,7 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
 
-    public void setValidator(Validator<Trainee> validator) {
+    public void setValidator(Validator validator) {
         this.validator = validator;
     }
 

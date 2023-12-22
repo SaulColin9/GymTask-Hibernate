@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrainerService {
+    private static final String TRAINER_ENTITY = "Trainer";
+
     @Override
     public Trainer selectTrainerProfileByUsername(String username) {
         Map<String, Object> params = new HashMap<>();
@@ -19,7 +21,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
         Optional<Trainer> foundTrainer = ((JpaDaoTrainerImpl) trainerDao).getByUsername(username);
 
         params.clear();
-        params.put("Trainer", foundTrainer.orElse(null));
+        params.put(TRAINER_ENTITY, foundTrainer.orElse(null));
         validator.validateEntitiesNotNull(params);
         logger.info("Selecting Trainer Profile with username {}", username);
 
@@ -30,7 +32,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     public boolean updateTrainerPassword(int id, String newPassword) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
         Map<String, Object> params = new HashMap<>();
-        params.put("Trainer", trainerToUpdate.orElse(null));
+        params.put(TRAINER_ENTITY, trainerToUpdate.orElse(null));
         validator.validateEntitiesNotNull(params);
 
         Trainer foundTrainer = trainerToUpdate.orElse(null);
@@ -45,7 +47,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     public boolean updateTrainerActiveStatus(int id, boolean isActive) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
         Map<String, Object> params = new HashMap<>();
-        params.put("Trainer", trainerToUpdate.orElse(null));
+        params.put(TRAINER_ENTITY, trainerToUpdate.orElse(null));
         validator.validateEntitiesNotNull(params);
 
         Trainer foundTrainer = trainerToUpdate.orElse(null);
@@ -60,7 +62,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     public List<Trainer> updateTraineeTrainersList(int traineeId, int trainerId) {
         Optional<Trainer> foundTrainer = trainerDao.get(trainerId);
         Map<String, Object> params = new HashMap<>();
-        params.put("Trainer", foundTrainer.orElse(null));
+        params.put(TRAINER_ENTITY, foundTrainer.orElse(null));
         validator.validateEntitiesNotNull(params);
 
         logger.info("Updating trainee with id {} trainers list with id {}", traineeId, trainerId);

@@ -141,7 +141,7 @@ public class JpaBeanConfiguration {
         trainingService.setTrainerDao(trainerDao);
         trainingService.setTrainingDao(trainingDao);
         trainingService.setTrainingTypeDao(trainingTypeDao);
-        trainingService.setValidator(new Validator<>());
+        trainingService.setValidator(new Validator());
         return trainingService;
     }
 
@@ -153,7 +153,7 @@ public class JpaBeanConfiguration {
         trainerService.setTrainerDao(trainerDao);
         trainerService.setTrainingTypeDao(trainingTypeDao);
         trainerService.setUserUtils(userUtils);
-        trainerService.setValidator(new Validator<>());
+        trainerService.setValidator(new Validator());
         return trainerService;
     }
 
@@ -162,7 +162,7 @@ public class JpaBeanConfiguration {
         JpaTraineeServiceImpl traineeService = new JpaTraineeServiceImpl();
         traineeService.setTraineeDao(traineeDao);
         traineeService.setUserUtils(userUtils);
-        traineeService.setValidator(new Validator<>());
+        traineeService.setValidator(new Validator());
         return traineeService;
     }
 

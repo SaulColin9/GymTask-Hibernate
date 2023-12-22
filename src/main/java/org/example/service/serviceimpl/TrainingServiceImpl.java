@@ -21,7 +21,7 @@ public class TrainingServiceImpl implements TrainingService {
     private Dao<TrainingType> trainingTypeDao;
     protected Dao<Training> trainingDao;
     protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
-    protected Validator<Training> validator;
+    protected Validator validator;
 
 
     @Override
@@ -64,7 +64,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
 
-    public void setValidator(Validator<Training> validator) {
+    public void setValidator(Validator validator) {
         this.validator = validator;
     }
 

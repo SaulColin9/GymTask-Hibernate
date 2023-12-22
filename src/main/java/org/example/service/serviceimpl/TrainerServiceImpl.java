@@ -20,7 +20,7 @@ public class TrainerServiceImpl implements TrainerService {
     protected Dao<TrainingType> trainingTypeDao;
     private UserUtils userUtils;
     protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
-    protected Validator<Trainer> validator;
+    protected Validator validator;
 
     @Override
     public Trainer createTrainerProfile(String firstName, String lastName, int specialization) {
@@ -77,7 +77,7 @@ public class TrainerServiceImpl implements TrainerService {
         return trainer.orElse(null);
     }
 
-    public void setValidator(Validator<Trainer> validator) {
+    public void setValidator(Validator validator) {
         this.validator = validator;
     }
 

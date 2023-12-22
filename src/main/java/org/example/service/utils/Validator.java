@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class Validator<T> {
+public class Validator {
     private static final Logger logger = LoggerFactory.getLogger(Validator.class);
     private static final String NULL_FIELD = "%s argument cannot be null";
     private static final String NEGATIVE_FIELD = "%s argument cannot be lower or equal to zero";

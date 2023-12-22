@@ -19,7 +19,7 @@ public abstract class AbstractCredentialsAuthenticator implements CredentialsAut
     public void authorize(Credentials credentials, User user) {
         Optional<User> foundUser = getUserByCredentials(credentials);
         foundUser.ifPresentOrElse(
-                (existentUser) -> {
+                existentUser -> {
                     if (!existentUser.equals(user)) {
                         logger.error(USER_NOT_AUTHORIZED);
                         throw new UserAuthorizationException(USER_NOT_AUTHORIZED);
