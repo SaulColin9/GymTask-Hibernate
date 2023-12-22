@@ -19,7 +19,9 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
 
         Optional<Trainee> foundTrainee = ((JpaDaoTraineeImpl) traineeDao).getByUsername(username);
 
-        validator.validateEntityNotNull(username, foundTrainee.orElse(null));
+        params.clear();
+        params.put("Trainee", foundTrainee.orElse(null));
+        validator.validateEntitiesNotNull(params);
         logger.info("Selecting Trainee Profile with username {}", username);
 
         return foundTrainee.orElse(null);
@@ -28,7 +30,9 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     @Override
     public boolean deleteTraineeProfile(int id) {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
-        validator.validateEntityNotNull(id, traineeToDelete.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainee", traineeToDelete.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Optional<Trainee> deletedTrainee = traineeDao.delete(id);
         logger.info("Deleting Trainee Profile with id {}", id);
@@ -39,7 +43,9 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     @Override
     public boolean deleteTraineeProfileByUsername(String username) {
         Optional<Trainee> traineeToDelete = ((JpaDaoTraineeImpl) traineeDao).getByUsername(username);
-        validator.validateEntityNotNull(username, traineeToDelete.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainee", traineeToDelete.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Optional<Trainee> deletedTrainee = ((JpaDaoTraineeImpl) traineeDao).deleteByUsername(username);
         logger.info("Deleting Trainee Profile with username {}", username);
@@ -50,7 +56,9 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     @Override
     public boolean updateTraineePassword(int id, String newPassword) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
-        validator.validateEntityNotNull(id, traineeToUpdate.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainee", traineeToUpdate.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Trainee foundTrainee = traineeToUpdate.orElse(null);
         if (traineeToUpdate.isPresent()) {
@@ -64,7 +72,9 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     @Override
     public boolean updateTraineeActiveStatus(int id, boolean isActive) {
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
-        validator.validateEntityNotNull(id, traineeToUpdate.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainee", traineeToUpdate.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Trainee foundTrainee = traineeToUpdate.orElse(null);
         if (traineeToUpdate.isPresent()) {
@@ -78,7 +88,9 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     @Override
     public List<Trainer> selectNotAssignedOnTraineeTrainersList(int traineeId) {
         Optional<Trainee> foundTrainee = traineeDao.get(traineeId);
-        validator.validateEntityNotNull(traineeId, foundTrainee.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainee", foundTrainee.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Trainee selectedTrainee = foundTrainee.orElse(null);
         if (foundTrainee.isPresent()) {

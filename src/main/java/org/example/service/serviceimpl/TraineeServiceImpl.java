@@ -61,8 +61,9 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public boolean deleteTraineeProfile(int id) {
         Optional<Trainee> traineeToDelete = traineeDao.get(id);
-        validator.validateEntityNotNull(id, traineeToDelete.orElse(null));
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainee", traineeToDelete.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Optional<Trainee> deletedTrainee = traineeDao.delete(id);
         if (traineeToDelete.isPresent()) {
@@ -75,7 +76,9 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Trainee selectTraineeProfile(int id) {
         Optional<Trainee> trainee = traineeDao.get(id);
-        validator.validateEntityNotNull(id, trainee.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainee", trainee.orElse(null));
+
         logger.info("Selecting Trainee Profile with id " + id);
         return trainee.orElse(null);
     }

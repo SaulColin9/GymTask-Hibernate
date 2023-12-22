@@ -18,7 +18,9 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
 
         Optional<Trainer> foundTrainer = ((JpaDaoTrainerImpl) trainerDao).getByUsername(username);
 
-        validator.validateEntityNotNull(username, foundTrainer.orElse(null));
+        params.clear();
+        params.put("Trainer", foundTrainer.orElse(null));
+        validator.validateEntitiesNotNull(params);
         logger.info("Selecting Trainer Profile with username {}", username);
 
         return foundTrainer.orElse(null);
@@ -27,7 +29,9 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     @Override
     public boolean updateTrainerPassword(int id, String newPassword) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
-        validator.validateEntityNotNull(id, trainerToUpdate.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainer", trainerToUpdate.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Trainer foundTrainer = trainerToUpdate.orElse(null);
         if (trainerToUpdate.isPresent()) {
@@ -40,7 +44,9 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     @Override
     public boolean updateTrainerActiveStatus(int id, boolean isActive) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
-        validator.validateEntityNotNull(id, trainerToUpdate.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainer", trainerToUpdate.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         Trainer foundTrainer = trainerToUpdate.orElse(null);
         if (trainerToUpdate.isPresent()) {
@@ -53,7 +59,9 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     @Override
     public List<Trainer> updateTraineeTrainersList(int traineeId, int trainerId) {
         Optional<Trainer> foundTrainer = trainerDao.get(trainerId);
-        validator.validateEntityNotNull(trainerId, foundTrainer.orElse(null));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Trainer", foundTrainer.orElse(null));
+        validator.validateEntitiesNotNull(params);
 
         logger.info("Updating trainee with id {} trainers list with id {}", traineeId, trainerId);
         return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(traineeId, foundTrainer.orElse(null));
