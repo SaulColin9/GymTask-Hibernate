@@ -51,9 +51,12 @@ public class InMemoryBeanConfiguration {
     }
 
     @Bean
-    public TrainerService trainerService(@Autowired Dao<Trainer> trainerDao, @Autowired UserUtils userUtils) {
+    public TrainerService trainerService(@Autowired Dao<Trainer> trainerDao,
+                                         @Autowired Dao<TrainingType> trainingTypeDao,
+                                         @Autowired UserUtils userUtils) {
         TrainerServiceImpl trainerService = new TrainerServiceImpl();
         trainerService.setTrainerDao(trainerDao);
+        trainerService.setTrainingTypeDao(trainingTypeDao);
         trainerService.setUserUtils(userUtils);
         trainerService.setValidator(new Validator<>());
         return trainerService;
