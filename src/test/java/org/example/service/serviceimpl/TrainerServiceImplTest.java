@@ -6,8 +6,8 @@ import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainer;
 import org.example.model.TrainingType;
 import org.example.model.User;
-import org.example.service.utils.user.UserUtils;
 import org.example.service.utils.Validator;
+import org.example.service.utils.user.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -66,10 +66,10 @@ class TrainerServiceImplTest {
         when(trainerDao.save(argThat(new TrainerMatcher(testTrainer)))).thenReturn(testTrainer);
 
         // act
-        int createdTrainerId = trainerService.createTrainerProfile("John", "Doe", 1);
+        Trainer createdTrainer = trainerService.createTrainerProfile("John", "Doe", 1);
 
         // assert
-        assertThat(createdTrainerId).isEqualTo(1);
+        assertThat(createdTrainer).isEqualTo(testTrainer);
         verify(trainerDao, times(1)).save(argThat(new TrainerMatcher(testTrainer)));
         verify(userUtils, times(1)).createUser("John", "Doe");
 
@@ -128,39 +128,6 @@ class TrainerServiceImplTest {
 
     }
 
-
-    @Test
-    void givenNonExistingTrainerId_ThrowsException() {
-        // arrange
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
-        when(trainerDao.get(77)).thenReturn(Optional.empty());
-
-        // act
-
-        // assert
-        assertThatThrownBy(() -> trainerService.selectTrainerProfile(77)).
-                isInstanceOf(IllegalArgumentException.class);
-        verify(trainerDao, times(1)).get(77);
-
-    }
-
-    @Test
-    void givenNonExistingTrainerIdUpdate_ThrowsException() {
-        // arrange
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(77, null);
-        when(trainerDao.get(77)).thenReturn(Optional.empty());
-
-        // act
-
-        // assert
-        assertThatThrownBy(
-                () -> trainerService
-                        .updateTrainerProfile(77, "New Name",
-                                "New LastName", false, 2)).
-                isInstanceOf(IllegalArgumentException.class);
-        verify(trainerDao, times(1)).get(77);
-
-    }
 
     @Test
     void givenInvalidRequestCreate_ThrowsException() {

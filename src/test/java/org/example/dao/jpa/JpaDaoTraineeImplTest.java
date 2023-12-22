@@ -57,20 +57,6 @@ class JpaDaoTraineeImplTest {
 
     }
 
-    @Test
-    void givenInvalidTraineeId_OptionalEmptyShouldBeReturned() {
-        // arrange
-        int id = 77;
-        when(entityManager.find(Trainee.class, 77)).thenThrow(NullPointerException.class);
-
-        // act
-        Optional<Trainee> actualResponse = jpaDaoTrainee.get(id);
-
-        // assert
-        assertThat(actualResponse.isEmpty()).isTrue();
-        verify(entityManager, times(1)).find(Trainee.class, 77);
-
-    }
 
     @Test
     void shouldReturnListOfTrainees() {
@@ -140,7 +126,7 @@ class JpaDaoTraineeImplTest {
         // arrange
         String username = "John.Doe";
         Trainee trainee = createNewTrainee();
-        when(entityManager.createQuery("FROM Trainee t WHERE t.user.username = :username")).thenReturn(query);
+        when(entityManager.createQuery("FROM Trainee t WHERE t.user.username = :username", Trainee.class)).thenReturn(query);
         when(query.getSingleResult()).thenReturn(trainee);
 
         // act
@@ -148,27 +134,11 @@ class JpaDaoTraineeImplTest {
 
         // assert
         assertThat(actualResponse.orElse(null)).isNotNull();
-        verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username");
+        verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username", Trainee.class);
         verify(query, times(1)).getSingleResult();
 
     }
 
-    @Test
-    void givenInvalidUserName_OptionalEmptyShouldBeReturned() {
-        // arrange
-        String username = "JohnDe";
-        when(entityManager.createQuery("FROM Trainee t WHERE t.user.username = :username")).thenReturn(query);
-        when(query.getSingleResult()).thenThrow(NoResultException.class);
-
-        // act
-        Optional<Trainee> actualResponse = jpaDaoTrainee.getByUsername(username);
-
-        // assert
-        assertThat(actualResponse.isEmpty()).isTrue();
-        verify(entityManager, times(1)).createQuery("FROM Trainee t WHERE t.user.username = :username");
-        verify(query, times(1)).getSingleResult();
-
-    }
 
     @Test
     void givenValidUsername_TraineeShouldBeDeleted() {

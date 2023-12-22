@@ -46,7 +46,7 @@ public class InMemoryBeanConfiguration {
         trainingService.setTrainerDao(trainerDao);
         trainingService.setTrainingDao(trainingDao);
         trainingService.setTrainingTypeDao(trainingTypeDao);
-        trainingService.setValidator(new Validator<>(Training.class));
+        trainingService.setValidator(new Validator<>());
         return trainingService;
     }
 
@@ -55,7 +55,7 @@ public class InMemoryBeanConfiguration {
         TrainerServiceImpl trainerService = new TrainerServiceImpl();
         trainerService.setTrainerDao(trainerDao);
         trainerService.setUserUtils(userUtils);
-        trainerService.setValidator(new Validator<>(Trainer.class));
+        trainerService.setValidator(new Validator<>());
         return trainerService;
     }
 
@@ -64,7 +64,7 @@ public class InMemoryBeanConfiguration {
         TraineeServiceImpl traineeService = new TraineeServiceImpl();
         traineeService.setTraineeDao(traineeDao);
         traineeService.setUserUtils(userUtils);
-        traineeService.setValidator(new Validator<>(Trainee.class));
+        traineeService.setValidator(new Validator<>());
         return traineeService;
     }
 

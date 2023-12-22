@@ -13,15 +13,9 @@ public abstract class JpaDaoImpl<T extends EntityModel> implements Dao<T> {
     public void executeTransaction(Consumer<EntityManager> action) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
-            System.out.println();
-            System.out.println();
-            System.out.println();
             transaction.begin();
             action.accept(entityManager);
             transaction.commit();
-            System.out.println();
-            System.out.println();
-            System.out.println();
         } catch (RuntimeException e) {
             transaction.rollback();
             throw e;

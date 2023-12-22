@@ -3,6 +3,7 @@ package org.example.service.utils;
 import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashMap;
@@ -12,62 +13,14 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ValidatorTest {
+    @InjectMocks
     Validator<User> validator;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        validator = new Validator<>(User.class);
     }
 
-    @Test
-    void givenValidEntity_NoExceptionThrown() {
-        // arrange
-        User user = createNewUser();
-
-        // act
-
-        // assert
-        assertThatCode(() -> validator.validateEntityNotNull(1, user)).doesNotThrowAnyException();
-    }
-
-    @Test
-    void givenInvalidEntity_ExceptionThrown() {
-        // arrange
-
-        // act
-
-        // assert
-        assertThatThrownBy(() -> validator.validateEntityNotNull(1, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Provided id of 1 for User entities was not found");
-
-    }
-
-    @Test
-    void givenValidEntity_WithUsername_NoExceptionThrown() {
-        // arrange
-        User user = createNewUser();
-
-        //act
-
-        // assert
-        assertThatCode(() -> validator.validateEntityNotNull("John.Doe", user)).doesNotThrowAnyException();
-
-    }
-
-    @Test
-    void givenInvalidEntity_WithUsername_ExceptionThrown() {
-        // arrange
-
-        // act
-
-        // assert
-        assertThatThrownBy(() -> validator.validateEntityNotNull("John.Doe", null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Provided username of John.Doe for User entities was not found");
-
-    }
 
     @Test
     void givenValidEntities_NoExceptionThrown() {

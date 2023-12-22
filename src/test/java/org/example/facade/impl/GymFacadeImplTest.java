@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.naming.AuthenticationException;
 import java.util.Date;
 import java.util.List;
 
@@ -51,8 +50,7 @@ class GymFacadeImplTest {
         Date dateOfBirth = new Date();
         String address = "Address";
         Trainee trainee = createNewTrainee();
-        when(traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address)).thenReturn(1);
-        when(traineeService.selectTraineeProfile(1)).thenReturn(trainee);
+        when(traineeService.createTraineeProfile(firstName, lastName, dateOfBirth, address)).thenReturn(createNewTrainee());
 
         // act
         Trainee actualResponse = gymFacade.addTrainee(firstName, lastName, dateOfBirth, address);
@@ -60,7 +58,6 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isEqualTo(trainee);
         verify(traineeService, times(1)).createTraineeProfile(firstName, lastName, dateOfBirth, address);
-        verify(traineeService, times(1)).selectTraineeProfile(1);
     }
 
     @Test
@@ -84,11 +81,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).updateTraineeProfile(traineeId, firstName, lastName, isActive, dateOfBirth, address);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
+
     }
 
     @Test
@@ -106,11 +100,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).deleteTraineeProfile(id);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
+
 
     }
 
@@ -128,11 +119,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(traineeService, times(1)).selectTraineeProfile(id);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
+
 
     }
 
@@ -150,11 +138,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(traineeService, times(1)).selectTraineeProfileByUsername(username);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
+
 
     }
 
@@ -174,11 +159,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).updateTraineePassword(id, newPassword);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
+
 
     }
 
@@ -198,11 +180,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).updateTraineeActiveStatus(id, isActive);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
+
 
     }
 
@@ -221,11 +200,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(traineeService, times(1)).deleteTraineeProfileByUsername(username);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainee.getUser());
+
 
     }
 
@@ -236,8 +212,7 @@ class GymFacadeImplTest {
         String lastName = "Doe";
         int specialization = 1;
         Trainer trainer = createNewTrainer();
-        when(trainerService.createTrainerProfile(firstName, lastName, 1)).thenReturn(1);
-        when(trainerService.selectTrainerProfile(1)).thenReturn(trainer);
+        when(trainerService.createTrainerProfile(firstName, lastName, 1)).thenReturn(trainer);
 
         // act
         Trainer actualResponse = gymFacade.addTrainer(firstName, lastName, specialization);
@@ -245,7 +220,6 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isEqualTo(trainer);
         verify(trainerService, times(1)).createTrainerProfile(firstName, lastName, specialization);
-        verify(trainerService, times(1)).selectTrainerProfile(1);
 
     }
 
@@ -269,11 +243,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(trainerService, times(1)).updateTrainerProfile(trainerId, firstName, lastName, isActive, specialization);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
+
     }
 
     @Test
@@ -290,11 +261,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainerService, times(1)).selectTrainerProfile(id);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
+
 
     }
 
@@ -312,11 +280,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainerService, times(1)).selectTrainerProfileByUsername(username);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
+
 
     }
 
@@ -336,12 +301,7 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(trainerService, times(1)).updateTrainerPassword(id, newPassword);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
-
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
     }
 
     @Test
@@ -360,11 +320,8 @@ class GymFacadeImplTest {
         // assert
         assertThat(actualResponse).isTrue();
         verify(trainerService, times(1)).updateTrainerActiveStatus(id, isActive);
-        try {
-            verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        verify(credentialsAuthenticator, times(1)).authorize(credentials, trainer.getUser());
+
 
     }
 
@@ -377,14 +334,15 @@ class GymFacadeImplTest {
         int trainingTypeId = 1;
         Date trainingDate = new Date();
         double trainingDuration = 1.0;
+        Training createdTraining = createNewTraining();
 
-        when(trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration)).thenReturn(1);
+        when(trainingService.createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration)).thenReturn(createdTraining);
 
         // act
-        int actualResponse = gymFacade.addTraining(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
+        Training actualResponse = gymFacade.addTraining(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
 
         // assert
-        assertThat(actualResponse).isEqualTo(1);
+        assertThat(actualResponse).isEqualTo(createdTraining);
         verify(trainingService, times(1)).createTrainingProfile(traineeId, trainerId, trainingName, trainingTypeId, trainingDate, trainingDuration);
 
     }
@@ -410,16 +368,16 @@ class GymFacadeImplTest {
     void givenValidTraineeUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        when(trainingService.selectTraineeTrainings(username, null))
+        when(trainingService.selectTraineeTrainings(username, null, null, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
-        List<Training> actualResponse = gymFacade.getTraineeTrainingsByUsername(username);
+        List<Training> actualResponse = gymFacade.getTraineeTrainings(username, null, null, null);
 
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainings(username, null);
+                .selectTraineeTrainings(username, null, null, null);
 
     }
 
@@ -427,17 +385,17 @@ class GymFacadeImplTest {
     void givenValidTraineeUsername_And_TrainingName_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        Integer trainingTypeId = 1;
-        when(trainingService.selectTraineeTrainings(username, trainingTypeId))
+        String trainingName = "Cardio";
+        when(trainingService.selectTraineeTrainings(username, trainingName, null, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
-        List<Training> actualResponse = gymFacade.getTraineeTrainingsByUsernameAndTrainingType(username, trainingTypeId);
+        List<Training> actualResponse = gymFacade.getTraineeTrainings(username, trainingName, null, null);
 
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTraineeTrainings(username, trainingTypeId);
+                .selectTraineeTrainings(username, trainingName, null, null);
 
     }
 
@@ -446,16 +404,16 @@ class GymFacadeImplTest {
     void givenValidTrainerUsername_TrainingsListShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        when(trainingService.selectTrainerTrainings(username, null))
+        when(trainingService.selectTrainerTrainings(username, null, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
-        List<Training> actualResponse = gymFacade.getTrainerTrainingsByUsername(username);
+        List<Training> actualResponse = gymFacade.getTrainerTrainings(username, null, null);
 
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainings(username, null);
+                .selectTrainerTrainings(username, null, null);
 
     }
 
@@ -464,16 +422,16 @@ class GymFacadeImplTest {
         // arrange
         String username = "John.Doe";
         Boolean isCompleted = true;
-        when(trainingService.selectTrainerTrainings(username, isCompleted))
+        when(trainingService.selectTrainerTrainings(username, isCompleted, null))
                 .thenReturn(List.of(createNewTraining(), createNewTraining()));
 
         // act
-        List<Training> actualResponse = gymFacade.getTrainerTrainingsByUsernameAndTrainingCompleteness(username, isCompleted);
+        List<Training> actualResponse = gymFacade.getTrainerTrainings(username, isCompleted, null);
 
         // assert
         assertThat(actualResponse).isNotNull();
         verify(trainingService, times(1))
-                .selectTrainerTrainings(username, isCompleted);
+                .selectTrainerTrainings(username, isCompleted, null);
 
     }
 

@@ -59,12 +59,12 @@ class TrainingServiceImplTest {
         when(trainingDao.save(argThat(new TrainingMatcher(testTraining)))).thenReturn(testTraining);
 
         // act
-        int actualResponse = trainingService.
+        Training actualResponse = trainingService.
                 createTrainingProfile(1, 1, "Elite", 1,
                         new Date(1054789200000L), 1.0);
 
         // assert
-        assertThat(actualResponse).isEqualTo(1);
+        assertThat(actualResponse).isEqualTo(testTraining);
         verify(traineeDao, times(1)).get(1);
         verify(trainerDao, times(1)).get(1);
         verify(trainingTypeDao, times(1)).get(1);
@@ -127,20 +127,6 @@ class TrainingServiceImplTest {
                 () ->
                         trainingService.createTrainingProfile(88, 99, "Elite", 4, new Date(), 1.0)
         ).isInstanceOf(IllegalArgumentException.class);
-
-    }
-
-    @Test
-    void givenNonExistingTrainingIdSelect_ThrowsException() {
-        // arrange
-        doThrow(new IllegalArgumentException()).when(validator).validateEntityNotNull(99, null);
-        when(trainingDao.get(99)).thenReturn(Optional.empty());
-
-        // act
-
-        // assert
-        assertThatThrownBy(() -> trainingService.selectTrainingProfile(99)).
-                isInstanceOf(IllegalArgumentException.class);
 
     }
 

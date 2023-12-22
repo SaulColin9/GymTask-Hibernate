@@ -35,18 +35,18 @@ class JpaTrainingServiceImplTest {
     void givenValidRequest_TraineeTrainingsShouldBeReturned() {
         // arrange
         String username = "John.Doe";
-        Integer trainingTypeId = 1;
+        String trainingTypeName = "Cardio";
 
-        when(daoTraining.getTraineeTrainings(username, trainingTypeId))
+        when(daoTraining.getTraineeTrainings(username, trainingTypeName, null, null))
                 .thenReturn(List.of(createNewTraining()));
 
         // act
         List<Training> actualResponse = jpaTrainingService
-                .selectTraineeTrainings(username, trainingTypeId);
+                .selectTraineeTrainings(username, trainingTypeName, null, null);
 
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(daoTraining, times(1)).getTraineeTrainings(username, trainingTypeId);
+        verify(daoTraining, times(1)).getTraineeTrainings(username, trainingTypeName, null, null);
 
     }
 
@@ -56,16 +56,16 @@ class JpaTrainingServiceImplTest {
         String username = "John.Doe";
         Boolean isCompleted = true;
 
-        when(daoTraining.getTrainingsByTrainerUsername(username, isCompleted))
+        when(daoTraining.getTrainingsByTrainerUsername(username, isCompleted, null))
                 .thenReturn(List.of(createNewTraining()));
 
         // act
         List<Training> actualResponse = jpaTrainingService
-                .selectTrainerTrainings(username, isCompleted);
+                .selectTrainerTrainings(username, isCompleted, null);
 
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(daoTraining, times(1)).getTrainingsByTrainerUsername(username, isCompleted);
+        verify(daoTraining, times(1)).getTrainingsByTrainerUsername(username, isCompleted, null);
 
     }
 

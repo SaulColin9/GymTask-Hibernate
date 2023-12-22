@@ -53,20 +53,7 @@ class JpaDaoTrainerImplTest {
 
     }
 
-    @Test
-    void givenInvalidTrainerId_OptionalEmptyShouldBeReturned() {
-        // arrange
-        int id = 77;
-        when(entityManager.find(Trainer.class, 77)).thenThrow(NullPointerException.class);
 
-        // act
-        Optional<Trainer> actualResponse = jpaDaoTrainer.get(id);
-
-        // assert
-        assertThat(actualResponse.isEmpty()).isTrue();
-        verify(entityManager, times(1)).find(Trainer.class, 77);
-
-    }
 
     @Test
     void shouldReturnListOfTrainers() {

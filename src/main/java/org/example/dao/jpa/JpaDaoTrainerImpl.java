@@ -12,7 +12,6 @@ public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
     @Override
     public Optional<Trainer> get(int id) {
         return Optional.of(getEntityManager().find(Trainer.class, id));
-
     }
 
     @Override

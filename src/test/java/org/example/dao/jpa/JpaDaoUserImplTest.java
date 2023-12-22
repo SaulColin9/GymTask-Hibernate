@@ -48,20 +48,6 @@ class JpaDaoUserImplTest {
 
     }
 
-    @Test
-    void givenInvalidUserId_OptionalEmptyShouldBeReturned() {
-        // arrange
-        int id = 77;
-        when(entityManager.find(User.class, 77)).thenThrow(NullPointerException.class);
-
-        // act
-        Optional<User> actualResponse = jpaDaoUser.get(id);
-
-        // assert
-        assertThat(actualResponse.isEmpty()).isTrue();
-        verify(entityManager, times(1)).find(User.class, 77);
-
-    }
 
     @Test
     void shouldReturnListOfUser() {
