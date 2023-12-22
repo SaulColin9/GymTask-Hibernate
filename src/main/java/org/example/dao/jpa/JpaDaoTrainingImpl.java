@@ -57,7 +57,7 @@ public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
             predicates.add(equalsTrainingType);
         }
         if (minDuration != null && maxDuration != null) {
-            Predicate durationPredicate = criteriaBuilder.between(root.get("trainingDuration"), maxDuration, minDuration);
+            Predicate durationPredicate = criteriaBuilder.between(root.get("trainingDuration"), minDuration, maxDuration);
             predicates.add(durationPredicate);
         }
 

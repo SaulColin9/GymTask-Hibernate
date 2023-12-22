@@ -74,7 +74,7 @@ public class Main {
         gymFacade.addTraining(trainee1.getId(), trainer1.getId(), "Elite Training", 1, new Date(), 1.0);
 
         // Get Trainee Trainings List by username and trainingType (criteria)
-        logger.info(gymFacade.getTraineeTrainings(updatedTraineeUsername, null, 0.0, 1.5).toString());
+        logger.info(gymFacade.getTraineeTrainings(updatedTraineeUsername, null, 1.0, 2.0).toString());
         // Get Trainer Trainings List by username and criteria
         logger.info(gymFacade.getTrainerTrainings(updatedTrainerUsername, true, null).toString());
 
