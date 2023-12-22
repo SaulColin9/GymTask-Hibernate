@@ -76,8 +76,7 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Trainee selectTraineeProfile(int id) {
         Optional<Trainee> trainee = traineeDao.get(id);
-        Map<String, Object> params = new HashMap<>();
-        params.put("Trainee", trainee.orElse(null));
+
 
         logger.info("Selecting Trainee Profile with id " + id);
         return trainee.orElse(null);

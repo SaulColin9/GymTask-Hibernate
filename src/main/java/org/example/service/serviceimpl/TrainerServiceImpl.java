@@ -71,8 +71,7 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Trainer selectTrainerProfile(int id) {
         Optional<Trainer> trainer = trainerDao.get(id);
-        Map<String, Object> params = new HashMap<>();
-        params.put("Trainer", trainer.orElse(null));
+
 
         logger.info("Selecting Trainer Profile with id {}", id);
         return trainer.orElse(null);
