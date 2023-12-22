@@ -30,7 +30,6 @@ public class Trainee extends BaseEntity {
         this.user = user;
     }
 
-
     public User getUser() {
         return this.user;
     }

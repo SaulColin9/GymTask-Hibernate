@@ -4,7 +4,7 @@ import org.example.dao.Dao;
 import org.example.matchers.TraineeMatcher;
 import org.example.model.Trainee;
 import org.example.model.User;
-import org.example.service.utils.UserUtils;
+import org.example.service.utils.user.UserUtils;
 import org.example.service.utils.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -6,7 +6,7 @@ import org.example.matchers.TrainerMatcher;
 import org.example.model.Trainer;
 import org.example.model.TrainingType;
 import org.example.model.User;
-import org.example.service.utils.UserUtils;
+import org.example.service.utils.user.UserUtils;
 import org.example.service.utils.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

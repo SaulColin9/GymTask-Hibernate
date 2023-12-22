@@ -15,7 +15,6 @@ import org.example.service.serviceimpl.jpa.JpaTraineeService;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 
-import javax.naming.AuthenticationException;
 import java.util.Date;
 import java.util.List;
 

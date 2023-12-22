@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.dao.Dao;
 import org.example.model.User;
 import org.example.service.utils.PasswordGenerator;
-import org.example.service.utils.UserUtilsImpl;
+import org.example.service.utils.user.InMemoryUserUtils;
 import org.example.service.utils.UsernameGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 class UserUtilsImplTest {
     @InjectMocks
-    UserUtilsImpl userUtils;
+    InMemoryUserUtils userUtils;
     @Mock
     Dao<User> userDao;
     @Mock

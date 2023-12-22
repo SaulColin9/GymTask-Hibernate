@@ -4,7 +4,7 @@ import org.example.dao.Dao;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.example.service.TraineeService;
-import org.example.service.utils.UserUtils;
+import org.example.service.utils.user.UserUtils;
 import org.example.service.utils.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,8 @@ public class TraineeServiceImpl implements TraineeService {
         params.put("lastName", lastName);
         validator.validateFieldsNotNull(params);
 
-        // TODO 2 different transactions, merge it into one
         User newUser = userUtils.createUser(firstName, lastName);
+
 
         logger.info("Creating Trainee Profile with id {}", newUser.getId());
         return traineeDao.save(new Trainee(dateOfBirth, address, newUser));
@@ -37,26 +37,23 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public boolean updateTraineeProfile(int id, String firstName, String lastName, boolean isActive, Date dateOfBirth, String address) {
-        // TODO additional check of user existence, not necessary
         Optional<Trainee> traineeToUpdate = traineeDao.get(id);
-        validator.validateEntityNotNull(id, traineeToUpdate.orElse(null));
 
         Trainee foundTrainee = traineeToUpdate.orElse(null);
-        if (traineeToUpdate.isPresent()) {
-            int userId = foundTrainee.getUser().getId();
+        traineeToUpdate.ifPresent(trainee -> {
+            int userId = trainee.getUser().getId();
             User updatedUser = userUtils.updateUser(userId,
-                    firstName == null ? foundTrainee.getUser().getFirstName() : firstName,
-                    lastName == null ? foundTrainee.getUser().getLastName() : lastName,
+                    firstName == null ? trainee.getUser().getFirstName() : firstName,
+                    lastName == null ? trainee.getUser().getLastName() : lastName,
                     isActive
             );
-            foundTrainee.setUser(updatedUser);
+            trainee.setUser(updatedUser);
 
-            foundTrainee.setDateOfBirth(dateOfBirth == null ? foundTrainee.getDateOfBirth() : dateOfBirth);
-            foundTrainee.setAddress(address == null ? foundTrainee.getAddress() : address);
+            trainee.setDateOfBirth(dateOfBirth == null ? trainee.getDateOfBirth() : dateOfBirth);
+            trainee.setAddress(address == null ? trainee.getAddress() : address);
 
             logger.info("Updating Trainee Profile with id {}", id);
-        }
-
+        });
 
         return traineeDao.update(id, foundTrainee) != null;
     }

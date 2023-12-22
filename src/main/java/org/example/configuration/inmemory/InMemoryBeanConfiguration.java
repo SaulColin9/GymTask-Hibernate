@@ -14,6 +14,8 @@ import org.example.service.serviceimpl.TraineeServiceImpl;
 import org.example.service.serviceimpl.TrainerServiceImpl;
 import org.example.service.serviceimpl.TrainingServiceImpl;
 import org.example.service.utils.*;
+import org.example.service.utils.user.UserUtils;
+import org.example.service.utils.user.InMemoryUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -117,7 +119,7 @@ public class InMemoryBeanConfiguration {
     UserUtils userUtils(@Autowired UsernameGenerator usernameGenerator,
                         @Autowired PasswordGenerator passwordGenerator,
                         @Autowired Dao<User> userDao) {
-        UserUtilsImpl userUtils = new UserUtilsImpl();
+        InMemoryUserUtils userUtils = new InMemoryUserUtils();
         userUtils.setUserDao(userDao);
         userUtils.setUsernameGenerator(usernameGenerator);
         userUtils.setPasswordGenerator(passwordGenerator);

@@ -12,6 +12,8 @@ import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.authentication.JpaCredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.*;
 import org.example.service.utils.*;
+import org.example.service.utils.user.JpaUserUtils;
+import org.example.service.utils.user.UserUtils;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -182,7 +184,7 @@ public class JpaBeanConfiguration {
     UserUtils userUtils(@Autowired UsernameGenerator usernameGenerator,
                         @Autowired PasswordGenerator passwordGenerator,
                         @Autowired Dao<User> userDao) {
-        UserUtilsImpl userUtils = new UserUtilsImpl();
+        JpaUserUtils userUtils = new JpaUserUtils();
         userUtils.setUserDao(userDao);
         userUtils.setUsernameGenerator(usernameGenerator);
         userUtils.setPasswordGenerator(passwordGenerator);

@@ -1,22 +1,25 @@
-package org.example.service.utils;
+package org.example.service.utils.user;
 
 import org.example.dao.Dao;
 import org.example.model.User;
+import org.example.service.utils.PasswordGenerator;
+import org.example.service.utils.UsernameGenerator;
 
 import java.util.Optional;
 
-public class UserUtilsImpl implements UserUtils {
+public abstract class AbstractUserUtils implements UserUtils {
     private UsernameGenerator usernameGenerator;
     private PasswordGenerator passwordGenerator;
-    private Dao<User> userDao;
-
+    protected Dao<User> userDao;
 
     @Override
     public User createUser(String firstName, String lastName) {
         String username = usernameGenerator.generateUserName(firstName, lastName);
         String password = passwordGenerator.generatePassword(10);
         User newUser = new User(firstName, lastName, username, password, true);
-        userDao.save(newUser);
+
+        createUserStrategy(newUser);
+
         return newUser;
     }
 
@@ -28,7 +31,8 @@ public class UserUtilsImpl implements UserUtils {
 
         updatedUser = updatedUser.setId(userId);
         updatedUser.setIsActive(isActive);
-        userDao.update(userId, updatedUser);
+
+        updateUserStrategy(userId, updatedUser);
 
         return updatedUser;
     }
@@ -37,6 +41,10 @@ public class UserUtilsImpl implements UserUtils {
     public Optional<User> deleteUser(int userId) {
         return userDao.delete(userId);
     }
+
+    protected abstract void createUserStrategy(User user);
+
+    protected abstract void updateUserStrategy(int id, User user);
 
     public void setUsernameGenerator(UsernameGenerator usernameGenerator) {
         this.usernameGenerator = usernameGenerator;
@@ -49,4 +57,5 @@ public class UserUtilsImpl implements UserUtils {
     public void setUserDao(Dao<User> userDao) {
         this.userDao = userDao;
     }
+
 }

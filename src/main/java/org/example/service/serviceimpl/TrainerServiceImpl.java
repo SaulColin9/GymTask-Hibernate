@@ -5,7 +5,7 @@ import org.example.model.Trainer;
 import org.example.model.TrainingType;
 import org.example.model.User;
 import org.example.service.TrainerService;
-import org.example.service.utils.UserUtils;
+import org.example.service.utils.user.UserUtils;
 import org.example.service.utils.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,25 +45,25 @@ public class TrainerServiceImpl implements TrainerService {
     public boolean updateTrainerProfile(int id, String firstName, String lastName, boolean isActive, int specialization) {
         Optional<Trainer> trainerToUpdate = trainerDao.get(id);
         Optional<TrainingType> trainingType = trainingTypeDao.get(specialization);
-        validator.validateEntityNotNull(id, trainerToUpdate.orElse(null));
 
         Trainer foundTrainer = trainerToUpdate.orElse(null);
-        if (trainerToUpdate.isPresent()) {
-            int userId = foundTrainer.getUser().getId();
+        trainerToUpdate.ifPresent(trainer -> {
+            int userId = trainer.getUser().getId();
             User updatedUser = userUtils.updateUser(userId,
-                    firstName == null ? foundTrainer.getUser().getFirstName() : firstName,
-                    lastName == null ? foundTrainer.getUser().getLastName() : lastName,
+                    firstName == null ? trainer.getUser().getFirstName() : firstName,
+                    lastName == null ? trainer.getUser().getLastName() : lastName,
                     isActive
             );
-            foundTrainer.setUser(updatedUser);
+            trainer.setUser(updatedUser);
             TrainingType foundTrainingType = null;
             if (trainingType.isPresent())
                 foundTrainingType = trainingType.get();
 
-            foundTrainer.setSpecialization(foundTrainingType);
+            trainer.setSpecialization(foundTrainingType);
 
             logger.info("Updating Trainer Profile with id {}", id);
-        }
+
+        });
 
         return trainerDao.update(id, foundTrainer) != null;
     }

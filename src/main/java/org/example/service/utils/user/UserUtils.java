@@ -1,4 +1,4 @@
-package org.example.service.utils;
+package org.example.service.utils.user;
 
 import org.example.model.User;
 
