@@ -88,6 +88,23 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
     }
 
     @Override
+    public boolean updateTraineeActiveStatus(String username, boolean isActive) {
+        Optional<Trainee> traineeToUpdate = ((JpaDaoTraineeImpl) traineeDao).getByUsername(username);
+        Map<String, Object> params = new HashMap<>();
+        params.put(TRAINEE_ENTITY, traineeToUpdate.orElse(null));
+        validator.validateEntitiesNotNull(params);
+
+        Trainee foundTrainee = traineeToUpdate.orElse(null);
+        if (traineeToUpdate.isPresent()) {
+            foundTrainee.getUser().setIsActive(isActive);
+            logger.info("Updating status for Trainee with username {} to {}", username, isActive);
+            foundTrainee = traineeDao.update(foundTrainee.getId(), foundTrainee);
+        }
+
+        return foundTrainee != null;
+    }
+
+    @Override
     public List<Trainer> selectNotAssignedOnTraineeTrainersList(int traineeId) {
         Optional<Trainee> foundTrainee = traineeDao.get(traineeId);
         Map<String, Object> params = new HashMap<>();
@@ -100,8 +117,21 @@ public class JpaTraineeServiceImpl extends TraineeServiceImpl implements JpaTrai
             return ((JpaDaoTraineeImpl) traineeDao).getNotAssignedOnTraineeTrainersList(selectedTrainee);
         }
         return List.of();
-
     }
 
+    @Override
+    public List<Trainer> selectTraineeTrainersList(int traineeId) {
+        Optional<Trainee> foundTrainee = traineeDao.get(traineeId);
+        Map<String, Object> params = new HashMap<>();
+        params.put(TRAINEE_ENTITY, foundTrainee.orElse(null));
+        validator.validateEntitiesNotNull(params);
+
+        Trainee selectedTrainee = foundTrainee.orElse(null);
+        if (foundTrainee.isPresent()) {
+            logger.info("Selecting assigned on trainee with id {} trainers list", traineeId);
+            return ((JpaDaoTraineeImpl) traineeDao).getTraineeTrainersList(selectedTrainee);
+        }
+        return List.of();
+    }
 
 }

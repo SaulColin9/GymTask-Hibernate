@@ -1,6 +1,8 @@
 package org.example.service.serviceimpl.jpa;
 
+import org.example.dao.jpa.JpaDaoTraineeImpl;
 import org.example.dao.jpa.JpaDaoTrainerImpl;
+import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.serviceimpl.TrainerServiceImpl;
 
@@ -59,6 +61,22 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     }
 
     @Override
+    public boolean updateTrainerActiveStatus(String username, boolean isActive) {
+        Optional<Trainer> trainerToUpdate = ((JpaDaoTrainerImpl) trainerDao).getByUsername(username);
+        Map<String, Object> params = new HashMap<>();
+        params.put(TRAINER_ENTITY, trainerToUpdate.orElse(null));
+        validator.validateEntitiesNotNull(params);
+
+        Trainer foundTrainer = trainerToUpdate.orElse(null);
+        if (trainerToUpdate.isPresent()) {
+            foundTrainer.getUser().setIsActive(isActive);
+            logger.info("Updating status for Trainer with username {} to {}", username, isActive);
+            foundTrainer = trainerDao.update(foundTrainer.getId(), foundTrainer);
+        }
+        return foundTrainer != null;
+    }
+
+    @Override
     public List<Trainer> updateTraineeTrainersList(int traineeId, int trainerId) {
         Optional<Trainer> foundTrainer = trainerDao.get(trainerId);
         Map<String, Object> params = new HashMap<>();
@@ -67,5 +85,20 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
 
         logger.info("Updating trainee with id {} trainers list with id {}", traineeId, trainerId);
         return ((JpaDaoTrainerImpl) trainerDao).updateTraineeTrainersList(traineeId, foundTrainer.orElse(null));
+    }
+
+    @Override
+    public List<Trainee> selectTrainerTraineeList(int trainerId) {
+        Optional<Trainer> foundTrainer = trainerDao.get(trainerId);
+        Map<String, Object> params = new HashMap<>();
+        params.put(TRAINER_ENTITY, foundTrainer.orElse(null));
+        validator.validateEntitiesNotNull(params);
+
+        Trainer selectedTrainer = foundTrainer.orElse(null);
+        if (foundTrainer.isPresent()) {
+            logger.info("Selecting assigned on trainee with id {} trainees list", trainerId);
+            return ((JpaDaoTrainerImpl) trainerDao).getTrainerTraineeList(selectedTrainer);
+        }
+        return List.of();
     }
 }

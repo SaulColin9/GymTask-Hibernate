@@ -1,5 +1,6 @@
 package org.example.service.serviceimpl.jpa;
 
+import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.TrainerService;
 
@@ -12,5 +13,9 @@ public interface JpaTrainerService extends TrainerService {
 
     boolean updateTrainerActiveStatus(int id, boolean isActive);
 
+    boolean updateTrainerActiveStatus(String username, boolean isActive);
+
     List<Trainer> updateTraineeTrainersList(int traineeId, int trainerId);
+
+    List<Trainee> selectTrainerTraineeList(int trainerId);
 }

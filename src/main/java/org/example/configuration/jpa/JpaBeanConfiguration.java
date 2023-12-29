@@ -8,8 +8,10 @@ import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.example.dao.Dao;
 import org.example.dao.jpa.*;
 import org.example.model.*;
+import org.example.service.TrainingTypeService;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.authentication.JpaCredentialsAuthenticator;
+import org.example.service.serviceimpl.TrainingTypeServiceImpl;
 import org.example.service.serviceimpl.jpa.*;
 import org.example.service.utils.*;
 import org.example.service.utils.user.JpaUserUtils;
@@ -80,6 +82,8 @@ public class JpaBeanConfiguration {
     public Map<String, String> props() {
         Map<String, String> props = new HashMap<>();
         props.put("hibernate.show_sql", "true");
+//        props.put("hibernate.hbm2ddl.import_files", "trainingTypes.sql");
+//        props.put("hibernate.hbm2ddl.auto", "create-drop");
         return props;
     }
 
@@ -143,6 +147,13 @@ public class JpaBeanConfiguration {
         trainingService.setTrainingTypeDao(trainingTypeDao);
         trainingService.setValidator(new Validator());
         return trainingService;
+    }
+
+    @Bean
+    public TrainingTypeService trainingTypeService(@Autowired Dao<TrainingType> trainingTypeDao) {
+        TrainingTypeServiceImpl trainingTypeService = new TrainingTypeServiceImpl();
+        trainingTypeService.setTrainingTypeDao(trainingTypeDao);
+        return trainingTypeService;
     }
 
     @Bean

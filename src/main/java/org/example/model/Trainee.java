@@ -6,6 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,7 @@ public class Trainee extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
 
     public Trainee() {
     }
@@ -50,6 +52,7 @@ public class Trainee extends BaseEntity {
         this.address = address;
         return this;
     }
+
 
     public void setUser(User user) {
         this.user = user;

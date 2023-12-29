@@ -34,6 +34,12 @@ public abstract class AbstractCredentialsAuthenticator implements CredentialsAut
         logger.info(USER_AUTHORIZED);
     }
 
+    @Override
+    public boolean login(Credentials credentials) {
+        if (getUserByCredentials(credentials).isPresent())
+            return true;
+        throw new UserAuthenticationException(FAILED_TO_AUTHENTICATE);
+    }
 
     protected abstract Optional<User> getUserByCredentials(Credentials credentials);
 

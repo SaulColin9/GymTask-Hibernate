@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class TrainingServiceImpl implements TrainingService {
-    private Dao<Trainee> traineeDao;
-    private Dao<Trainer> trainerDao;
-    private Dao<TrainingType> trainingTypeDao;
+    protected Dao<Trainee> traineeDao;
+    protected Dao<Trainer> trainerDao;
+    protected Dao<TrainingType> trainingTypeDao;
     protected Dao<Training> trainingDao;
     protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
     protected Validator validator;

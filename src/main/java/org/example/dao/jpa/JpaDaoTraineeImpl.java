@@ -76,6 +76,17 @@ public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
         return query.getResultList();
     }
 
+    public List<Trainer> getTraineeTrainersList(Trainee trainee) {
+        TypedQuery<Trainer> query = getEntityManager().createQuery(
+                "FROM Trainer trainer LEFT JOIN Training training" +
+                        " ON trainer.id = training.trainer.id " +
+                        "WHERE trainer.user.isActive = true AND (training.trainee.id = :trainee_id)",
+                Trainer.class);
+        query.setParameter(TRAINEE_ID_PARAM, trainee.getId());
+
+        return query.getResultList();
+    }
+
     private void deleteTrainee(Trainee trainee) {
         executeTransaction(entityManager -> {
             Query trainingDeleteQuery = entityManager.createQuery("DELETE Training tr WHERE tr.trainee.id = :trainee_id");

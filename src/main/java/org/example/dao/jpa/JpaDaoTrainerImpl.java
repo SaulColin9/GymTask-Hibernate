@@ -3,6 +3,7 @@ package org.example.dao.jpa;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import org.example.model.Trainee;
 import org.example.model.Trainer;
 
 import java.util.List;
@@ -61,6 +62,17 @@ public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
                 " ON trainer.id = training.trainer.id" +
                 " WHERE training.trainee.id = :trainee_id", Trainer.class);
         query.setParameter("trainee_id", traineeId);
+        return query.getResultList();
+    }
+
+    public List<Trainee> getTrainerTraineeList(Trainer trainer) {
+        TypedQuery<Trainee> query = getEntityManager().createQuery(
+                "FROM Trainee trainee LEFT JOIN Training training" +
+                        " ON trainee.id = training.trainee.id " +
+                        "WHERE trainee.user.isActive = true AND (training.trainer.id = :trainer_id)",
+                Trainee.class);
+        query.setParameter("trainer_id", trainer.getId());
+
         return query.getResultList();
     }
 
