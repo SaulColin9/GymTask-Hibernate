@@ -61,7 +61,6 @@ class UserUtilsImplTest {
         String newLastName = "Foo";
         boolean isActive = false;
 
-        when(usernameGenerator.generateUserName("Jane", "Foo")).thenReturn("Jane.Foo");
         when(userDao.get(1)).thenReturn(Optional.of(createNewUser()));
 
         // act
@@ -69,10 +68,9 @@ class UserUtilsImplTest {
 
         // assert
         assertThat(updatedUser).isNotNull();
-        assertThat(updatedUser.getUsername()).isEqualTo("Jane.Foo");
+        assertThat(updatedUser.getUsername()).isEqualTo("John.Doe");
         assertThat(updatedUser.getPassword()).isEqualTo("password");
         verify(userDao, times(1)).get(1);
-        verify(usernameGenerator, times(1)).generateUserName("Jane", "Foo");
 
     }
 

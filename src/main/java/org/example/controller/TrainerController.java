@@ -1,9 +1,6 @@
 package org.example.controller;
 
-import org.example.controller.dto.AddTrainerRequestDTO;
-import org.example.controller.dto.TrainerDTO;
-import org.example.controller.dto.UpdateIsActiveTrainerRequestDTO;
-import org.example.controller.dto.UsernameDTO;
+import org.example.controller.dto.*;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.TrainerService;
@@ -44,6 +41,17 @@ public class TrainerController {
         authorize(headers, trainer);
         trainerService.updateTrainerActiveStatus(req.username(), req.isActive());
         return ResponseEntity.ok("OK");
+    }
+
+    @PutMapping
+    public TrainerDTO updateTrainer(@RequestBody UpdateTrainerRequestDTO req, @RequestHeader Map<String, String> headers) {
+        Trainer t = trainerService.selectTrainerProfileByUsername(req.username());
+        authorize(headers, t);
+        trainerService.
+                updateTrainerProfile(t.getId(), req.firstName(), req.lastName(), req.isActive(), req.specialization());
+
+        List<Trainee> trainers = trainerService.selectTrainerTraineeList(t.getId());
+        return new TrainerDTO(t, trainers);
     }
 
     private void authorize(Map<String, String> headers, Trainer t) {

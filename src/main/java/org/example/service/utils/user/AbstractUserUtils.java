@@ -25,8 +25,9 @@ public abstract class AbstractUserUtils implements UserUtils {
 
     @Override
     public User updateUser(int userId, String newFirstName, String newLastName, boolean isActive) {
-        String username = usernameGenerator.generateUserName(newFirstName, newLastName);
-        String password = userDao.get(userId).map(User::getPassword).orElse("");
+        Optional<User> user = userDao.get(userId);
+        String username = user.map(User::getUsername).orElse("");
+        String password = user.map(User::getPassword).orElse("");
         User updatedUser = new User(newFirstName, newLastName, username, password, true);
 
         updatedUser = updatedUser.setId(userId);
