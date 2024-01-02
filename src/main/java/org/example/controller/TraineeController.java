@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import io.swagger.annotations.Api;
 import org.example.controller.dto.*;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
@@ -7,6 +8,7 @@ import org.example.model.Training;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTraineeService;
+import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +17,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/trainee")
+@Api(produces = "application/json", value = "Operations for creating, updating, retrieving and deleting Trainees in the application")
 public class TraineeController {
     private JpaTraineeService traineeService;
+    private JpaTrainingService trainingService;
 
     private CredentialsAuthenticator credentialsAuthenticator;
 
@@ -72,14 +76,24 @@ public class TraineeController {
         authorize(headers, t);
         return traineeService.selectNotAssignedOnTraineeTrainersList(t.getId());
     }
-    @GetMapping("/trainings")
-    public List<Training>  getTraineeTrainings(){
 
-        return null;
+    @GetMapping("/trainings")
+    public List<GetTraineeTrainingsResponseDTO> getTraineeTrainings(@RequestBody GetTraineeTrainingsRequestDTO req,
+                                                                    @RequestHeader Map<String, String> headers) {
+        Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
+        authorize(headers, t);
+        return trainingService.
+                selectTraineeTrainings(req.username(), req.periodFrom(),
+                        req.periodTo(), req.trainerName(), req.trainingType()).stream().
+                map(GetTraineeTrainingsResponseDTO::new).toList();
     }
 
     private void authorize(Map<String, String> headers, Trainee t) {
         credentialsAuthenticator.authorize(new Credentials(headers.get("username"), headers.get("password")), t.getUser());
+    }
+
+    public void setTrainingService(JpaTrainingService trainingService) {
+        this.trainingService = trainingService;
     }
 
     public void setTraineeService(JpaTraineeService traineeService) {

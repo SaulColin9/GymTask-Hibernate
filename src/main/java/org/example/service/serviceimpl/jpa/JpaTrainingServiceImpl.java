@@ -25,6 +25,16 @@ public class JpaTrainingServiceImpl extends TrainingServiceImpl implements JpaTr
         return ((JpaDaoTrainingImpl) trainingDao).getTraineeTrainings(username, trainingTypeName, minDuration, maxDuration);
     }
 
+    @Override
+    public List<Training> selectTraineeTrainings(String username, Date periodFrom, Date periodTo, String trainerName, Integer trainingType) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        validator.validateFieldsNotNull(params);
+
+        logger.info("Selecting Trainings with Trainer username {}", username);
+        return ((JpaDaoTrainingImpl) trainingDao).getTraineeTrainings(username, periodFrom, periodTo, trainerName, trainingType);
+    }
+
 
     @Override
     public List<Training> selectTrainerTrainings(String username, Boolean isCompleted, String trainingName) {
@@ -34,6 +44,17 @@ public class JpaTrainingServiceImpl extends TrainingServiceImpl implements JpaTr
 
         logger.info("Selecting Trainings with Trainer username {}", username);
         return ((JpaDaoTrainingImpl) trainingDao).getTrainingsByTrainerUsername(username, isCompleted, trainingName);
+    }
+
+    @Override
+    public List<Training> selectTrainerTrainings(String username, Date periodFrom, Date periodTo, String traineeName,
+                                                 Integer trainingType) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        validator.validateFieldsNotNull(params);
+
+        logger.info("Selecting Trainings with Trainer username {}", username);
+        return ((JpaDaoTrainingImpl) trainingDao).getTrainerTrainings(username, periodFrom, periodTo, traineeName, trainingType);
     }
 
     @Override
@@ -49,7 +70,7 @@ public class JpaTrainingServiceImpl extends TrainingServiceImpl implements JpaTr
         validator.validatePositiveField("trainingDuration", (int) trainingDuration);
 
         Optional<Trainee> trainee = ((JpaDaoTraineeImpl) traineeDao).getByUsername(traineeUsername);
-        Optional<Trainer> trainer = ((JpaDaoTrainerImpl)trainerDao).getByUsername(trainerUsername);
+        Optional<Trainer> trainer = ((JpaDaoTrainerImpl) trainerDao).getByUsername(trainerUsername);
         Optional<TrainingType> trainingType = trainingTypeDao.get(trainingTypeId);
 
         Map<String, Object> entities = new HashMap<>();
