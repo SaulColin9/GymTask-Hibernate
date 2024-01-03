@@ -39,3 +39,6 @@ In order to run this application, Tomcat 9 must be installed
 
 
 Once Tomcat 9 is set up and running go to the webapps folder and copy the generated war file inside.
+
+Go to 
+```http://localhost:<port>/GymTask1.0-SNAPSHOT/swagger-ui.html``` to enter the swagger ui page.
