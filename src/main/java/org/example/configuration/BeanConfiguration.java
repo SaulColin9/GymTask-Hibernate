@@ -24,7 +24,7 @@ import javax.servlet.Filter;
 
 @Configuration
 @EnableWebMvc
-@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, SwaggerConfig.class})
+@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, OpenApiConfig.class})
 public class BeanConfiguration {
     @Bean
     public GymFacadeImpl gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
