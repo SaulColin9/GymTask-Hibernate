@@ -1,8 +1,5 @@
 package org.example.dao.jpa;
 
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
-import org.example.model.Trainee;
 import org.example.model.User;
 
 import java.util.List;

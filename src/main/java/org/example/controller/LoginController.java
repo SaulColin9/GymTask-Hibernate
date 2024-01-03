@@ -5,22 +5,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.example.controller.dto.ChangeLoginRequestDTO;
-import org.example.exception.UserAuthenticationException;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
-import org.example.model.User;
-import org.example.service.TraineeService;
-import org.example.service.TrainerService;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTraineeService;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/login")

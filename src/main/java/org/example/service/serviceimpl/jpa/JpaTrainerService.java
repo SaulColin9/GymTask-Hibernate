@@ -13,7 +13,7 @@ public interface JpaTrainerService extends TrainerService {
 
     boolean updateTrainerActiveStatus(int id, boolean isActive);
 
-    boolean updateTrainerActiveStatus(String username, boolean isActive);
+    void updateTrainerActiveStatus(String username, boolean isActive);
 
     List<Trainer> updateTraineeTrainersList(int traineeId, int trainerId);
 

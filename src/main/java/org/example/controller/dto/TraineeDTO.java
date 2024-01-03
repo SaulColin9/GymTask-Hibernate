@@ -1,8 +1,5 @@
 package org.example.controller.dto;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.User;

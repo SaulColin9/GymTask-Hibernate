@@ -1,9 +1,7 @@
 package org.example.service.serviceimpl;
 
 import org.example.dao.Dao;
-import org.example.dao.inmemory.TrainingTypeDao;
 import org.example.model.TrainingType;
-import org.example.service.TraineeService;
 import org.example.service.TrainingTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

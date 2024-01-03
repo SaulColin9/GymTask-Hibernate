@@ -20,8 +20,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.handler.MappedInterceptor;
 
-import javax.servlet.Filter;
-
 @Configuration
 @EnableWebMvc
 @Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, OpenApiConfig.class})

@@ -1,6 +1,5 @@
 package org.example.service.serviceimpl.jpa;
 
-import org.example.dao.jpa.JpaDaoTraineeImpl;
 import org.example.dao.jpa.JpaDaoTrainerImpl;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
@@ -61,7 +60,7 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
     }
 
     @Override
-    public boolean updateTrainerActiveStatus(String username, boolean isActive) {
+    public void updateTrainerActiveStatus(String username, boolean isActive) {
         Optional<Trainer> trainerToUpdate = ((JpaDaoTrainerImpl) trainerDao).getByUsername(username);
         Map<String, Object> params = new HashMap<>();
         params.put(TRAINER_ENTITY, trainerToUpdate.orElse(null));
@@ -71,9 +70,8 @@ public class JpaTrainerServiceImpl extends TrainerServiceImpl implements JpaTrai
         if (trainerToUpdate.isPresent()) {
             foundTrainer.getUser().setIsActive(isActive);
             logger.info("Updating status for Trainer with username {} to {}", username, isActive);
-            foundTrainer = trainerDao.update(foundTrainer.getId(), foundTrainer);
+            trainerDao.update(foundTrainer.getId(), foundTrainer);
         }
-        return foundTrainer != null;
     }
 
     @Override

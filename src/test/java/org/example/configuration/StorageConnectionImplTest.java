@@ -6,11 +6,8 @@ import org.example.model.Trainee;
 import org.example.model.User;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class StorageConnectionImplTest {
@@ -23,23 +20,6 @@ class StorageConnectionImplTest {
         assertThatThrownBy(() -> storageConnection.getEntities(filePath)).isInstanceOf(RuntimeException.class);
     }
 
-//    @Test
-//    void givenValidFilePath_ShouldReturnEntityReader() {
-//        // arrange
-//        Trainee newTrainee = getTrainee();
-//        List<Trainee> expectedTrainees = new ArrayList<>();
-//        expectedTrainees.add(newTrainee);
-//        String filePath = "src\\test\\resources\\data\\entities.json";
-//        StorageConnectionImpl<EntitiesReader> storageConnection =
-//                new StorageConnectionImpl<>(EntitiesReader.class);
-//
-//        // act
-//        EntitiesReader actualResponse = storageConnection.getEntities(filePath);
-//
-//        // assert
-//        assertThat(actualResponse.getTrainees()).isEqualTo(expectedTrainees);
-//
-//    }
 
     private static Trainee getTrainee() {
         User newUser = new User();

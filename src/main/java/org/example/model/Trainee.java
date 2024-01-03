@@ -6,7 +6,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
