@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import org.example.controller.dto.*;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
-import org.example.model.Training;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTraineeService;

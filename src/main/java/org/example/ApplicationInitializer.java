@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.configuration.BeanConfiguration;
-import org.example.configuration.WebConfiguration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -19,8 +18,14 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         ctx.register(BeanConfiguration.class);
         ServletRegistration.Dynamic servletRegistration =
                 servletContext.addServlet("mvc", new DispatcherServlet(ctx));
+
         servletRegistration.setLoadOnStartup(1);
         servletRegistration.addMapping("/");
 
     }
+
+//    @Override
+//    public void onStartup(jakarta.servlet.ServletContext servletContext) throws ServletException {
+//
+//    }
 }

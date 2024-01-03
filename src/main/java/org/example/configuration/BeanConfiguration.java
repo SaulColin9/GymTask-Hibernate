@@ -14,22 +14,17 @@ import org.example.service.serviceimpl.jpa.JpaTraineeService;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.handler.MappedInterceptor;
+
+import javax.servlet.Filter;
 
 @Configuration
 @EnableWebMvc
-@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, SwaggerConfiguration.class, WebConfiguration.class})
+@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class})
 public class BeanConfiguration {
     @Bean
     public GymFacadeImpl gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
@@ -39,25 +34,11 @@ public class BeanConfiguration {
         return gymFacade;
     }
 
+
 //    @Bean
-//    public MappedInterceptor customInterceptor() {
+//    public MappedInterceptor mappedInterceptor() {
 //        return new MappedInterceptor(null, new CustomHttpInterceptor());
 //    }
-
-    @Bean
-    public FilterRegistrationBean filterRegistration() {
-        FilterRegistrationBean<RequestCachingFilter> registration = new FilterRegistrationBean();
-        registration.setFilter(requestCachingFilter());
-        registration.addUrlPatterns("/");
-        registration.setName("filter");
-        registration.setOrder(1);
-        return registration;
-    }
-
-    @Bean
-    public RequestCachingFilter requestCachingFilter() {
-        return new RequestCachingFilter();
-    }
 
     @Bean
     public TraineeController traineeController(@Autowired JpaTraineeService traineeService,
