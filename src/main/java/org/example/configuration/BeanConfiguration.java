@@ -24,7 +24,7 @@ import javax.servlet.Filter;
 
 @Configuration
 @EnableWebMvc
-@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class})
+@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, OpenApiConfig.class})
 public class BeanConfiguration {
     @Bean
     public GymFacadeImpl gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
@@ -35,10 +35,10 @@ public class BeanConfiguration {
     }
 
 
-//    @Bean
-//    public MappedInterceptor mappedInterceptor() {
-//        return new MappedInterceptor(null, new CustomHttpInterceptor());
-//    }
+    @Bean
+    public MappedInterceptor mappedInterceptor() {
+        return new MappedInterceptor(null, new CustomHttpInterceptor());
+    }
 
     @Bean
     public TraineeController traineeController(@Autowired JpaTraineeService traineeService,
