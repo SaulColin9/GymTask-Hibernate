@@ -32,3 +32,10 @@ Or enable these properties in the 'props' bean in the JpaBeanConfiguration:
 in order to allow automated creation of the tables based on the entity classes.
 
 
+### Integration with Tomcat
+In order to run this application, Tomcat 9 must be installed
+
+* Run: ```./mvnw clean install``` in the terminal to generate the application war file in the target folder
+
+
+Once Tomcat 9 is set up and running go to the webapps folder and copy the generated war file inside.
