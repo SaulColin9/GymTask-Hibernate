@@ -24,7 +24,7 @@ import javax.servlet.Filter;
 
 @Configuration
 @EnableWebMvc
-@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, OpenApiConfig.class})
+@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, SwaggerConfig.class})
 public class BeanConfiguration {
     @Bean
     public GymFacadeImpl gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
@@ -33,7 +33,6 @@ public class BeanConfiguration {
         gymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
         return gymFacade;
     }
-
 
     @Bean
     public MappedInterceptor mappedInterceptor() {

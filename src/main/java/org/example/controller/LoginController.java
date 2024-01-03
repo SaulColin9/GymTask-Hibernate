@@ -1,5 +1,9 @@
 package org.example.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.example.controller.dto.ChangeLoginRequestDTO;
 import org.example.exception.UserAuthenticationException;
 import org.example.model.Trainee;
@@ -20,18 +24,30 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
+@Api(produces = "application/json", value = "Operations for logging and changing users passwords")
 public class LoginController {
     private CredentialsAuthenticator credentialsAuthenticator;
     private JpaTraineeService traineeService;
     private JpaTrainerService trainerService;
 
     @GetMapping
-    public ResponseEntity<String> login(@RequestBody Credentials credentials, HttpServletResponse res) {
+    @ApiOperation(value = "Validate provided credentials")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
+            @ApiResponse(code = 403, message = "Invalid credentials")
+    })
+    public ResponseEntity<String> login(@RequestBody Credentials credentials) {
         credentialsAuthenticator.login(credentials);
         return ResponseEntity.ok("OK");
     }
 
     @PutMapping
+    @ApiOperation(value = "Change user password")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Given entity was not found"),
+            @ApiResponse(code = 403, message = "Provided user is not authorized to perform this action")
+    })
     public ResponseEntity<String> changeLogin(@RequestBody ChangeLoginRequestDTO req) {
         Credentials credentials = new Credentials(req.username(), req.oldPassword());
 

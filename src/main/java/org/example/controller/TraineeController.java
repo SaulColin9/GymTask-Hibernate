@@ -1,7 +1,11 @@
 package org.example.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.example.controller.dto.*;
+import org.example.exception.ErrorResponse;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.authentication.Credentials;
@@ -16,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/trainee")
-@Api(produces = "application/json", value = "Operations for creating, updating, retrieving and deleting Trainees in the application")
+@Api(produces = "application/json", value = "Operations for creating, updating, retrieving and deleting Trainees")
 public class TraineeController {
     private JpaTraineeService traineeService;
     private JpaTrainingService trainingService;
@@ -24,6 +28,12 @@ public class TraineeController {
     private CredentialsAuthenticator credentialsAuthenticator;
 
     @GetMapping
+    @ApiOperation(value = "Retrieve Trainee information")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = TraineeDTO.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
+            @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
+    })
     public TraineeDTO getTrainee(@RequestBody UsernameDTO req, @RequestHeader Map<String, String> headers) {
         Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
         authorize(headers, t);
@@ -32,6 +42,11 @@ public class TraineeController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Add new Trainee to storage")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Credentials.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class)
+    })
     public Credentials addTrainee(@RequestBody AddTraineeRequestDTO req) {
         Trainee trainee = traineeService.
                 createTraineeProfile(req.firstName(), req.lastName(), req.dateOfBirth(), req.address());
@@ -39,6 +54,12 @@ public class TraineeController {
     }
 
     @PatchMapping
+    @ApiOperation(value = "Update Trainee is active status")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
+            @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
+    })
     public ResponseEntity<String> updateIsActiveStatus(@RequestBody UpdateIsActiveTraineeRequestDTO req,
                                                        @RequestHeader Map<String, String> headers) {
         Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
@@ -48,6 +69,12 @@ public class TraineeController {
     }
 
     @PutMapping
+    @ApiOperation(value = "Update Trainee information")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = TraineeDTO.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
+            @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
+    })
     public TraineeDTO updateTrainee(@RequestBody UpdateTraineeRequestDTO req, @RequestHeader Map<String, String> headers) {
         Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
         authorize(headers, t);
@@ -60,6 +87,12 @@ public class TraineeController {
     }
 
     @DeleteMapping
+    @ApiOperation(value = "Delete a Trainee (hard delete)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
+            @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
+    })
     public ResponseEntity<String> deleteTrainee(@RequestBody UsernameDTO usernameDTO, @RequestHeader Map<String, String> headers) {
         Trainee t = traineeService.selectTraineeProfileByUsername(usernameDTO.username());
         authorize(headers, t);
@@ -69,6 +102,12 @@ public class TraineeController {
 
 
     @GetMapping("/availableTrainers")
+    @ApiOperation(value = "Get trainers not associated with specific trainee")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
+            @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
+    })
     public List<Trainer> getNotAssignedOnTraineeActiveTrainers(@RequestBody UsernameDTO req,
                                                                @RequestHeader Map<String, String> headers) {
         Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
@@ -77,6 +116,12 @@ public class TraineeController {
     }
 
     @GetMapping("/trainings")
+    @ApiOperation(value = "Get trainee trainings")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
+            @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
+    })
     public List<GetTraineeTrainingsResponseDTO> getTraineeTrainings(@RequestBody GetTraineeTrainingsRequestDTO req,
                                                                     @RequestHeader Map<String, String> headers) {
         Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
