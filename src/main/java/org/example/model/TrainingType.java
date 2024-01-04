@@ -1,10 +1,12 @@
 package org.example.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "trainingType")
 public class TrainingType extends BaseEntity {
     private String trainingTypeName;
 

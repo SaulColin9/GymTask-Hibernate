@@ -19,10 +19,8 @@ import org.example.service.utils.user.UserUtils;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -30,73 +28,16 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-@PropertySource(value = "classpath:storage.properties")
 @Profile("jpa")
+@ComponentScan("org.example.service.authentication")
 public class JpaBeanConfiguration {
-    @Value("${entities.jpa.source}")
-    String url;
-    @Value("${entities.jpa.username}")
-    String username;
-    @Value("${entities.jpa.password}")
-    String password;
-    @Value("${entities.jpa.driver}")
-    String driver;
-    @Value("${entities.jpa.persistenceProvider}")
-    String persistenceProvider;
-    @Value("${entities.jpa.persistenceUnit}")
-    String persistenceUnit;
 
-    @Bean
-    DataSource dataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        dataSource.setDriverClassName(driver);
-
-        return dataSource;
-    }
-
-    @Bean
-    CredentialsAuthenticator credentialsAuthenticator(@Autowired EntityManager entityManager) {
-        JpaCredentialsAuthenticator credentialsAuthenticator = new JpaCredentialsAuthenticator();
-        credentialsAuthenticator.setEntityManager(entityManager);
-        return credentialsAuthenticator;
-    }
-
-    @Bean
-    PersistenceUnitInfo persistenceUnitInfo(@Autowired DataSource dataSource) {
-        PersistenceUnitInfoImpl persistenceUnitInfo = new PersistenceUnitInfoImpl();
-        persistenceUnitInfo.setPersistenceUnitName(persistenceUnit);
-        persistenceUnitInfo.setPersistenceProviderClassName(persistenceProvider);
-        persistenceUnitInfo.setPersistenceUnitTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
-        persistenceUnitInfo.setManagedClassNames(
-                List.of(User.class.getName(), Trainer.class.getName(), Trainee.class.getName(),
-                        Training.class.getName(), TrainingType.class.getName()));
-        persistenceUnitInfo.setDataSource(dataSource);
-
-        return persistenceUnitInfo;
-    }
-
-    @Bean
-    public Map<String, String> props() {
-        Map<String, String> props = new HashMap<>();
-//        props.put("hibernate.show_sql", "true");
-//        props.put("hibernate.hbm2ddl.import_files", "trainingTypes.sql");
-//        props.put("hibernate.hbm2ddl.auto", "create-drop");
-        return props;
-    }
-
-    @Bean
-    public EntityManagerFactory emf(@Autowired PersistenceUnitInfo persistenceUnitInfo,
-                                    @Autowired Map<String, String> props) {
-        return new HibernatePersistenceProvider().createContainerEntityManagerFactory(persistenceUnitInfo, props);
-    }
-
-    @Bean
-    public EntityManager entityManager(@Autowired EntityManagerFactory emf) {
-        return emf.createEntityManager();
-    }
+//    @Bean
+//    CredentialsAuthenticator credentialsAuthenticator(@Autowired EntityManager entityManager) {
+//        JpaCredentialsAuthenticator credentialsAuthenticator = new JpaCredentialsAuthenticator();
+//        credentialsAuthenticator.setEntityManager(entityManager);
+//        return credentialsAuthenticator;
+//    }
 
     @Bean
     public JpaDaoUserImpl jpaDaoUser(@Autowired EntityManager entityManager) {

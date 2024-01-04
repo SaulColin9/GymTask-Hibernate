@@ -4,10 +4,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.example.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class JpaCredentialsAuthenticator extends AbstractCredentialsAuthenticator {
+    @Autowired
     private EntityManager entityManager;
 
     @Override
