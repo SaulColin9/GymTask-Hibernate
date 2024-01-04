@@ -1,23 +1,22 @@
 package org.example.configuration;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-public class CustomHttpInterceptor extends HandlerInterceptorAdapter {
+public class CustomHttpInterceptor implements HandlerInterceptor {
     protected static final Logger logger = LoggerFactory.getLogger(CustomHttpInterceptor.class);
 
     @Override
-    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
-                             final Object handler)
-            throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         logger.info("REQUEST {}, ENDPOINT {}", request.getMethod(), request.getRequestURI());
-        return super.preHandle(request, response, handler);
     }
+
 
     @Override
     public void afterCompletion(final HttpServletRequest request, final HttpServletResponse response,

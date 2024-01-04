@@ -22,7 +22,7 @@ import org.springframework.web.servlet.handler.MappedInterceptor;
 
 @Configuration
 @EnableWebMvc
-@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class, OpenApiConfig.class})
+@Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class})
 public class BeanConfiguration {
     @Bean
     public GymFacadeImpl gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
