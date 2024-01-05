@@ -5,6 +5,7 @@ import org.example.model.TrainingType;
 import java.util.List;
 import java.util.Optional;
 
+
 public class JpaDaoTrainingTypeImpl extends JpaDaoImpl<TrainingType> {
     @Override
     public Optional<TrainingType> get(int id) {

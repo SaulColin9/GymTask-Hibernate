@@ -5,10 +5,12 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
     @Override
     public Optional<Trainer> get(int id) {

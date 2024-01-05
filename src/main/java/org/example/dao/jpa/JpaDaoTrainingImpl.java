@@ -6,12 +6,14 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.example.model.Training;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class JpaDaoTrainingImpl extends JpaDaoImpl<Training> {
     @Override
     public Optional<Training> get(int id) {

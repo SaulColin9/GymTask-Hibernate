@@ -5,10 +5,12 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class JpaDaoTraineeImpl extends JpaDaoImpl<Trainee> {
     private static final String TRAINEE_ID_PARAM = "trainee_id";
     private static final String USERNAME_PARAM = "username";

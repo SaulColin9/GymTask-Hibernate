@@ -32,12 +32,12 @@ import java.util.Map;
 @ComponentScan("org.example.service.authentication")
 public class JpaBeanConfiguration {
 
-//    @Bean
-//    CredentialsAuthenticator credentialsAuthenticator(@Autowired EntityManager entityManager) {
-//        JpaCredentialsAuthenticator credentialsAuthenticator = new JpaCredentialsAuthenticator();
-//        credentialsAuthenticator.setEntityManager(entityManager);
-//        return credentialsAuthenticator;
-//    }
+    @Bean
+    CredentialsAuthenticator credentialsAuthenticator(@Autowired EntityManager entityManager) {
+        JpaCredentialsAuthenticator credentialsAuthenticator = new JpaCredentialsAuthenticator();
+        credentialsAuthenticator.setEntityManager(entityManager);
+        return credentialsAuthenticator;
+    }
 
     @Bean
     public JpaDaoUserImpl jpaDaoUser(@Autowired EntityManager entityManager) {

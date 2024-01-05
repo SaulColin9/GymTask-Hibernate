@@ -1,10 +1,12 @@
 package org.example.dao.jpa;
 
 import org.example.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class JpaDaoUserImpl extends JpaDaoImpl<User> {
 
     @Override
