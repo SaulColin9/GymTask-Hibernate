@@ -1,10 +1,14 @@
 package org.example.configuration;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import org.example.configuration.indicator.MaxMemoryHealthIndicator;
 import org.example.configuration.inmemory.InMemoryBeanConfiguration;
 import org.example.configuration.jpa.JpaBeanConfiguration;
+import org.example.configuration.metric.TrainingTypesMetric;
 import org.example.controller.*;
 import org.example.exception.RestExceptionHandler;
 import org.example.facade.impl.GymFacadeImpl;
+import org.example.interceptor.CustomHttpInterceptor;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
@@ -17,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.handler.MappedInterceptor;
 
@@ -31,6 +34,11 @@ public class BeanConfiguration {
         GymFacadeImpl gymFacade = new GymFacadeImpl(traineeService, trainerService, trainingService);
         gymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
         return gymFacade;
+    }
+
+    @Bean
+    MaxMemoryHealthIndicator maxMemoryHealthIndicator() {
+        return new MaxMemoryHealthIndicator();
     }
 
     @Bean
@@ -79,12 +87,20 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public TrainingTypeController trainingTypeController(@Autowired TrainingTypeService trainingTypeService) {
-        TrainingTypeController trainingTypeController = new TrainingTypeController();
+    public TrainingTypeController trainingTypeController(@Autowired TrainingTypeService trainingTypeService,
+                                                         @Autowired MeterRegistry registry) {
+        TrainingTypeController trainingTypeController = new TrainingTypeController(registry);
         trainingTypeController.setTrainingTypeService(trainingTypeService);
         return trainingTypeController;
     }
 
+    @Bean
+    public TrainingTypesMetric trainingTypesMetric(@Autowired MeterRegistry registry,
+                                                   @Autowired TrainingTypeController trainingTypeController) {
+        TrainingTypesMetric metric = new TrainingTypesMetric(registry);
+        metric.setTrainingTypeController(trainingTypeController);
+        return metric;
+    }
 
     @Bean
     public RestExceptionHandler restExceptionHandler() {

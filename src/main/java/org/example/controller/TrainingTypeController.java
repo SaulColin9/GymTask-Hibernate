@@ -1,5 +1,8 @@
 package org.example.controller;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -18,12 +21,21 @@ import java.util.List;
 public class TrainingTypeController {
     private TrainingTypeService trainingTypeService;
 
+    Counter requestCounter;
+
+    public TrainingTypeController(MeterRegistry registry) {
+        requestCounter = Counter.builder("request_counter")
+                .description("Number of requests to retrieve training types")
+                .register(registry);
+    }
+
     @GetMapping
-    @ApiOperation(value = "Retrieve Trainee information")
+    @ApiOperation(value = "Retrieve Training Types information")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = List.class),
     })
     public List<TrainingType> getTrainingTypes() {
+        requestCounter.increment();
         return trainingTypeService.selectTrainingTypeList();
     }
 

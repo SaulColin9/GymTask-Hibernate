@@ -24,7 +24,6 @@ import java.util.Map;
 public class TraineeController {
     private JpaTraineeService traineeService;
     private JpaTrainingService trainingService;
-
     private CredentialsAuthenticator credentialsAuthenticator;
 
     @GetMapping
