@@ -1,6 +1,5 @@
 package org.example.controller;
 
-import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.annotations.Api;
@@ -21,8 +20,9 @@ import java.util.List;
 public class TrainingTypeController {
     private TrainingTypeService trainingTypeService;
 
-    Counter requestCounter;
+    protected Counter requestCounter;
 
+    public TrainingTypeController(){}
     public TrainingTypeController(MeterRegistry registry) {
         requestCounter = Counter.builder("request_counter")
                 .description("Number of requests to retrieve training types")
