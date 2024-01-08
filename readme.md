@@ -23,5 +23,15 @@ In the resources folder under the path:
 there will be a file containing the ddl script to create the trainee, trainer, training, trainingType and user tables;
 it also creates the default insert values for the training types table.
 
+### Profiles
+There are four different profiles:
+* dev
+* local
+* stg
+* prod
+
+in order to select each one go to application.properties and set the 
+```spring.profiles.active=jpa,<profile>``` profile to the one you need.
+
 ### Start application
 Go to GymApplication class and execute the main method in order to start the spring boot application.
