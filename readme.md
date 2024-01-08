@@ -23,22 +23,5 @@ In the resources folder under the path:
 there will be a file containing the ddl script to create the trainee, trainer, training, trainingType and user tables;
 it also creates the default insert values for the training types table.
 
-Or enable these properties in the 'props' bean in the JpaBeanConfiguration:
-
-```props.put("hibernate.hbm2ddl.import_files", "trainingTypes.sql");```
-
-```props.put("hibernate.hbm2ddl.auto", "create-drop");```
-
-in order to allow automated creation of the tables based on the entity classes.
-
-
-### Integration with Tomcat
-In order to run this application, Tomcat 9 must be installed
-
-* Run: ```./mvnw clean install``` in the terminal to generate the application war file in the target folder
-
-
-Once Tomcat 9 is set up and running go to the webapps folder and copy the generated war file inside.
-
-Go to 
-```http://localhost:<port>/GymTask1.0-SNAPSHOT/swagger-ui.html``` to enter the swagger ui page.
+### Start application
+Go to GymApplication class and execute the main method in order to start the spring boot application.
