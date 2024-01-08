@@ -43,7 +43,6 @@ public class LoginController {
     public ResponseEntity<String> changeLogin(@RequestBody ChangeLoginRequestDTO req) {
         Credentials credentials = new Credentials(req.username(), req.oldPassword());
 
-
         Trainee trainee;
         try {
             trainee = traineeService.selectTraineeProfileByUsername(req.username());

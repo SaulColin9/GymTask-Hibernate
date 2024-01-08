@@ -22,7 +22,6 @@ public class TrainingTypeController {
 
     protected Counter requestCounter;
 
-    public TrainingTypeController(){}
     public TrainingTypeController(MeterRegistry registry) {
         requestCounter = Counter.builder("request_counter")
                 .description("Number of requests to retrieve training types")

@@ -2,15 +2,12 @@ package org.example.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.example.controller.dto.AddTraineeRequestDTO;
-import org.example.controller.dto.TraineeDTO;
-import org.example.controller.dto.UsernameDTO;
+import org.example.controller.dto.*;
 import org.example.entitiesFactory.EntitiesFactory;
+import org.example.exception.ErrorResponse;
 import org.example.model.Trainee;
-import org.example.model.TrainingType;
-import org.example.service.TraineeService;
+import org.example.model.Trainer;
+import org.example.model.Training;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTraineeService;
@@ -32,9 +29,11 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TraineeControllerTest {
     @Mock
@@ -108,23 +107,134 @@ class TraineeControllerTest {
     }
 
     @Test
-    void updateIsActiveStatus() {
+    void givenValidRequest_TraineeStatusShouldBeUpdated() throws Exception {
+        // arrange
+        Trainee trainee = entitiesFactory.createNewTrainee();
+        UpdateIsActiveTraineeRequestDTO req = new UpdateIsActiveTraineeRequestDTO(trainee.getUser().getUsername(), false);
+        when(traineeService.selectTraineeProfileByUsername("John.Doe")).thenReturn(trainee);
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("username", trainee.getUser().getUsername());
+        headers.add("password", trainee.getUser().getPassword());
+
+        // act
+        mockMvc.perform(
+                        patch("/trainee")
+                                .headers(headers)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(convertObjectToJsonString(req)))
+                .andExpect(content().string("OK"))
+                .andExpect(status().isOk());
+
     }
 
     @Test
-    void updateTrainee() {
+    void givenValidRequest_TraineeShouldBeUpdated() throws Exception {
+        // arrange
+        Trainee trainee = entitiesFactory.createNewTrainee();
+        UpdateTraineeRequestDTO req =
+                new UpdateTraineeRequestDTO(trainee.getUser().getUsername(), "newName",
+                        "newLastName", new Date(), "address", false);
+        when(traineeService.selectTraineeProfileByUsername("John.Doe")).thenReturn(trainee);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("username", trainee.getUser().getUsername());
+        headers.add("password", trainee.getUser().getPassword());
+
+        // act
+        mockMvc.perform(
+                        put("/trainee")
+                                .headers(headers)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(convertObjectToJsonString(req))
+                ).andExpect(status().isOk())
+                .andExpect(content().
+                        json(convertObjectToJsonString(new TraineeDTO(trainee, new ArrayList<>()))));
     }
 
     @Test
-    void deleteTrainee() {
+    void givenValidRequest_TraineeShouldBeDeleted() throws Exception {
+        // arrange
+        Trainee trainee = entitiesFactory.createNewTrainee();
+        when(traineeService.selectTraineeProfileByUsername("John.Doe")).thenReturn(trainee);
+        UsernameDTO req = new UsernameDTO(trainee.getUser().getUsername());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("username", trainee.getUser().getUsername());
+        headers.add("password", trainee.getUser().getPassword());
+
+        // act
+        mockMvc.perform(
+                        delete("/trainee")
+                                .headers(headers)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(convertObjectToJsonString(req))
+                ).andExpect(status().isOk())
+                .andExpect(content().
+                        string("OK"));
+
     }
 
     @Test
-    void getNotAssignedOnTraineeActiveTrainers() {
+    void givenValidRequest_TrainersListShouldBeReturned() throws Exception {
+        // arrange
+        Trainee trainee = entitiesFactory.createNewTrainee();
+        when(traineeService.selectTraineeProfileByUsername("John.Doe")).thenReturn(trainee);
+        UsernameDTO req = new UsernameDTO(trainee.getUser().getUsername());
+
+
+        List<Trainer> trainers = new ArrayList<>();
+        trainers.add(entitiesFactory.createNewTrainer());
+        trainers.add(entitiesFactory.createNewTrainer());
+        when(traineeService.selectNotAssignedOnTraineeTrainersList(trainee.getId())).thenReturn(trainers);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("username", trainee.getUser().getUsername());
+        headers.add("password", trainee.getUser().getPassword());
+
+        // act
+        mockMvc.perform(
+                        get("/trainee/availableTrainers")
+                                .headers(headers)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(convertObjectToJsonString(req))
+                ).andExpect(status().isOk())
+                .andExpect(content().
+                        json(convertObjectToJsonString(trainers)));
+
     }
 
     @Test
-    void getTraineeTrainings() {
+    void givenValidRequest_TraineeTrainingsShouldBeReturned() throws Exception {
+        // arrange
+        Trainee trainee = entitiesFactory.createNewTrainee();
+        when(traineeService.selectTraineeProfileByUsername("John.Doe")).thenReturn(trainee);
+        GetTraineeTrainingsRequestDTO req =
+                new GetTraineeTrainingsRequestDTO(trainee.getUser().getUsername(), new Date(), new Date(),
+                        "Trainer", 2);
+        List<Training> trainings = new ArrayList<>();
+        trainings.add(entitiesFactory.createNewTraining());
+        trainings.add(entitiesFactory.createNewTraining());
+        when(trainingService
+                .selectTraineeTrainings(req.username(), req.periodFrom(), req.periodTo(),
+                        req.trainerName(), req.trainingType())).thenReturn(trainings);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("username", trainee.getUser().getUsername());
+        headers.add("password", trainee.getUser().getPassword());
+
+        // act
+        mockMvc.perform(
+                        get("/trainee/trainings")
+                                .headers(headers)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(convertObjectToJsonString(req))
+                ).andExpect(status().isOk())
+                .andExpect(content().
+                        json(convertObjectToJsonString(trainings.stream().map(GetTraineeTrainingsResponseDTO::new).toList())));
+
+
     }
 
     private String convertObjectToJsonString(Object object) {

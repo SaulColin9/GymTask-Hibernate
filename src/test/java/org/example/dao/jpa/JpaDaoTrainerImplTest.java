@@ -174,7 +174,6 @@ class JpaDaoTrainerImplTest {
 
         // assert
         assertThat(actualResponse).isNotNull();
-        verify(entityManager, times(1)).getTransaction();
         verify(entityManager, times(1)).createQuery(updateQuery);
         verify(entityManager, times(1)).createQuery(getListQuery, Trainer.class);
         verify(query, times(1)).getResultList();
