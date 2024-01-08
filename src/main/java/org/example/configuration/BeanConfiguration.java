@@ -2,6 +2,7 @@ package org.example.configuration;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.example.configuration.indicator.MaxMemoryHealthIndicator;
+import org.example.configuration.indicator.PingHealthIndicator;
 import org.example.configuration.inmemory.InMemoryBeanConfiguration;
 import org.example.configuration.jpa.JpaBeanConfiguration;
 import org.example.configuration.metric.TrainingTypesMetric;
@@ -39,6 +40,11 @@ public class BeanConfiguration {
     @Bean
     MaxMemoryHealthIndicator maxMemoryHealthIndicator() {
         return new MaxMemoryHealthIndicator();
+    }
+
+    @Bean
+    PingHealthIndicator serverHealthIndicator() {
+        return new PingHealthIndicator();
     }
 
     @Bean
