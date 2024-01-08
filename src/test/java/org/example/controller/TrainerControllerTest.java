@@ -1,10 +1,7 @@
 package org.example.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.controller.dto.*;
 import org.example.entitiesFactory.EntitiesFactory;
-import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.service.authentication.Credentials;
@@ -25,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -183,12 +179,7 @@ class TrainerControllerTest {
 
 
     private String convertObjectToJsonString(Object object) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
+        JsonUtils utils = new JsonUtils();
+        return utils.convertObjectToJsonString(object);
     }
 }

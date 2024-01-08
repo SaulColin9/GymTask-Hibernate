@@ -1,9 +1,6 @@
 package org.example.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.controller.dto.ChangeLoginRequestDTO;
-import org.example.controller.dto.TraineeDTO;
 import org.example.entitiesFactory.EntitiesFactory;
 import org.example.model.Trainee;
 import org.example.service.authentication.Credentials;
@@ -18,8 +15,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.ArrayList;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -85,12 +80,7 @@ class LoginControllerTest {
     }
 
     private String convertObjectToJsonString(Object object) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
+        JsonUtils utils = new JsonUtils();
+        return utils.convertObjectToJsonString(object);
     }
 }

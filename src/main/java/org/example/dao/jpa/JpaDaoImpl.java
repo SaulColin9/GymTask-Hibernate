@@ -1,7 +1,6 @@
 package org.example.dao.jpa;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import org.example.dao.Dao;
 import org.example.model.EntityModel;
 import org.springframework.transaction.annotation.Transactional;

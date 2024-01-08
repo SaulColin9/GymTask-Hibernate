@@ -20,7 +20,7 @@ import java.util.List;
 public class TrainingTypeController {
     private TrainingTypeService trainingTypeService;
 
-    protected Counter requestCounter;
+    protected final Counter requestCounter;
 
     public TrainingTypeController(MeterRegistry registry) {
         requestCounter = Counter.builder("request_counter")

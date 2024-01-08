@@ -12,7 +12,7 @@ public class CustomHttpInterceptor implements HandlerInterceptor {
     protected static final Logger logger = LoggerFactory.getLogger(CustomHttpInterceptor.class);
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         logger.info("REQUEST {}, ENDPOINT {}", request.getMethod(), request.getRequestURI());
         return true;
     }

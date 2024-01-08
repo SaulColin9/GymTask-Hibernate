@@ -1,10 +1,6 @@
 package org.example.configuration.jpa;
 
-import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.spi.PersistenceUnitInfo;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import org.example.dao.Dao;
 import org.example.dao.jpa.*;
 import org.example.model.*;
@@ -16,16 +12,11 @@ import org.example.service.serviceimpl.jpa.*;
 import org.example.service.utils.*;
 import org.example.service.utils.user.JpaUserUtils;
 import org.example.service.utils.user.UserUtils;
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-
-import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("jpa")
