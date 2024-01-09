@@ -1,6 +1,9 @@
 package org.example.dao.jpa;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import org.example.model.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,7 +24,9 @@ public class JpaDaoUserImpl extends JpaDaoImpl<User> {
 
     @Override
     public User save(User user) {
-        executeTransaction(entityManager -> entityManager.persist(user));
+        executeTransaction(entityManager -> {
+            entityManager.persist(user);
+        });
         return user;
     }
 
@@ -36,6 +41,18 @@ public class JpaDaoUserImpl extends JpaDaoImpl<User> {
         Optional<User> foundUser = get(id);
         foundUser.ifPresent(user -> executeTransaction(em -> em.remove(user)));
         return foundUser;
+    }
+
+    private static final String USERNAME_PARAM = "username";
+
+    public Optional<User> getByUsername(String username) {
+        try {
+            TypedQuery<User> query = getEntityManager().createQuery("FROM User u WHERE u.username = :username", User.class);
+            query.setParameter(USERNAME_PARAM, username);
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
 

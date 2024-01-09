@@ -4,14 +4,19 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.example.configuration.security.JwtIssuer;
 import org.example.controller.dto.ChangeLoginRequestDTO;
+import org.example.controller.dto.LoginResponseDTO;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTraineeService;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +26,9 @@ public class LoginController {
     private CredentialsAuthenticator credentialsAuthenticator;
     private JpaTraineeService traineeService;
     private JpaTrainerService trainerService;
+    private JwtIssuer jwtIssuer;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @GetMapping
     @ApiOperation(value = "Validate provided credentials")
@@ -28,9 +36,12 @@ public class LoginController {
             @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
             @ApiResponse(code = 403, message = "Invalid credentials")
     })
-    public ResponseEntity<String> login(@RequestBody Credentials credentials) {
-        credentialsAuthenticator.login(credentials);
-        return ResponseEntity.ok("OK");
+    public LoginResponseDTO login(@RequestBody Credentials credentials) {
+        var authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password())
+        );
+        String token = jwtIssuer.issue(credentials.username(), credentials.password());
+        return new LoginResponseDTO(token);
     }
 
     @PutMapping
@@ -42,7 +53,6 @@ public class LoginController {
     })
     public ResponseEntity<String> changeLogin(@RequestBody ChangeLoginRequestDTO req) {
         Credentials credentials = new Credentials(req.username(), req.oldPassword());
-
         Trainee trainee;
         try {
             trainee = traineeService.selectTraineeProfileByUsername(req.username());
@@ -50,7 +60,6 @@ public class LoginController {
             trainee = null;
         }
         if (trainee != null) {
-            credentialsAuthenticator.authorize(credentials, trainee.getUser());
             traineeService.updateTraineePassword(trainee.getId(), req.newPassword());
             return ResponseEntity.ok("OK");
         }
@@ -62,7 +71,6 @@ public class LoginController {
         }
 
         if (trainer != null) {
-            credentialsAuthenticator.authorize(credentials, trainer.getUser());
             trainerService.updateTrainerPassword(trainer.getId(), req.newPassword());
             return ResponseEntity.ok("OK");
         }
@@ -80,5 +88,9 @@ public class LoginController {
 
     public void setCredentialsAuthenticator(CredentialsAuthenticator credentialsAuthenticator) {
         this.credentialsAuthenticator = credentialsAuthenticator;
+    }
+
+    public void setJwtIssuer(JwtIssuer jwtIssuer) {
+        this.jwtIssuer = jwtIssuer;
     }
 }

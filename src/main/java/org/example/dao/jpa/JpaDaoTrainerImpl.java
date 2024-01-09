@@ -5,6 +5,8 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
+import org.example.model.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,7 +26,14 @@ public class JpaDaoTrainerImpl extends JpaDaoImpl<Trainer> {
 
     @Override
     public Trainer save(Trainer trainer) {
-        executeTransaction(entityManager -> entityManager.persist(trainer));
+        String realPassword = trainer.getUser().getPassword();
+        executeTransaction(entityManager -> {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            trainer.getUser().setPassword(passwordEncoder.encode(realPassword));
+            entityManager.persist(trainer);
+        });
+        getEntityManager().detach(trainer);
+        trainer.getUser().setPassword(realPassword);
         return trainer;
     }
 

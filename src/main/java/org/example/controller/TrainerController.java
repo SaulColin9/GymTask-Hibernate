@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.example.configuration.security.UserPrincipal;
 import org.example.controller.dto.*;
 import org.example.exception.ErrorResponse;
 import org.example.model.Trainee;
@@ -13,6 +14,8 @@ import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +37,8 @@ public class TrainerController {
     })
     public Credentials addTrainer(@RequestBody AddTrainerRequestDTO req) {
         Trainer trainer = trainerService.createTrainerProfile(req.firstName(), req.lastName(), req.specialization());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         return new Credentials(trainer.getUser().getUsername(), trainer.getUser().getPassword());
     }
 
@@ -44,7 +49,8 @@ public class TrainerController {
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public TrainerDTO getTrainer(@RequestBody UsernameDTO req, @RequestHeader Map<String, String> headers) {
+    public TrainerDTO getTrainer(@AuthenticationPrincipal UserPrincipal principal, @RequestBody UsernameDTO req, @RequestHeader Map<String, String> headers) {
+        System.out.println(principal.getUsername());
         Trainer trainer = trainerService.selectTrainerProfileByUsername(req.username());
         authorize(headers, trainer);
         List<Trainee> trainees = trainerService.selectTrainerTraineeList(trainer.getId());

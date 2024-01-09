@@ -6,6 +6,7 @@ import org.example.configuration.indicator.PingHealthIndicator;
 import org.example.configuration.inmemory.InMemoryBeanConfiguration;
 import org.example.configuration.jpa.JpaBeanConfiguration;
 import org.example.configuration.metric.TrainingTypesMetric;
+import org.example.configuration.security.JwtIssuer;
 import org.example.controller.*;
 import org.example.exception.RestExceptionHandler;
 import org.example.facade.impl.GymFacadeImpl;
@@ -84,11 +85,13 @@ public class BeanConfiguration {
     @Bean
     public LoginController loginController(@Autowired CredentialsAuthenticator credentialsAuthenticator,
                                            @Autowired JpaTrainerService trainerService,
-                                           @Autowired JpaTraineeService traineeService) {
+                                           @Autowired JpaTraineeService traineeService, @Autowired JwtIssuer jwtIssuer) {
+
         LoginController loginController = new LoginController();
         loginController.setCredentialsAuthenticator(credentialsAuthenticator);
         loginController.setTraineeService(traineeService);
         loginController.setTrainerService(trainerService);
+        loginController.setJwtIssuer(jwtIssuer);
         return loginController;
     }
 

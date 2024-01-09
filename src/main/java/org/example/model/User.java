@@ -3,6 +3,7 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
@@ -21,6 +22,14 @@ public class User extends BaseEntity {
 
     public User() {
     }
+    public User(User user){
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.isActive = user.getIsActive();
+    }
+
 
     public User(String firstName, String lastName, String username, String password, boolean isActive) {
         this.firstName = firstName;
