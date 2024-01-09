@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.example.configuration.security.JwtIssuer;
 import org.example.controller.dto.*;
 import org.example.exception.ErrorResponse;
 import org.example.model.Trainee;
@@ -12,6 +13,7 @@ import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTraineeService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,8 @@ public class TraineeController {
     private JpaTraineeService traineeService;
     private JpaTrainingService trainingService;
     private CredentialsAuthenticator credentialsAuthenticator;
+    @Autowired
+    private JwtIssuer jwtIssuer;
 
     @GetMapping
     @ApiOperation(value = "Retrieve Trainee information")
@@ -46,10 +50,12 @@ public class TraineeController {
             @ApiResponse(code = 200, message = "OK", response = Credentials.class),
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class)
     })
-    public Credentials addTrainee(@RequestBody AddTraineeRequestDTO req) {
+    public CredentialsResponseDTO addTrainee(@RequestBody AddTraineeRequestDTO req) {
         Trainee trainee = traineeService.
                 createTraineeProfile(req.firstName(), req.lastName(), req.dateOfBirth(), req.address());
-        return new Credentials(trainee.getUser().getUsername(), trainee.getUser().getPassword());
+        String token = jwtIssuer.issue(trainee.getUser().getUsername(), trainee.getUser().getPassword());
+
+        return new CredentialsResponseDTO(trainee.getUser().getUsername(), trainee.getUser().getPassword(), token);
     }
 
     @PatchMapping

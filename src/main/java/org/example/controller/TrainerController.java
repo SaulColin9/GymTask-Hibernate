@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.example.configuration.security.JwtIssuer;
 import org.example.configuration.security.UserPrincipal;
 import org.example.controller.dto.*;
 import org.example.exception.ErrorResponse;
@@ -13,6 +14,7 @@ import org.example.service.authentication.Credentials;
 import org.example.service.authentication.CredentialsAuthenticator;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +30,8 @@ public class TrainerController {
     private JpaTrainerService trainerService;
     private JpaTrainingService trainingService;
     private CredentialsAuthenticator credentialsAuthenticator;
+    @Autowired
+    private JwtIssuer jwtIssuer;
 
     @PostMapping
     @ApiOperation(value = "Add new Trainer to storage")
@@ -35,11 +39,11 @@ public class TrainerController {
             @ApiResponse(code = 200, message = "OK", response = Credentials.class),
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class)
     })
-    public Credentials addTrainer(@RequestBody AddTrainerRequestDTO req) {
+    public CredentialsResponseDTO addTrainer(@RequestBody AddTrainerRequestDTO req) {
         Trainer trainer = trainerService.createTrainerProfile(req.firstName(), req.lastName(), req.specialization());
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String token = jwtIssuer.issue(trainer.getUser().getUsername(), trainer.getUser().getPassword());
 
-        return new Credentials(trainer.getUser().getUsername(), trainer.getUser().getPassword());
+        return new CredentialsResponseDTO(trainer.getUser().getUsername(), trainer.getUser().getPassword(), token);
     }
 
     @GetMapping
