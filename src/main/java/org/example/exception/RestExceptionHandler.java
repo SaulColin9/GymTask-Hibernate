@@ -1,5 +1,6 @@
 package org.example.exception;
 
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -29,5 +30,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         String responseString = "Provided user is not authorized to perform this action";
         return new ErrorResponse(responseString, "403");
     }
+
 
 }

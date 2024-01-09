@@ -5,6 +5,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,13 +17,17 @@ public class JpaCredentialsAuthenticator extends AbstractCredentialsAuthenticato
 
     @Override
     protected Optional<User> getUserByCredentials(Credentials credentials) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         TypedQuery<User> query = entityManager
-                .createQuery("FROM User WHERE username = :username AND password = :password", User.class);
+                .createQuery("FROM User WHERE username = :username", User.class);
         query.setParameter("username", credentials.username());
-        query.setParameter("password", credentials.password());
 
         try {
-            return Optional.of(query.getSingleResult());
+            Optional<User> user = Optional.of(query.getSingleResult());
+            if (!passwordEncoder.matches(credentials.password(), user.get().getPassword())) {
+                return Optional.empty();
+            }
+            return user;
         } catch (NoResultException e) {
             return Optional.empty();
         }

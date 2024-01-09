@@ -53,9 +53,9 @@ public class TrainerController {
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public TrainerDTO getTrainer(@AuthenticationPrincipal UserPrincipal principal, @RequestBody UsernameDTO req, @RequestHeader Map<String, String> headers) {
-        System.out.println(principal.getUsername());
+    public TrainerDTO getTrainer(@RequestBody UsernameDTO req, @RequestHeader Map<String, String> headers) {
         Trainer trainer = trainerService.selectTrainerProfileByUsername(req.username());
+        System.out.println(headers.get("username"));
         authorize(headers, trainer);
         List<Trainee> trainees = trainerService.selectTrainerTraineeList(trainer.getId());
         return new TrainerDTO(trainer, trainees);
