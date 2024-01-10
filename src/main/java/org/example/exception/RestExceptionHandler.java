@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.naming.AuthenticationException;
+
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {UserAuthenticationException.class})
@@ -31,5 +33,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResponse(responseString, "403");
     }
 
+    @ExceptionHandler(value = {UserBlockedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse errorHandlerUserAuthorization(UserBlockedException ex, WebRequest req) {
+        String responseString = "You have been blocked for 5 minutes";
+        return new ErrorResponse(responseString, "403");
+    }
 
 }

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import org.example.configuration.security.JwtIssuer;
 import org.example.controller.dto.ChangeLoginRequestDTO;
 import org.example.controller.dto.LoginResponseDTO;
+import org.example.exception.UserAuthenticationException;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.service.authentication.Credentials;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,7 +39,7 @@ public class LoginController {
             @ApiResponse(code = 403, message = "Invalid credentials")
     })
     public LoginResponseDTO login(@RequestBody Credentials credentials) {
-        var authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password())
         );
         String token = jwtIssuer.issue(credentials.username(), credentials.password());
