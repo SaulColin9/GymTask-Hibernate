@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import org.example.controller.dto.AddTrainingRequestDTO;
 import org.example.controller.dto.DeleteTrainingRequestDTO;
 import org.example.controller.dto.DeleteTrainingResponseDTO;
+import org.example.controller.dto.TrainingWorkloadResponseDTO;
 import org.example.exception.ErrorResponse;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +37,28 @@ public class TrainingController {
             @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public ResponseEntity<String> addTraining(@RequestBody AddTrainingRequestDTO req) {
+    public TrainingWorkloadResponseDTO addTraining(@RequestBody AddTrainingRequestDTO req,
+                                                   @RequestHeader Map<String, String> headers) {
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+
         trainingService.createTrainingProfile(req.traineeUsername(), req.trainerUsername(), req.trainingName(),
                 req.trainingTypeId(), req.trainingDate(), req.duration());
-        return ResponseEntity.ok("OK");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        httpHeaders.add("authorization", headers.get("authorization"));
+
+        HttpEntity<String> entity = new HttpEntity<>("body", httpHeaders);
+        return circuitBreaker.run(
+                () ->
+                        restTemplate.exchange(MICROSERVICE_URL + "/training/workload/" + req.trainerUsername(),
+                                HttpMethod.POST, entity, TrainingWorkloadResponseDTO.class).getBody()
+                ,
+                throwable ->
+                {
+                    // or call fallback microservice
+                    throw new IllegalArgumentException();
+                });
     }
 
     @DeleteMapping
