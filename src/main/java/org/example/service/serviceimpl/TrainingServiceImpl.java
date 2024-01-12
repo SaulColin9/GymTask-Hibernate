@@ -20,7 +20,7 @@ public class TrainingServiceImpl implements TrainingService {
     protected Dao<Trainer> trainerDao;
     protected Dao<TrainingType> trainingTypeDao;
     protected Dao<Training> trainingDao;
-    protected static final Logger logger = LoggerFactory.getLogger(TrainerServiceImpl.class);
+    protected static final Logger logger = LoggerFactory.getLogger(TrainingServiceImpl.class);
     protected Validator validator;
 
 

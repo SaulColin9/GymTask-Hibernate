@@ -37,6 +37,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/trainee").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/trainer").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/training").permitAll()
                                 .requestMatchers("/swagger-ui/index.html").permitAll()
                                 .anyRequest().authenticated()
                 );

@@ -1,5 +1,7 @@
 package org.example.configuration;
 
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.example.configuration.indicator.MaxMemoryHealthIndicator;
 import org.example.configuration.indicator.PingHealthIndicator;
@@ -20,11 +22,18 @@ import org.example.service.serviceimpl.jpa.JpaTraineeService;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.handler.MappedInterceptor;
+
+import java.time.Duration;
 
 @Configuration
 @EnableWebMvc
@@ -37,6 +46,28 @@ public class BeanConfiguration {
         gymFacade.setCredentialsAuthenticator(credentialsAuthenticator);
         return gymFacade;
     }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public Customizer<Resilience4JCircuitBreakerFactory> circuitBreakerFactoryCustomizer() {
+        CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
+                .failureRateThreshold(50)
+                .waitDurationInOpenState(Duration.ofMillis(1000))
+                .slidingWindowSize(2)
+                .build();
+        TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom()
+                .timeoutDuration(Duration.ofSeconds(4))
+                .build();
+        return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
+                .timeLimiterConfig(timeLimiterConfig)
+                .circuitBreakerConfig(circuitBreakerConfig)
+                .build());
+    }
+
 
     @Bean
     MaxMemoryHealthIndicator maxMemoryHealthIndicator() {
