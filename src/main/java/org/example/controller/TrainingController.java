@@ -48,8 +48,6 @@ public class TrainingController {
     })
     public Training addTraining(@RequestBody AddTrainingRequestDTO req,
                                 @RequestHeader Map<String, String> headers) {
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
-
         jmsTemplate.convertAndSend("training.create.queue", req.trainerUsername());
         return trainingService.createTrainingProfile(req.traineeUsername(), req.trainerUsername(), req.trainingName(),
                 req.trainingTypeId(), req.trainingDate(), req.duration());
