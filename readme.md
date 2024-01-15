@@ -1,9 +1,11 @@
 ## Gym Task
 
 #### This project uses MySql as a database, so it should be installed in order to work.
+### This application uses ActiveMQ as a message broker for communication between microservices, so make sure to install it and set it up and running
 
 #### Go to the storage.properties file stored inside:
 * src/main/resources/storage.properties
+
 
 [//]: # (#### Make sure to change the port, hostname, username and password variables to the ones needed for your machine)
 
