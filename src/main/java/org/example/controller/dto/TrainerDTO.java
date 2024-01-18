@@ -17,6 +17,7 @@ public class TrainerDTO {
         this.user = trainer.getUser();
         this.trainees = trainees;
     }
+    public TrainerDTO(){}
 
     public TrainingType getSpecialization() {
         return specialization;

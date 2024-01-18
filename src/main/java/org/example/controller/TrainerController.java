@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.example.configuration.security.JwtIssuer;
-import org.example.configuration.security.UserPrincipal;
 import org.example.controller.dto.*;
 import org.example.exception.ErrorResponse;
 import org.example.model.Trainee;
@@ -16,8 +15,6 @@ import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,17 +43,15 @@ public class TrainerController {
         return new CredentialsResponseDTO(trainer.getUser().getUsername(), trainer.getUser().getPassword(), token);
     }
 
-    @GetMapping
+    @GetMapping("/{username}")
     @ApiOperation(value = "Retrieve Trainer information")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = TrainerDTO.class),
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public TrainerDTO getTrainer(@RequestBody UsernameDTO req, @RequestHeader Map<String, String> headers) {
-        Trainer trainer = trainerService.selectTrainerProfileByUsername(req.username());
-        System.out.println(headers.get("username"));
-        authorize(headers, trainer);
+    public TrainerDTO getTrainer(@PathVariable("username") String username) {
+        Trainer trainer = trainerService.selectTrainerProfileByUsername(username);
         List<Trainee> trainees = trainerService.selectTrainerTraineeList(trainer.getId());
         return new TrainerDTO(trainer, trainees);
     }
