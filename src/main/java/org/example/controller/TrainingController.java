@@ -46,8 +46,7 @@ public class TrainingController {
             @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public Training addTraining(@RequestBody AddTrainingRequestDTO req,
-                                @RequestHeader Map<String, String> headers) {
+    public Training addTraining(@RequestBody AddTrainingRequestDTO req) {
         jmsTemplate.convertAndSend("training.create.queue", req.trainerUsername());
         return trainingService.createTrainingProfile(req.traineeUsername(), req.trainerUsername(), req.trainingName(),
                 req.trainingTypeId(), req.trainingDate(), req.duration());
@@ -59,8 +58,7 @@ public class TrainingController {
             @ApiResponse(code = 200, message = "OK", response = DeleteTrainingResponseDTO.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public ResponseEntity<String> deleteTraining(@RequestBody DeleteTrainingRequestDTO req,
-                                                 @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<String> deleteTraining(@RequestBody DeleteTrainingRequestDTO req) {
         jmsTemplate.convertAndSend(queue, req);
         return ResponseEntity.ok("OK");
     }
