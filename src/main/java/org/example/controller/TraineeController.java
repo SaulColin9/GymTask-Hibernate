@@ -57,17 +57,15 @@ public class TraineeController {
         return new CredentialsResponseDTO(trainee.getUser().getUsername(), trainee.getUser().getPassword(), token);
     }
 
-    @PatchMapping
+    @PutMapping("/status")
     @ApiOperation(value = "Update Trainee is active status")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public ResponseEntity<String> updateIsActiveStatus(@RequestBody UpdateIsActiveTraineeRequestDTO req,
-                                                       @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<String> updateIsActiveStatus(@RequestBody UpdateIsActiveTraineeRequestDTO req) {
         Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
-        authorize(headers, t);
         traineeService.updateTraineeActiveStatus(req.username(), req.isActive());
         return ResponseEntity.ok("OK");
     }

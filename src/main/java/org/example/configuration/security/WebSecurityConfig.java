@@ -34,6 +34,8 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(registry ->
                         registry
+                                .requestMatchers(HttpMethod.PATCH,"/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/login").permitAll()

@@ -56,18 +56,15 @@ public class TrainerController {
         return new TrainerDTO(trainer, trainees);
     }
 
-    @PatchMapping
+    @PutMapping("/status")
     @ApiOperation(value = "Update Trainer is active status")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public ResponseEntity<String> updateIsActiveStatus(@RequestBody UpdateIsActiveTrainerRequestDTO req,
-                                                       @RequestHeader Map<String, String> headers) {
-
+    public ResponseEntity<String> updateIsActiveStatus(@RequestBody UpdateIsActiveTrainerRequestDTO req) {
         Trainer trainer = trainerService.selectTrainerProfileByUsername(req.username());
-        authorize(headers, trainer);
         trainerService.updateTrainerActiveStatus(req.username(), req.isActive());
         return ResponseEntity.ok("OK");
     }
