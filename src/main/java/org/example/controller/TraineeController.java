@@ -30,16 +30,15 @@ public class TraineeController {
     @Autowired
     private JwtIssuer jwtIssuer;
 
-    @GetMapping
+    @GetMapping("/{username}")
     @ApiOperation(value = "Retrieve Trainee information")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = TraineeDTO.class),
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse.class),
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
-    public TraineeDTO getTrainee(@RequestBody UsernameDTO req, @RequestHeader Map<String, String> headers) {
-        Trainee t = traineeService.selectTraineeProfileByUsername(req.username());
-        authorize(headers, t);
+    public TraineeDTO getTrainee(@PathVariable("username") String username) {
+        Trainee t = traineeService.selectTraineeProfileByUsername(username);
         List<Trainer> trainers = traineeService.selectTraineeTrainersList(t.getId());
         return new TraineeDTO(t, trainers);
     }
