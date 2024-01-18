@@ -32,17 +32,17 @@ public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping
+    @PostMapping
     @ApiOperation(value = "Validate provided credentials")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ResponseEntity.class),
             @ApiResponse(code = 403, message = "Invalid credentials")
     })
-    public LoginResponseDTO login(@RequestBody Credentials credentials) {
+    public LoginResponseDTO login(@RequestBody Credentials req) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password())
+                new UsernamePasswordAuthenticationToken(req.username(), req.password())
         );
-        String token = jwtIssuer.issue(credentials.username(), credentials.password());
+        String token = jwtIssuer.issue(req.username(), req.password());
         return new LoginResponseDTO(token);
     }
 

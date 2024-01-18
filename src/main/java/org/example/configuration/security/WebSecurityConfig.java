@@ -35,6 +35,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(registry ->
                         registry
                                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/trainee").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/trainer").permitAll()

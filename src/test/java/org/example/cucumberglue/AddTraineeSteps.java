@@ -3,42 +3,42 @@ package org.example.cucumberglue;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.example.controller.dto.AddTrainerRequestDTO;
+import org.example.controller.dto.AddTraineeRequestDTO;
 import org.example.service.authentication.Credentials;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class AddTrainerSteps {
+public class AddTraineeSteps {
     @LocalServerPort
     private String port;
     private ResponseEntity<Credentials> lastResponse;
 
-    @When("the client calls \\/trainer")
-    public void theClientCallsTrainer() {
-        String url = "/trainer";
+    @When("the client calls \\/trainee")
+    public void theClientCallsTrainee() {
+        String url = "/trainee";
 
-        AddTrainerRequestDTO req = new AddTrainerRequestDTO("Jane", "Doe", 1);
+        AddTraineeRequestDTO req = new AddTraineeRequestDTO("Chris", "Smith", new Date(), "Address");
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<AddTrainerRequestDTO> entity = new HttpEntity<>(req, headers);
+        HttpEntity<AddTraineeRequestDTO> entity = new HttpEntity<>(req, headers);
 
         lastResponse = new RestTemplate().exchange("http://localhost:" + port + url, HttpMethod.POST, entity, Credentials.class);
     }
 
-    @Then("the client receives a status code of {int}")
-    public void theClientReceivesAStatusCodeOf(int statusCode) {
+    @Then("the client receives a status code of {int} after creation")
+    public void theClientReceivesAStatusCode(int statusCode){
         assertThat(lastResponse.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(statusCode));
     }
 
-    @And("the trainer credentials are returned")
-    public void theTrainerCredentialsAreReturned() {
+    @And("the trainee credentials are returned")
+    public void theTraineeCredentialsAreReturned() {
         assertThat(lastResponse.getBody()).isNotNull();
     }
-
 }
