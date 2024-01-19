@@ -22,6 +22,7 @@ import org.example.service.serviceimpl.jpa.JpaTraineeService;
 import org.example.service.serviceimpl.jpa.JpaTrainerService;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
@@ -29,6 +30,7 @@ import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.handler.MappedInterceptor;
@@ -38,7 +40,17 @@ import java.time.Duration;
 @Configuration
 @EnableWebMvc
 @Import({InMemoryBeanConfiguration.class, JpaBeanConfiguration.class})
+@PropertySource(value = "classpath:security.properties")
 public class BeanConfiguration {
+
+    @Value("${token}")
+    private String permanentToken;
+
+    @Bean
+    public String token() {
+        return permanentToken;
+    }
+
     @Bean
     public GymFacadeImpl gymFacade(@Autowired TraineeService traineeService, @Autowired TrainerService trainerService,
                                    @Autowired TrainingService trainingService, @Autowired CredentialsAuthenticator credentialsAuthenticator) {

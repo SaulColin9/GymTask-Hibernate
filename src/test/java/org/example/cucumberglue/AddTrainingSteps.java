@@ -6,8 +6,10 @@ import io.cucumber.java.en.When;
 import org.example.controller.dto.AddTrainerRequestDTO;
 import org.example.controller.dto.AddTrainingRequestDTO;
 import org.example.controller.dto.TraineeDTO;
+import org.example.dao.jpa.JpaDaoTrainingImpl;
 import org.example.model.Training;
 import org.example.service.authentication.Credentials;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +24,8 @@ public class AddTrainingSteps {
     @LocalServerPort
     private String port;
     private ResponseEntity<Training> lastResponse;
+    @Autowired
+    private JpaDaoTrainingImpl daoTraining;
 
     @When("the client calls \\/training")
     public void theClientCallsTraining() {
@@ -50,5 +54,7 @@ public class AddTrainingSteps {
 
     @And("the training is returned")
     public void theTrainingIsReturned() {
+        assertThat(lastResponse.getBody()).isNotNull();
+        daoTraining.delete(lastResponse.getBody().getId());
     }
 }

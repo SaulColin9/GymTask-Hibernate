@@ -4,7 +4,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.controller.dto.AddTraineeRequestDTO;
+import org.example.dao.jpa.JpaDaoTraineeImpl;
 import org.example.service.authentication.Credentials;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +20,8 @@ public class AddTraineeSteps {
     @LocalServerPort
     private String port;
     private ResponseEntity<Credentials> lastResponse;
+    @Autowired
+    private JpaDaoTraineeImpl daoTrainee;
 
     @When("the client calls \\/trainee")
     public void theClientCallsTrainee() {
@@ -33,12 +37,13 @@ public class AddTraineeSteps {
     }
 
     @Then("the client receives a status code of {int} after creation")
-    public void theClientReceivesAStatusCode(int statusCode){
+    public void theClientReceivesAStatusCode(int statusCode) {
         assertThat(lastResponse.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(statusCode));
     }
 
     @And("the trainee credentials are returned")
     public void theTraineeCredentialsAreReturned() {
         assertThat(lastResponse.getBody()).isNotNull();
+        daoTrainee.delete(daoTrainee.getByUsername(lastResponse.getBody().username()).get().getId());
     }
 }
