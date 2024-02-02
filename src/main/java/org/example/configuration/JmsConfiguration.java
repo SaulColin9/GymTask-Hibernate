@@ -47,7 +47,7 @@ public class JmsConfiguration {
 
     @Bean
     public ActiveMQConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
+        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("admin", "admin", "tcp://activemq:61616");
         return factory;
     }
 

@@ -16,6 +16,7 @@
         <tomcat.version>8.0.8</tomcat.version>
         <swagger.version>3.0.0</swagger.version>
         <cucumber.version>7.5.0</cucumber.version>
+        <start-class>org.example.GymApplication</start-class>
     </properties>
     <dependencies>
         <dependency>
@@ -247,6 +248,21 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.example.GymApplication</mainClass>
+                    <layout>JAR</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 
