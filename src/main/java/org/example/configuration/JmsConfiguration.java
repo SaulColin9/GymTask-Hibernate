@@ -21,42 +21,42 @@ import java.util.Map;
 @EnableJms
 @Configuration
 public class JmsConfiguration {
-
-    @Bean
-    public Queue deleteTrainingQueue() {
-        return new ActiveMQQueue("training.delete.queue");
-    }
-
-    @Bean
-    public MessageConverter jacksonJmsMessageConverter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        Map<String, Class<?>> typeIdMappings = new HashMap<String, Class<?>>();
-        typeIdMappings.put("_type", DeleteTrainingRequestDTO.class);
-        converter.setTypeIdMappings(typeIdMappings);
-        converter.setTargetType(MessageType.TEXT);
-        converter.setTypeIdPropertyName("_type");
-        return converter;
-    }
-
-    @Bean
-    public JmsListenerContainerFactory wareHouseFactory(ConnectionFactory factory, DefaultJmsListenerContainerFactoryConfigurer configurer) {
-        DefaultJmsListenerContainerFactory containerFactory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(containerFactory, factory);
-        return containerFactory;
-    }
-
-    @Bean
-    public ActiveMQConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
-        return factory;
-    }
-
-
-    @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory());
-        return factory;
-    }
+//
+//    @Bean
+//    public Queue deleteTrainingQueue() {
+//        return new ActiveMQQueue("training.delete.queue");
+//    }
+//
+//    @Bean
+//    public MessageConverter jacksonJmsMessageConverter() {
+//        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+//        Map<String, Class<?>> typeIdMappings = new HashMap<String, Class<?>>();
+//        typeIdMappings.put("_type", DeleteTrainingRequestDTO.class);
+//        converter.setTypeIdMappings(typeIdMappings);
+//        converter.setTargetType(MessageType.TEXT);
+//        converter.setTypeIdPropertyName("_type");
+//        return converter;
+//    }
+//
+//    @Bean
+//    public JmsListenerContainerFactory wareHouseFactory(ConnectionFactory factory, DefaultJmsListenerContainerFactoryConfigurer configurer) {
+//        DefaultJmsListenerContainerFactory containerFactory = new DefaultJmsListenerContainerFactory();
+//        configurer.configure(containerFactory, factory);
+//        return containerFactory;
+//    }
+//
+//    @Bean
+//    public ActiveMQConnectionFactory connectionFactory() {
+//        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
+//        return factory;
+//    }
+//
+//
+//    @Bean
+//    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+//        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+//        factory.setConnectionFactory(connectionFactory());
+//        return factory;
+//    }
 
 }

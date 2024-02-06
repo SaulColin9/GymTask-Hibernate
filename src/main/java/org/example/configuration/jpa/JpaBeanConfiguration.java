@@ -24,42 +24,42 @@ import org.springframework.context.annotation.Profile;
 public class JpaBeanConfiguration {
 
     @Bean
-    CredentialsAuthenticator credentialsAuthenticator(@Autowired EntityManager entityManager) {
+    CredentialsAuthenticator credentialsAuthenticator(@Autowired(required = false) EntityManager entityManager) {
         JpaCredentialsAuthenticator credentialsAuthenticator = new JpaCredentialsAuthenticator();
         credentialsAuthenticator.setEntityManager(entityManager);
         return credentialsAuthenticator;
     }
 
     @Bean
-    public JpaDaoUserImpl jpaDaoUser(@Autowired EntityManager entityManager) {
+    public JpaDaoUserImpl jpaDaoUser(@Autowired(required = false) EntityManager entityManager) {
         JpaDaoUserImpl jpaDaoUser = new JpaDaoUserImpl();
         jpaDaoUser.setEntityManager(entityManager);
         return jpaDaoUser;
     }
 
     @Bean
-    public JpaDaoTrainerImpl jpaDaoTrainer(@Autowired EntityManager entityManager) {
+    public JpaDaoTrainerImpl jpaDaoTrainer(@Autowired(required = false) EntityManager entityManager) {
         JpaDaoTrainerImpl jpaDaoTrainer = new JpaDaoTrainerImpl();
         jpaDaoTrainer.setEntityManager(entityManager);
         return jpaDaoTrainer;
     }
 
     @Bean
-    public JpaDaoTraineeImpl jpaDaoTrainee(@Autowired EntityManager entityManager) {
+    public JpaDaoTraineeImpl jpaDaoTrainee(@Autowired(required = false) EntityManager entityManager) {
         JpaDaoTraineeImpl jpaDaoTrainee = new JpaDaoTraineeImpl();
         jpaDaoTrainee.setEntityManager(entityManager);
         return jpaDaoTrainee;
     }
 
     @Bean
-    public JpaDaoTrainingImpl jpaDaoTraining(@Autowired EntityManager entityManager) {
+    public JpaDaoTrainingImpl jpaDaoTraining(@Autowired(required = false) EntityManager entityManager) {
         JpaDaoTrainingImpl jpaDaoTraining = new JpaDaoTrainingImpl();
         jpaDaoTraining.setEntityManager(entityManager);
         return jpaDaoTraining;
     }
 
     @Bean
-    public JpaDaoTrainingTypeImpl jpaDaoTrainingType(@Autowired EntityManager entityManager) {
+    public JpaDaoTrainingTypeImpl jpaDaoTrainingType(@Autowired(required = false) EntityManager entityManager) {
         JpaDaoTrainingTypeImpl jpaDaoTrainingType = new JpaDaoTrainingTypeImpl();
         jpaDaoTrainingType.setEntityManager(entityManager);
         return jpaDaoTrainingType;

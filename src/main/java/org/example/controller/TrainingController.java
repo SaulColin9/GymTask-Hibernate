@@ -34,10 +34,10 @@ public class TrainingController {
     @Autowired
     private CircuitBreakerFactory circuitBreakerFactory;
 
-    @Autowired
-    private Queue queue;
-    @Autowired
-    private JmsTemplate jmsTemplate;
+//    @Autowired
+//    private Queue queue;
+//    @Autowired
+//    private JmsTemplate jmsTemplate;
 
 
     @PostMapping
@@ -47,7 +47,7 @@ public class TrainingController {
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
     public Training addTraining(@RequestBody AddTrainingRequestDTO req) {
-        jmsTemplate.convertAndSend("training.create.queue", req.trainerUsername());
+//        jmsTemplate.convertAndSend("training.create.queue", req.trainerUsername());
         return trainingService.createTrainingProfile(req.traineeUsername(), req.trainerUsername(), req.trainingName(),
                 req.trainingTypeId(), req.trainingDate(), req.duration());
     }
@@ -59,7 +59,7 @@ public class TrainingController {
             @ApiResponse(code = 400, message = "Given entity was not found", response = ErrorResponse.class),
     })
     public ResponseEntity<String> deleteTraining(@RequestBody DeleteTrainingRequestDTO req) {
-        jmsTemplate.convertAndSend(queue, req);
+//        jmsTemplate.convertAndSend(queue, req);
         return ResponseEntity.ok("OK");
     }
 

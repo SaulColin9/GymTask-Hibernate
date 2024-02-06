@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class JpaCredentialsAuthenticator extends AbstractCredentialsAuthenticator {
-    @Autowired
+    @Autowired(required = false)
     private EntityManager entityManager;
 
     @Override

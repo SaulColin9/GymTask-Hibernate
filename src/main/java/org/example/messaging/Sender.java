@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Sender {
-    @Autowired
+//    @Autowired
     private JmsTemplate jmsTemplate;
 
     public void sendMessage(String destination, String message) {
