@@ -19,7 +19,7 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 
 @EnableJms
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@SpringBootApplication
 @ComponentScan(basePackages = {"org.example.configuration", "org.example.messaging"})
 public class GymApplication {
     public static void main(String[] args) {
