@@ -4,29 +4,27 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import jakarta.jms.Queue;
 import org.example.controller.dto.AddTrainingRequestDTO;
 import org.example.controller.dto.DeleteTrainingRequestDTO;
 import org.example.controller.dto.DeleteTrainingResponseDTO;
-import org.example.controller.dto.TrainingWorkloadResponseDTO;
 import org.example.exception.ErrorResponse;
 import org.example.model.Training;
 import org.example.service.serviceimpl.jpa.JpaTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
-import org.springframework.http.*;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Collections;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/training")
 @Api(produces = "application/json", value = "Adding new Trainings")
 public class TrainingController {
+    @Value("${cloud.aws.end-point.uri}")
+    private String url;
     private JpaTrainingService trainingService;
     private static final String MICROSERVICE_URL = "http://localhost:8085";
     @Autowired
@@ -39,6 +37,8 @@ public class TrainingController {
 //    @Autowired
 //    private JmsTemplate jmsTemplate;
 
+    @Autowired
+    QueueMessagingTemplate queueMessagingTemplate;
 
     @PostMapping
     @ApiOperation(value = "Add new training to storage")
@@ -48,6 +48,7 @@ public class TrainingController {
     })
     public Training addTraining(@RequestBody AddTrainingRequestDTO req) {
 //        jmsTemplate.convertAndSend("training.create.queue", req.trainerUsername());
+        queueMessagingTemplate.send(url, MessageBuilder.withPayload(req.trainerUsername()).build());
         return trainingService.createTrainingProfile(req.traineeUsername(), req.trainerUsername(), req.trainingName(),
                 req.trainingTypeId(), req.trainingDate(), req.duration());
     }
